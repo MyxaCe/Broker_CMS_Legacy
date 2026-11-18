@@ -1,6 +1,5 @@
 import type { Field } from 'payload'
 
-/** Поля раздела «Navigation» (per-site коллекция, бывший глобал). */
 export const navigationFields: Field[] = [
     {
       name: 'header',

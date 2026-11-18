@@ -8,17 +8,6 @@ import { RESOURCE_MAPPERS } from '@/lib/contract/resources'
 import { validateContract } from '@/lib/contract/validate'
 import { defaultSiteSlug } from '@/lib/notify-site'
 
-/**
- * Контрактные эндпоинты CMS (мульти-тенантные):
- *   GET /v1/cms/{resource}?site=<slug>&locale=ru|en[&draft=true]
- *   GET /v1/cms/articles[?page=N] · /v1/cms/articles/{slug} — то же с ?site=
- *   GET /v1/cms/sites/{slug} — конфиг тенанта (server-side)
- * Без ?site= — сайт по умолчанию (DEFAULT_SITE): обратная совместимость,
- * действующие потребители работают без правок. Формы ответов не менялись.
- * Аутентификация X-API-Key; публичное исключение — brand?site= (тема
- * терминала грузится браузером, в т.ч. до логина).
- */
-
 export const dynamic = 'force-dynamic'
 
 const ARTICLES_PAGE_SIZE = 20
@@ -54,7 +43,6 @@ export async function GET(
     return NextResponse.json({ error: 'invalid_site' }, { status: 400 })
   }
 
-  // Публичное исключение: бренд читают браузеры (тема терминала до логина)
   const isPublicBrand =
     resource === 'brand' && segments.length === 1 && Boolean(url.searchParams.get('site')) && !draft
 
@@ -66,7 +54,6 @@ export async function GET(
   try {
     const payload = await getPayload({ config })
 
-    // Реестр сайтов нужен всем веткам
     const sites = await payload.find({
       collection: 'sites',
       where: { slug: { equals: segments[0] === 'sites' ? (segments[1] ?? '') : siteSlug } },
@@ -75,7 +62,6 @@ export async function GET(
     })
     const site = sites.docs[0] as Record<string, any> | undefined
 
-    // Конфиг тенанта: /v1/cms/sites/{slug} (server-side, под ключом)
     if (resource === 'sites' && segments.length === 2) {
       if (!SITE_SLUG_PATTERN.test(segments[1] ?? '')) {
         return NextResponse.json({ error: 'invalid_site' }, { status: 400 })
@@ -86,7 +72,6 @@ export async function GET(
           slug: String(site.slug),
           name: String(site.name ?? ''),
           demoStartBalanceCents: Number(site.demoStartBalanceCents ?? 1000000),
-          // Доступ сайта к вселенной MDS (allow-list канонических символов)
           instruments: Array.isArray(site.instruments) ? site.instruments.map(String) : [],
         },
         site.updatedAt,
@@ -95,7 +80,6 @@ export async function GET(
 
     if (!site) return NextResponse.json({ error: 'unknown_site' }, { status: 404 })
 
-    // Бренд = поля карточки сайта
     if (resource === 'brand' && segments.length === 1) {
       const dto = RESOURCE_MAPPERS.brand!(site)
       const check = validateContract('brand', dto)
@@ -105,7 +89,6 @@ export async function GET(
         : {})
     }
 
-    // Деталка статьи: /v1/cms/articles/{slug}
     if (resource === 'articles' && segments.length === 2) {
       const found = await payload.find({
         collection: 'articles',
@@ -126,7 +109,6 @@ export async function GET(
       return NextResponse.json({ error: 'unknown_resource' }, { status: 404 })
     }
 
-    // Список статей сайта
     if (resource === 'articles') {
       const page = Math.max(1, Number.parseInt(url.searchParams.get('page') ?? '1', 10) || 1)
       const found = await payload.find({
@@ -150,7 +132,6 @@ export async function GET(
       return jsonWithVersion(dto, newest?.updatedAt)
     }
 
-    // Per-site контентные коллекции (бывшие глобалы)
     const collection = RESOURCE_TO_COLLECTION[resource]
     const mapper = RESOURCE_MAPPERS[resource]
     if (!collection || !mapper) {

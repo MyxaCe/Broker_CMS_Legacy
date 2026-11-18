@@ -1,6 +1,5 @@
 import type { Field } from 'payload'
 
-/** Поля раздела «Contacts» (per-site коллекция, бывший глобал). */
 export const contactsFields: Field[] = [
     {
       name: 'channels',

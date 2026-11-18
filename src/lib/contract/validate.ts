@@ -4,13 +4,6 @@ import path from 'node:path'
 import { Ajv, type ValidateFunction } from 'ajv'
 import addFormats from 'ajv-formats'
 
-/**
- * Контрактная валидация ответов /v1/cms/* (ADR-021):
- * канон контракта — JSON Schema из platform-contracts (копия в contract/json-schema),
- * CMS не имеет права отдать ответ, не проходящий схему, — лучше 500,
- * чем «почти правильный» JSON, который сайт молча заменит фолбэком.
- */
-
 const ajv = new Ajv({ allErrors: true, strict: false })
 addFormats(ajv)
 

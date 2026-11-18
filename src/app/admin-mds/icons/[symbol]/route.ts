@@ -1,9 +1,5 @@
 import { NextResponse } from 'next/server'
 
-/**
- * Прокси иконок монет из MDS для админки: браузер редактора ходит
- * только на origin CMS (MDS может быть недоступен ему напрямую).
- */
 export async function GET(_req: Request, { params }: { params: Promise<{ symbol: string }> }) {
   const { symbol } = await params
   const base = process.env.MDS_HTTP_URL

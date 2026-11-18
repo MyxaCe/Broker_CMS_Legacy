@@ -1,5 +1,3 @@
-# Локальный стек CMS: docker compose up -d --build  (db + cms)
-# Только БД для разработки на хосте: docker compose up -d db
 services:
   db:
     image: postgres:16-alpine
@@ -17,8 +15,6 @@ services:
       timeout: 3s
       retries: 10
 
-  # Одноразовый прогон миграций перед стартом CMS (payload migrate).
-  # Использует build-стадию образа (полные node_modules + исходники).
   migrate:
     build:
       context: .
@@ -39,12 +35,9 @@ services:
       DATABASE_URL: postgres://cms:cms@db:5432/broker_cms
       PAYLOAD_SECRET: dev-payload-secret-b7f3a1c94e2d48f6a0c5e8d217394b6f
       CMS_API_KEY: dev-cms-api-key
-      # Вселенная инструментов для поля выбора в разделе «Инструменты»
       MDS_HTTP_URL: http://host.docker.internal:3003
-      # Вебхук уходит ИЗ контейнера на сайт, работающий на хосте (:3000)
       SITE_WEBHOOK_URL: http://host.docker.internal:3000/api/revalidate
       SITE_WEBHOOK_SECRET: local-dev-secret
-      # Эти URL открываются в браузере редактора/посетителя — остаются localhost
       CMS_PUBLIC_URL: http://localhost:3001
       SITE_URL: http://localhost:3000
       SITE_PREVIEW_SECRET: preview-dev-secret

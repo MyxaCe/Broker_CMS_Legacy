@@ -6,16 +6,6 @@ import React from 'react'
 import { activeSiteSlug } from '../lib/active-site'
 import { ensureSiteSkeleton } from '../lib/site-skeleton'
 
-/**
- * Навигация админки (замена стандартной, задание пользователя):
- * — рабочий сайт не выбран → только Дашборд и «Сайты» (разделы контента
- *   появляются ПОСЛЕ выбора: структура сайтов может различаться);
- * — сайт выбран → разделы ведут НАПРЯМУЮ в документ рабочего сайта
- *   (как раньше глобалы, без промежуточного списка); документа нет →
- *   создаётся черновик-каркас, ссылка всегда рабочая;
- * — «Новости» — единственный список (у статей документов много).
- */
-
 const CONTENT_LINKS: { collection: string; label: string }[] = [
   { collection: 'site-navigation', label: 'Навигация' },
   { collection: 'site-instruments', label: 'Инструменты' },
@@ -74,7 +64,6 @@ export async function AdminNav() {
     const siteDoc = site.docs[0] as { id: string | number; name?: string } | undefined
     if (siteDoc) {
       siteName = siteDoc.name ?? active
-      // Каркас гарантирует, что каждая ссылка ведёт в существующий документ
       docIds = await ensureSiteSkeleton(payload, siteDoc.id)
     }
   }

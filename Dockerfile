@@ -1,6 +1,3 @@
-# Broker CMS — production-образ (Next standalone + Payload).
-# Сборка: docker compose build cms   (или docker build -t broker-cms .)
-
 FROM node:22-alpine AS base
 RUN apk add --no-cache libc6-compat
 RUN corepack enable pnpm
@@ -14,7 +11,6 @@ FROM base AS build
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-# На этапе сборки БД не нужна: страницы админки динамические
 ENV BUILD_STANDALONE=1
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN pnpm build
@@ -29,10 +25,8 @@ RUN addgroup --system --gid 1001 nodejs \
 
 COPY --from=build --chown=payload:nodejs /app/.next/standalone ./
 COPY --from=build --chown=payload:nodejs /app/.next/static ./.next/static
-# Контракт нужен в рантайме: ajv-валидация ответов читает contract/json-schema
 COPY --from=build --chown=payload:nodejs /app/contract ./contract
 
-# Каталог медиа (подключается volume'ом)
 RUN mkdir -p /app/media && chown payload:nodejs /app/media
 
 USER payload

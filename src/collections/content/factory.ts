@@ -4,21 +4,11 @@ import { fillSiteFromActive, siteListFilter } from '../../lib/active-site'
 import { notifyContentChange } from '../../lib/notify-site'
 import { sitePreviewUrl } from '../../lib/preview-url'
 
-/**
- * Фабрика per-site контентных коллекций (мульти-тенантность):
- * бывшие глобалы становятся коллекциями «один документ на сайт».
- * Поле site — связь с реестром sites (unique: у сайта ровно один документ
- * каждого ресурса); контентные поля — те же, что были у глобалов,
- * поэтому мапперы и формы контракта не меняются ни на байт.
- */
 export interface SiteContentDef {
-  /** Slug коллекции в Payload (множественное/отличное от старого глобала имя) */
   collectionSlug: string
-  /** Имя ресурса контракта (cms:<resource> в тегах и URL) */
   resource: string
   label: string
   fields: Field[]
-  /** Путь страницы сайта для кнопки Preview */
   previewPath?: string
 }
 
@@ -30,14 +20,12 @@ export function makeSiteContentCollection(def: SiteContentDef): CollectionConfig
       useAsTitle: 'site',
       group: 'Контент',
       defaultColumns: ['site', 'updatedAt', '_status'],
-      // Списки показывают только рабочий сайт (выбор — на дашборде)
       baseListFilter: siteListFilter,
       ...(def.previewPath ? { preview: sitePreviewUrl(def.previewPath) } : {}),
     },
     versions: { drafts: true },
     hooks: {
       afterChange: [notifyContentChange(def.resource)],
-      // Поле site скрыто из формы — заполняем из рабочего сайта админки
       beforeValidate: [fillSiteFromActive],
     },
     fields: [
@@ -46,12 +34,10 @@ export function makeSiteContentCollection(def: SiteContentDef): CollectionConfig
         type: 'relationship',
         relationTo: 'sites',
         required: true,
-        // Один документ ресурса на сайт
         unique: true,
         index: true,
         label: 'Сайт',
         admin: {
-          // Рабочий сайт выбран на дашборде — в форме выбор не нужен
           condition: () => false,
         },
       },

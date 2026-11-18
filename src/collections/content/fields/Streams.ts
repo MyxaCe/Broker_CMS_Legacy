@@ -1,6 +1,5 @@
 import type { Field } from 'payload'
 
-/** Поля раздела «Streams» (per-site коллекция, бывший глобал). */
 export const streamsFields: Field[] = [
     {
       name: 'items',

@@ -1,12 +1,5 @@
 import { RESOURCE_TO_COLLECTION } from '../collections/content/index'
 
-/**
- * Каркас контента сайта: у КАЖДОГО сайта должен существовать документ
- * каждого раздела (как раньше глобал). Создаём ЧЕРНОВИКИ (draft: true —
- * required-поля не валидируются): редактор заполняет и публикует.
- * Вызывается хуком при создании сайта и идемпотентно из навигации.
- */
-
 const SKELETON_COLLECTIONS = [...Object.values(RESOURCE_TO_COLLECTION)]
 
 interface PayloadLike {
@@ -14,7 +7,6 @@ interface PayloadLike {
   create: (a: { collection: never; data: unknown; draft?: boolean }) => Promise<{ id: string | number }>
 }
 
-/** Создаёт недостающие документы разделов для сайта. Возвращает slug→docId. */
 export async function ensureSiteSkeleton(
   payload: unknown,
   siteId: string | number,

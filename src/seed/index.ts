@@ -6,13 +6,6 @@ import path from 'node:path'
 import config from '@payload-config'
 import { getPayload } from 'payload'
 
-/**
- * Seed мульти-тенантной CMS из эталонных фикстур контракта:
- * админ+редактор, сайт по умолчанию (apex-ru), per-site контентные
- * документы (12 ресурсов × ru/en) и статьи сайта.
- * Идемпотентен. На мигрируемой БД запускать с NODE_ENV=production (B-016).
- */
-
 type Locale = 'ru' | 'en'
 const LOCALES: Locale[] = ['ru', 'en']
 const SITE_SLUG = process.env.DEFAULT_SITE ?? 'apex-ru'
@@ -24,9 +17,6 @@ function fixture(resource: string, locale: Locale): any {
 
 const payload = await getPayload({ config })
 
-/* ---------------------------------------------------------------- */
-/* 1. Пользователи                                                    */
-/* ---------------------------------------------------------------- */
 async function ensureUser(email: string, password: string, role: 'admin' | 'editor') {
   const existing = await payload.find({
     collection: 'users',
@@ -52,9 +42,6 @@ await ensureUser(
   'editor',
 )
 
-/* ---------------------------------------------------------------- */
-/* 2. Сайт по умолчанию (бренд — поля карточки)                       */
-/* ---------------------------------------------------------------- */
 const brandRu = fixture('brand', 'ru')
 const existingSite = await payload.find({
   collection: 'sites',
@@ -79,9 +66,6 @@ if (siteId === undefined) {
   console.info(`[seed] site already exists: ${SITE_SLUG}`)
 }
 
-/* ---------------------------------------------------------------- */
-/* 3. Per-site контент: фикстура → данные документа                   */
-/* ---------------------------------------------------------------- */
 const CONTENT_BUILDERS: Record<string, { collection: string; build: (f: any) => Record<string, unknown> }> = {
   navigation: {
     collection: 'site-navigation',
@@ -255,9 +239,6 @@ for (const [resource, def] of Object.entries(CONTENT_BUILDERS)) {
 }
 console.info(`[seed] per-site content seeded for ${SITE_SLUG}: ${Object.keys(CONTENT_BUILDERS).join(', ')}`)
 
-/* ---------------------------------------------------------------- */
-/* 4. Статьи сайта: upsert по (site, slug)                            */
-/* ---------------------------------------------------------------- */
 const articlesRu = fixture('articles', 'ru').items
 const articlesEn = fixture('articles', 'en').items
 for (const ru of articlesRu) {

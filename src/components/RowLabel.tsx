@@ -2,12 +2,6 @@
 
 import { useRowLabel } from '@payloadcms/ui'
 
-/**
- * Универсальная подпись строки массива в админке: вместо «Feature 01»
- * показывает содержимое строки (первое осмысленное текстовое поле,
- * для пар «параметр — значение» — оба). Порядок ключей — по убыванию
- * «заголовочности» поля в наших глобалах.
- */
 const TITLE_KEYS = [
   'label',
   'name',
@@ -52,7 +46,6 @@ export function ArrayRowLabel() {
     return <span>{`Элемент ${String(n).padStart(2, '0')}`}</span>
   }
 
-  // Пары «параметр — значение» (характеристики тарифов, каналы связи…)
   const value = data?.['value']
   if (titleKey !== 'value' && typeof value === 'string' && value.trim() !== '') {
     return <span>{truncate(`${title} — ${value.trim()}`)}</span>

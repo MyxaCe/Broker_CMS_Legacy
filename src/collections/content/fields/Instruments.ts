@@ -1,6 +1,5 @@
 import type { Field } from 'payload'
 
-/** Поля раздела «Instruments» (per-site коллекция, бывший глобал). */
 export const instrumentsFields: Field[] = [
     {
       name: 'items',
@@ -16,7 +15,6 @@ export const instrumentsFields: Field[] = [
           required: true,
           label: 'Символ (EURUSD…)',
           admin: {
-            // Выбор из вселенной MDS + автозаполнение name/category/digits
             components: { Field: '/components/MdsSymbolField#MdsSymbolField' },
           },
         },

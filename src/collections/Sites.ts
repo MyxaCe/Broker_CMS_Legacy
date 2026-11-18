@@ -2,12 +2,6 @@ import type { CollectionConfig } from 'payload'
 
 import { defaultSiteSlug, notifySiteFor } from '../lib/notify-site'
 
-/**
- * Реестр сайтов платформы (мульти-тенантность, ADR-023/024 сайта):
- * slug — канонический идентификатор тенанта (`?site=`) для терминала,
- * кабинетов и будущих страновых сайтов. Бренд per-site отдаётся
- * контрактом `GET /v1/cms/brand?site=<slug>` (форма — та же cms.brand).
- */
 export const Sites: CollectionConfig = {
   slug: 'sites',
   labels: { singular: 'Сайт', plural: 'Сайты' },
@@ -18,7 +12,6 @@ export const Sites: CollectionConfig = {
   hooks: {
     afterChange: [
       ({ doc }) => {
-        // Бренд сайта — поля этой карточки; вебхук самому сайту
         const site = doc as { slug?: string; webhookUrl?: string | null; webhookSecret?: string | null }
         const slug = site.slug ?? 'unknown'
         const tags = [`cms:brand:${slug}`]
@@ -27,7 +20,6 @@ export const Sites: CollectionConfig = {
         return doc
       },
       async ({ doc, operation, req }) => {
-        // Новый сайт сразу получает каркас всех разделов (черновики)
         if (operation === 'create') {
           const { ensureSiteSkeleton } = await import('../lib/site-skeleton')
           await ensureSiteSkeleton(req.payload, (doc as { id: string | number }).id)

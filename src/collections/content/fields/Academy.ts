@@ -1,6 +1,5 @@
 import type { Field } from 'payload'
 
-/** Поля раздела «Academy» (per-site коллекция, бывший глобал). */
 export const academyFields: Field[] = [
     {
       name: 'articles',

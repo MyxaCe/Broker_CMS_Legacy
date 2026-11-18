@@ -3,16 +3,6 @@ import 'dotenv/config'
 import config from '@payload-config'
 import { getPayload } from 'payload'
 
-/**
- * Одноразовый бэкфилл доступа (ADR-027, allow-list per site):
- * сайтам без списка instruments включаем всю ТЕКУЩУЮ вселенную MDS
- * (то, что они и так показывали до введения доступа) — поведение
- * не меняется. Новые сайты создаются с пустым доступом (осознанный выбор).
- *
- * Запуск (на мигрированной БД — NODE_ENV=production, B-016):
- *   pnpm payload run scripts/backfill-allow-list.ts
- */
-
 const base = process.env.MDS_HTTP_URL ?? 'http://localhost:3003'
 const res = await fetch(`${base.replace(/\/$/, '')}/v1/instruments`)
 if (!res.ok) throw new Error(`MDS /v1/instruments: HTTP ${res.status}`)

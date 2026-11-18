@@ -5,27 +5,12 @@ import React, { useEffect, useMemo, useState } from 'react'
 
 import { loadMdsInstruments, MDS_FAILURE_TEXT, type MdsFailureReason } from '@/lib/admin-mds'
 
-/**
- * Поле «Символ» раздела «Инструменты»: выбор из ДОСТУПА рабочего сайта
- * (пересечение вселенной MDS со списком instruments карточки сайта —
- * прокси /admin-mds/instruments фильтрует сам). При выборе автоматически
- * заполняются name/category/digits соседних полей строки.
- * Списка нет → обычный текстовый ввод (деградация без блокировки).
- *
- * Р-027: раньше здесь стояло `items.length > 0 ? items : null`, а подпись у
- * текстового ввода была одна — «MDS недоступен». Пустой доступ сайта,
- * невыбранный рабочий сайт и действительно мёртвый MDS давали одно и то же
- * сообщение, причём два раза из трёх — неправду. Состояний теперь три, и
- * подпись называет то, что произошло: чинятся они по-разному.
- */
-
 interface MdsInstrument {
   symbol: string
   name: string
   category: string
   digits: number
   icon?: string | null
-  /** Метка группы из MDS («Акции — Европа») — группируем как по данным */
   group?: string
 }
 
@@ -49,8 +34,6 @@ export function MdsSymbolField({ path }: { path: string }) {
 
   const rowBase = useMemo(() => path.slice(0, path.lastIndexOf('.') + 1), [path])
 
-  // Группы в порядке появления в каталоге MDS (вселенная растёт — новые
-  // группы появляются здесь сами, без правок CMS)
   const groups = useMemo(() => {
     const byGroup = new Map<string, MdsInstrument[]>()
     for (const i of items ?? []) {

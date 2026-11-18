@@ -3,14 +3,6 @@ import type { CollectionConfig } from 'payload'
 import { fillSiteFromActive, siteListFilter } from '../../lib/active-site'
 import { notifyContentChange } from '../../lib/notify-site'
 
-/**
- * Конфиг главной страницы кабинета (ADR-026 сайта): per-site НАБОР МОДУЛЕЙ.
- * Порядок = порядок строк массива (drag в админке); каждый модуль —
- * главный выключатель + группа настроек подпунктов (показывается только
- * для своего типа). Это реестр типизированных модулей, НЕ page-builder.
- * Конфиг не локализуется (тексты модулей живут в словарях кабинета).
- */
-
 const onlyFor = (type: string) => ({
   condition: (_data: unknown, sibling: { type?: string } | undefined) => sibling?.type === type,
 })

@@ -1,6 +1,5 @@
 import type { Field } from 'payload'
 
-/** Поля раздела «Promotions» (per-site коллекция, бывший глобал). */
 export const promotionsFields: Field[] = [
     {
       name: 'items',

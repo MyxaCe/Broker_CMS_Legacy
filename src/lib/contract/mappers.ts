@@ -1,12 +1,3 @@
-/**
- * Мапперы Payload-документов в контрактные DTO.
- * Схемы контракта объявлены с additionalProperties: false,
- * поэтому каждый маппер собирает объект явно — служебные поля Payload
- * (id строк массивов, _status, updatedAt…) в ответ не протекают.
- * Контрактные id, конфликтующие с зарезервированным полем строк массива,
- * хранятся как planId/promoId/webinarId/serviceId и маппятся обратно в id.
- */
-
 type PayloadDoc = Record<string, any>
 
 interface ContractImage {
@@ -32,7 +23,6 @@ function mapMedia(media: unknown): ContractImage | null {
   }
 }
 
-/** Дата из Payload → каноничный ISO-8601 (UTC, с миллисекундами). */
 const iso = (value: unknown): string => new Date(String(value)).toISOString()
 const isoOrNull = (value: unknown): string | null => (value ? iso(value) : null)
 
@@ -143,7 +133,6 @@ export function mapPartners(doc: PayloadDoc) {
       name: String(t.name ?? ''),
       clients: String(t.clients ?? ''),
       share: String(t.share ?? ''),
-      // featured в контракте опционален — не эмитим false, сохраняя паритет с фикстурами
       ...(t.featured ? { featured: true } : {}),
     })),
     steps: (doc.steps ?? []).map((s: PayloadDoc) => ({
@@ -257,7 +246,6 @@ export function mapSystemStatus(doc: PayloadDoc) {
   }
 }
 
-/** Конфиг главной кабинета: строки массива → строгие модули контракта. */
 export function mapCabinetHome(doc: PayloadDoc) {
   const modules: unknown[] = []
   for (const row of doc.modules ?? []) {
@@ -305,14 +293,12 @@ export function mapCabinetHome(doc: PayloadDoc) {
         })
         break
       default:
-        // неизвестный тип не отдаём — контракт строгий
         break
     }
   }
   return { modules }
 }
 
-/** Одна статья коллекции articles → контрактный cms.article. */
 export function mapArticle(doc: PayloadDoc) {
   return {
     slug: String(doc.slug ?? ''),

@@ -1,13 +1,5 @@
 import { createHmac, randomUUID } from 'node:crypto'
 
-/**
- * Вебхуки инвалидации контента: CMS → сайты (спецификация §6).
- * Мульти-тенантность: у каждого сайта свой webhookUrl/webhookSecret
- * (поля карточки sites, фолбэк — env SITE_WEBHOOK_URL/SECRET).
- * Теги: `cms:<resource>:<slug>` всегда; плюс `cms:<resource>` без slug —
- * только для сайта по умолчанию (обратная совместимость текущего сайта).
- */
-
 export function defaultSiteSlug(): string {
   return process.env.DEFAULT_SITE ?? 'apex-ru'
 }
@@ -41,7 +33,6 @@ async function sendWebhook(url: string, secret: string, tags: string[]): Promise
   console.error(`[notify-site] giving up after 3 attempts, url=${url} tags=[${tags.join(',')}]`)
 }
 
-/** Вебхук сайту по умолчанию (env) — используется seed'ом и хуком sites. */
 export async function notifySite(tags: string[]): Promise<void> {
   const url = process.env.SITE_WEBHOOK_URL
   const secret = process.env.SITE_WEBHOOK_SECRET
@@ -58,7 +49,6 @@ interface SiteDoc {
   webhookSecret?: string | null
 }
 
-/** Вебхук конкретному сайту: его URL/секрет или фолбэк на env. */
 export async function notifySiteFor(site: SiteDoc, tags: string[]): Promise<void> {
   const url = site.webhookUrl || process.env.SITE_WEBHOOK_URL
   const secret = site.webhookSecret || process.env.SITE_WEBHOOK_SECRET
@@ -74,11 +64,6 @@ type AfterChangeArgs = {
   req: { url?: string | null; payload: unknown }
 }
 
-/**
- * Хук afterChange per-site контентных коллекций: вебхук ТОМУ сайту,
- * которому принадлежит документ. Публикации и restore-версий (B-012);
- * черновики — нет.
- */
 export const notifyContentChange =
   (resource: string) =>
   async ({ doc, req }: AfterChangeArgs) => {
@@ -102,7 +87,6 @@ export const notifyContentChange =
 
       const slug = site?.slug ?? 'unknown'
       const tags = [`cms:${resource}:${slug}`]
-      // Обратная совместимость: сайт по умолчанию слушает теги без slug
       if (slug === defaultSiteSlug()) tags.unshift(`cms:${resource}`)
       void notifySiteFor(site ?? {}, tags)
     } catch (error) {

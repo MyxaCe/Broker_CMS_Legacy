@@ -21,19 +21,14 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
     components: {
-      // Дашборд = экран выбора рабочего сайта (карточки с метаданными)
       views: {
         dashboard: {
           Component: '/components/SiteDashboard#SiteDashboard',
         },
       },
-      // Своя навигация: разделы появляются ПОСЛЕ выбора сайта и ведут
-      // напрямую в документ рабочего сайта (без промежуточных списков)
       Nav: '/components/AdminNav#AdminNav',
     },
   },
-  // Мульти-тенантность: бывшие глобалы — per-site коллекции (один док на сайт);
-  // бренд — поля карточки sites; глобалов в конфиге больше нет
   collections: [Users, Media, Sites, Articles, ...CONTENT_COLLECTIONS],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
@@ -44,11 +39,9 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
-    // Прод накатывает миграции (payload migrate); dev-push — только локально
     migrationDir: path.resolve(dirname, 'migrations'),
   }),
   sharp,
-  // Локали контента совпадают с локалями сайтов (next-intl): ru — основная, en — fallback на ru
   localization: {
     locales: ['ru', 'en'],
     defaultLocale: 'ru',

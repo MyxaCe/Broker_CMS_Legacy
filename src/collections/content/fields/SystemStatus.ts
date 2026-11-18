@@ -1,6 +1,5 @@
 import type { Field } from 'payload'
 
-/** Поля раздела «SystemStatus» (per-site коллекция, бывший глобал). */
 export const systemStatusFields: Field[] = [
     {
       name: 'services',

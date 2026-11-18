@@ -5,13 +5,6 @@ import React from 'react'
 
 import { activeSiteSlug } from '../lib/active-site'
 
-/**
- * Дашборд админки = экран выбора рабочего сайта (задание пользователя):
- * карточка на сайт — название, slug, дата создания, «интерфейс обновлён»,
- * «последняя новость» — и кнопка выбора. После выбора все списки контента
- * фильтруются по рабочему сайту (baseListFilter).
- */
-
 function fmt(date: string | Date | null | undefined): string {
   if (!date) return '—'
   return new Date(date).toLocaleString('ru-RU', { dateStyle: 'medium', timeStyle: 'short' })
@@ -39,7 +32,6 @@ export async function SiteDashboard() {
   const cards = await Promise.all(
     sites.docs.map(async (site) => {
       const s = site as Record<string, any>
-      // «Интерфейс обновлён» = свежайший из конфигов внешнего вида сайта
       const [home, nav, article] = await Promise.all([
         payload.find({
           collection: 'site-cabinet-home',

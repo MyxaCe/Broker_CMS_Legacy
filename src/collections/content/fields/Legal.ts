@@ -1,6 +1,5 @@
 import type { Field } from 'payload'
 
-/** Поля раздела «Legal» (per-site коллекция, бывший глобал). */
 export const legalFields: Field[] = [
     {
       name: 'items',
@@ -12,7 +11,6 @@ export const legalFields: Field[] = [
       fields: [
         { name: 'slug', type: 'text', required: true, label: 'Slug (privacy, terms…)' },
         { name: 'title', type: 'text', required: true, label: 'Название' },
-        // Дата «обновлено» — контрактная строка YYYY-MM-DD, без таймзонных сюрпризов
         { name: 'updatedAt', type: 'text', required: true, label: 'Обновлено (YYYY-MM-DD)' },
         { name: 'intro', type: 'textarea', required: true, label: 'Вступление' },
         {
