@@ -2,6 +2,7 @@
   "items": [
     {
       "id": "standard",
+      "portfolioKey": "standard",
       "name": "Standard",
       "description": "Для первых шагов на рынке",
       "minDeposit": "$100",
@@ -47,6 +48,7 @@
     },
     {
       "id": "pro",
+      "portfolioKey": "pro",
       "name": "Pro",
       "description": "Для активных трейдеров",
       "minDeposit": "$1 000",
@@ -92,6 +94,7 @@
     },
     {
       "id": "ecn",
+      "portfolioKey": "enc_prime",
       "name": "ECN Prime",
       "description": "Межбанковская ликвидность",
       "minDeposit": "$5 000",

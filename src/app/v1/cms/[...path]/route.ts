@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 
 import { RESOURCE_TO_COLLECTION } from '@/collections/content/index'
-import { mapArticle } from '@/lib/contract/mappers'
+import { heroBackground, mapArticle } from '@/lib/contract/mappers'
 import { RESOURCE_MAPPERS } from '@/lib/contract/resources'
 import { validateContract } from '@/lib/contract/validate'
 import { parseLocale, siteLanguages } from '@/lib/languages'
@@ -88,6 +88,7 @@ export async function GET(
         demoStartBalanceCents: Number(site.demoStartBalanceCents ?? 1000000),
         // Доступ сайта к вселенной MDS (allow-list канонических символов)
         instruments: Array.isArray(site.instruments) ? site.instruments.map(String) : [],
+        heroBackground: heroBackground(site),
         ...siteLanguages(site),
       }
       const check = validateContract('sites', dto)

@@ -12,6 +12,10 @@
               "id": {
                 "type": "string"
               },
+              "portfolioKey": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_]+$"
+              },
               "name": {
                 "type": "string"
               },
@@ -66,10 +70,8 @@
               "id",
               "name",
               "description",
-              "minDeposit",
               "featured",
-              "features",
-              "pricing"
+              "features"
             ],
             "additionalProperties": false
           }

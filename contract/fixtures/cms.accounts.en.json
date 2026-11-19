@@ -2,6 +2,7 @@
   "items": [
     {
       "id": "standard",
+      "portfolioKey": "standard",
       "name": "Standard",
       "description": "For your first steps in the market",
       "minDeposit": "$100",
@@ -47,6 +48,7 @@
     },
     {
       "id": "pro",
+      "portfolioKey": "pro",
       "name": "Pro",
       "description": "For active traders",
       "minDeposit": "$1,000",
@@ -92,6 +94,7 @@
     },
     {
       "id": "ecn",
+      "portfolioKey": "enc_prime",
       "name": "ECN Prime",
       "description": "Interbank liquidity",
       "minDeposit": "$5,000",

@@ -17,7 +17,7 @@ export const CONTENT_BUILDERS: Record<string, ContentBuilder> = {
         name: i.name,
         category: i.category,
         digits: i.digits,
-        leverageMax: i.leverageMax,
+        ...(i.leverageMax !== undefined ? { leverageMax: i.leverageMax } : {}),
         spreadFrom: i.spreadFrom,
         swapFree: i.swapFree,
       })),
@@ -28,12 +28,13 @@ export const CONTENT_BUILDERS: Record<string, ContentBuilder> = {
     build: (f) => ({
       items: f.items.map((p: any) => ({
         planId: p.id,
+        ...(p.portfolioKey !== undefined ? { portfolioKey: p.portfolioKey } : {}),
         name: p.name,
         description: p.description,
-        minDeposit: p.minDeposit,
+        ...(p.minDeposit !== undefined ? { minDeposit: p.minDeposit } : {}),
         featured: p.featured,
         features: p.features,
-        pricing: p.pricing,
+        ...(p.pricing !== undefined ? { pricing: p.pricing } : {}),
       })),
     }),
   },
@@ -42,6 +43,7 @@ export const CONTENT_BUILDERS: Record<string, ContentBuilder> = {
     build: (f) => ({
       items: f.items.map((p: any) => ({
         promoId: p.id,
+        ...(p.promoId !== undefined ? { enginePromoId: p.promoId } : {}),
         badge: p.badge,
         title: p.title,
         description: p.description,

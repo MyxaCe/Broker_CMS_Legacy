@@ -453,6 +453,7 @@
         "items": [
           {
             "id": "standard",
+            "portfolioKey": "standard",
             "name": "Standard",
             "description": "Für Ihre ersten Schritte am Markt",
             "minDeposit": "$100",
@@ -498,6 +499,7 @@
           },
           {
             "id": "pro",
+            "portfolioKey": "pro",
             "name": "Pro",
             "description": "Für aktive Trader",
             "minDeposit": "$1,000",
@@ -543,6 +545,7 @@
           },
           {
             "id": "ecn",
+            "portfolioKey": "enc_prime",
             "name": "ECN Prime",
             "description": "Interbanken-Liquidität",
             "minDeposit": "$5,000",
@@ -1678,6 +1681,7 @@
         "items": [
           {
             "id": "standard",
+            "portfolioKey": "standard",
             "name": "Standard",
             "description": "Pour vos premiers pas sur le marché",
             "minDeposit": "$100",
@@ -1723,6 +1727,7 @@
           },
           {
             "id": "pro",
+            "portfolioKey": "pro",
             "name": "Pro",
             "description": "Pour les traders actifs",
             "minDeposit": "$1,000",
@@ -1768,6 +1773,7 @@
           },
           {
             "id": "ecn",
+            "portfolioKey": "enc_prime",
             "name": "ECN Prime",
             "description": "Liquidité interbancaire",
             "minDeposit": "$5,000",
@@ -2903,6 +2909,7 @@
         "items": [
           {
             "id": "standard",
+            "portfolioKey": "standard",
             "name": "Standard",
             "description": "Para sus primeros pasos en el mercado",
             "minDeposit": "$100",
@@ -2948,6 +2955,7 @@
           },
           {
             "id": "pro",
+            "portfolioKey": "pro",
             "name": "Pro",
             "description": "Para traders activos",
             "minDeposit": "$1,000",
@@ -2993,6 +3001,7 @@
           },
           {
             "id": "ecn",
+            "portfolioKey": "enc_prime",
             "name": "ECN Prime",
             "description": "Liquidez interbancaria",
             "minDeposit": "$5,000",

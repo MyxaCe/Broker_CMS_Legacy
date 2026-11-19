@@ -21,6 +21,13 @@
             "type": "string"
           }
         },
+        "heroBackground": {
+          "type": "string",
+          "enum": [
+            "quotes",
+            "off"
+          ]
+        },
         "languages": {
           "type": "array",
           "items": {

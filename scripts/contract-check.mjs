@@ -104,22 +104,37 @@ else fail(`sites/apex-ru: HTTP ${sitesRes.status}`);
 const publicBrand = await get('/v1/cms/brand?site=apex-ru', {});
 const publicBody = publicBrand.ok ? await publicBrand.json() : null;
 if (publicBrand.status === 200 && publicBrand.headers.get('access-control-allow-origin') === '*' &&
-    JSON.stringify(publicBody?.languages) === '["ru","en"]' && publicBody?.defaultLanguage === 'ru') {
-  console.log('OK    public brand: languages, defaultLanguage');
+    JSON.stringify(publicBody?.languages) === '["ru","en"]' && publicBody?.defaultLanguage === 'ru' &&
+    publicBody?.heroBackground === 'quotes') {
+  console.log('OK    public brand: languages, defaultLanguage, heroBackground');
 } else fail(`public brand: HTTP ${publicBrand.status} ${JSON.stringify(publicBody)}`);
 
 const ajv = new Ajv({ allErrors: true, strict: false });
 addFormats(ajv);
-const { languages: _l, defaultLanguage: _d, ...legacyBrand } = readJson('contract', 'fixtures', 'cms.brand.ru.json');
+const { languages: _l, defaultLanguage: _d, heroBackground: _h, ...legacyBrand } = readJson('contract', 'fixtures', 'cms.brand.ru.json');
 for (const [resource, legacy] of [
   ['brand', legacyBrand],
   ['sites', { slug: 'apex-ru', name: 'Apex Capital', demoStartBalanceCents: 1000000, instruments: [] }],
 ]) {
   const validate = ajv.compile(readJson('contract', 'json-schema', `cms.${resource}.schema.json`));
-  if (validate(legacy)) console.log(`OK    ${resource}: ответ без languages/defaultLanguage валиден (старая CMS)`);
+  if (validate(legacy)) console.log(`OK    ${resource}: ответ без languages/defaultLanguage/heroBackground валиден (старая CMS)`);
   else fail(`${resource}: схема требует новые поля ${JSON.stringify(validate.errors)}`);
   if (validate({ ...legacy, languages: [], defaultLanguage: 'it' })) fail(`${resource}: схема пропускает пустые languages и неизвестный код`);
   else console.log(`OK    ${resource}: схема отвергает пустые languages и неизвестный код`);
+  if (validate({ ...legacy, heroBackground: 'video' })) fail(`${resource}: схема пропускает неизвестный heroBackground`);
+  else console.log(`OK    ${resource}: схема отвергает неизвестный heroBackground`);
+}
+
+for (const [resource, strip] of [
+  ['accounts', (item) => { const { portfolioKey: _p, ...rest } = item; return rest; }],
+  ['accounts', (item) => { const { minDeposit: _m, pricing: _p, ...rest } = item; return rest; }],
+  ['instruments', (item) => { const { leverageMax: _l, ...rest } = item; return rest; }],
+]) {
+  const validate = ajv.compile(readJson('contract', 'json-schema', `cms.${resource}.schema.json`));
+  const body = readJson('contract', 'fixtures', `cms.${resource}.ru.json`);
+  const variant = { ...body, items: body.items.map(strip) };
+  if (validate(variant)) console.log(`OK    ${resource}: ответ без ${Object.keys(body.items[0]).filter((k) => !(k in variant.items[0])).join(', ')} валиден`);
+  else fail(`${resource}: схема требует ${JSON.stringify(validate.errors)}`);
 }
 
 const translations = readJson('scripts', 'i18n', 'content.de-fr-es.json').locales;

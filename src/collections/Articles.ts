@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { fillSiteFromActive, siteListFilter } from '../lib/active-site'
+import { liveParamsSummaryField, warnUnknownLiveParams, withLiveParams } from '../lib/live-params-fields'
 import { notifyContentChange } from '../lib/notify-site'
 import { sitePreviewUrlFor } from '../lib/preview-url'
 
@@ -22,10 +23,11 @@ export const Articles: CollectionConfig = {
   versions: { drafts: { autosave: { interval: 1000 } } },
   hooks: {
     // per-site вебхук: правка статьи demo не должна дёргать кеш apex-ru
-    afterChange: [notifyContentChange('articles')],
+    afterChange: [notifyContentChange('articles'), warnUnknownLiveParams],
     beforeValidate: [fillSiteFromActive],
   },
-  fields: [
+  fields: withLiveParams([
+    liveParamsSummaryField,
     {
       name: 'site',
       type: 'relationship',
@@ -54,5 +56,5 @@ export const Articles: CollectionConfig = {
     },
     { name: 'readingMinutes', type: 'number', required: true, min: 1, label: 'Минут чтения' },
     { name: 'bodyMarkdown', type: 'textarea', required: true, localized: true, label: 'Текст (Markdown)' },
-  ],
+  ]),
 }

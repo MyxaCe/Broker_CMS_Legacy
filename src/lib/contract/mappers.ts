@@ -36,6 +36,7 @@ function mapMedia(media: unknown): ContractImage | null {
 
 /** Дата из Payload → каноничный ISO-8601 (UTC, с миллисекундами). */
 const iso = (value: unknown): string => new Date(String(value)).toISOString()
+const present = (value: unknown): boolean => value !== undefined && value !== null && value !== ''
 const isoOrNull = (value: unknown): string | null => (value ? iso(value) : null)
 
 export function mapBrand(doc: PayloadDoc) {
@@ -48,8 +49,13 @@ export function mapBrand(doc: PayloadDoc) {
       name: String(s.name ?? ''),
       url: String(s.url ?? ''),
     })),
+    heroBackground: heroBackground(doc),
     ...siteLanguages(doc),
   }
+}
+
+export function heroBackground(site: PayloadDoc): 'quotes' | 'off' {
+  return site.heroBackground === 'off' ? 'off' : 'quotes'
 }
 
 export function mapNavigation(doc: PayloadDoc) {
@@ -90,7 +96,7 @@ export function mapInstruments(doc: PayloadDoc) {
       name: String(i.name ?? ''),
       category: String(i.category ?? 'forex'),
       digits: Number(i.digits ?? 0),
-      leverageMax: String(i.leverageMax ?? ''),
+      ...(present(i.leverageMax) ? { leverageMax: String(i.leverageMax) } : {}),
       spreadFrom: String(i.spreadFrom ?? ''),
       swapFree: Boolean(i.swapFree),
       icon: mapMedia(i.icon),
@@ -102,18 +108,23 @@ export function mapAccounts(doc: PayloadDoc) {
   return {
     items: (doc.items ?? []).map((p: PayloadDoc) => ({
       id: String(p.planId ?? ''),
+      ...(present(p.portfolioKey) ? { portfolioKey: String(p.portfolioKey) } : {}),
       name: String(p.name ?? ''),
       description: String(p.description ?? ''),
-      minDeposit: String(p.minDeposit ?? ''),
+      ...(present(p.minDeposit) ? { minDeposit: String(p.minDeposit) } : {}),
       featured: Boolean(p.featured),
       features: (p.features ?? []).map((f: PayloadDoc) => ({
         label: String(f.label ?? ''),
         value: String(f.value ?? ''),
       })),
-      pricing: {
-        spreadPips: Number(p.pricing?.spreadPips ?? 0),
-        commissionPerLotRT: Number(p.pricing?.commissionPerLotRT ?? 0),
-      },
+      ...(present(p.pricing?.spreadPips) && present(p.pricing?.commissionPerLotRT)
+        ? {
+            pricing: {
+              spreadPips: Number(p.pricing.spreadPips),
+              commissionPerLotRT: Number(p.pricing.commissionPerLotRT),
+            },
+          }
+        : {}),
     })),
   }
 }
@@ -122,6 +133,7 @@ export function mapPromotions(doc: PayloadDoc) {
   return {
     items: (doc.items ?? []).map((p: PayloadDoc) => ({
       id: String(p.promoId ?? ''),
+      ...(present(p.enginePromoId) ? { promoId: String(p.enginePromoId) } : {}),
       badge: String(p.badge ?? ''),
       title: String(p.title ?? ''),
       description: String(p.description ?? ''),

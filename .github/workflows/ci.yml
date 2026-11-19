@@ -62,7 +62,10 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
-      - name: Миграции на обжитой базе (сайты получают языки, ru/en не меняются)
+      - name: Живые параметры и контракт новых полей
+        run: pnpm test:live-params
+
+      - name: Миграции на обжитой базе (языки, фон, портфели тарифов; ru/en не меняются)
         run: |
           PGPASSWORD=cms psql -h localhost -U cms -d broker_cms -c "CREATE DATABASE broker_cms_migration"
           pnpm test:migration
@@ -70,13 +73,21 @@ jobs:
           NODE_ENV: production
           DATABASE_URL: postgres://cms:cms@localhost:5432/broker_cms_migration
 
+      - name: Повторная выкатка (миграции + сид) не меняет правки редактора в ru/en
+        run: |
+          PGPASSWORD=cms psql -h localhost -U cms -d broker_cms -c "CREATE DATABASE broker_cms_redeploy"
+          pnpm test:redeploy
+        env:
+          NODE_ENV: production
+          DATABASE_URL: postgres://cms:cms@localhost:5432/broker_cms_redeploy
+
       - name: Seed (dev-режим применяет схему БД + контент из фикстур)
         run: pnpm seed
 
       - name: Языки сайта, запасной язык, импорт переводов и живого FAQ
         run: pnpm test:i18n
 
-      - name: Повторный сид не стирает de/fr/es (так мигратор работает при каждой выкатке)
+      - name: Повторный сид не стирает ни ru/en, ни de/fr/es (так мигратор работает при каждой выкатке)
         run: pnpm seed
 
       - name: Build (production)

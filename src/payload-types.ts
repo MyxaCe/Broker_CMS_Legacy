@@ -235,6 +235,10 @@ export interface Site {
    * Открывается без префикса в адресе. Должен входить в список языков сайта
    */
   defaultLanguage: 'ru' | 'en' | 'de' | 'fr' | 'es';
+  /**
+   * Что показывать фоном первого экрана витрины: живые котировки или ничего
+   */
+  heroBackground: 'quotes' | 'off';
   demoStartBalanceCents: number;
   /**
    * Пусто — используется SITE_WEBHOOK_URL из окружения
@@ -335,7 +339,10 @@ export interface SiteInstrument {
         name: string;
         category: 'forex' | 'metals' | 'crypto' | 'indices' | 'stocks' | 'energy';
         digits: number;
-        leverageMax: string;
+        /**
+         * Устарело — плечо из портфелей платформы с учётом класса инструмента, сайт это поле не выводит
+         */
+        leverageMax?: string | null;
         spreadFrom: string;
         swapFree?: boolean | null;
         icon?: (number | null) | Media;
@@ -356,9 +363,16 @@ export interface SiteAccount {
   items?:
     | {
         planId: string;
+        /**
+         * Ключ портфеля плеча в админке платформы: standard, pro, enc_prime. Название, плечо, комиссию и наценку тарифа сайт берёт из этого портфеля; здесь — только описание и преимущества. Заполняется в каждом языке одинаково
+         */
+        portfolioKey?: string | null;
         name: string;
         description: string;
-        minDeposit: string;
+        /**
+         * Устарело — берётся из настроек платформы, сайт это поле не выводит. В текстах — параметр {{deposit.min}}
+         */
+        minDeposit?: string | null;
         featured?: boolean | null;
         features?:
           | {
@@ -367,9 +381,12 @@ export interface SiteAccount {
               id?: string | null;
             }[]
           | null;
-        pricing: {
-          spreadPips: number;
-          commissionPerLotRT: number;
+        /**
+         * Устарело — плечо, спред и комиссия берутся из настроек платформы (портфель), сайт эти поля не выводит. В текстах — параметры {{account.<key>.leverage}}, {{account.<key>.commission}}, {{account.<key>.markup}}
+         */
+        pricing?: {
+          spreadPips?: number | null;
+          commissionPerLotRT?: number | null;
         };
         id?: string | null;
       }[]
@@ -388,14 +405,30 @@ export interface SitePromotion {
   items?:
     | {
         promoId: string;
+        /**
+         * Идентификатор акции в движке акций платформы (раздел «Акции» админки). Сайт показывает эти тексты и картинки только к активной акции движка; условия и цифры — из движка. Заполняется в каждом языке одинаково
+         */
+        enginePromoId?: string | null;
         badge: string;
         title: string;
+        /**
+         * Размер бонуса и другие цифры — не числом, а параметром {{…}} или из движка акций
+         */
         description: string;
+        /**
+         * Цифры условий — параметром {{…}} или из движка акций
+         */
         terms: string;
         ctaLabel: string;
         ctaHref: string;
         featured?: boolean | null;
+        /**
+         * Устарело — сроки и активность акции берутся из движка акций платформы
+         */
         activeFrom?: string | null;
+        /**
+         * Устарело — сроки и активность акции берутся из движка акций платформы
+         */
         activeTo?: string | null;
         id?: string | null;
       }[]
@@ -862,6 +895,7 @@ export interface SitesSelect<T extends boolean = true> {
   instruments?: T;
   languages?: T;
   defaultLanguage?: T;
+  heroBackground?: T;
   demoStartBalanceCents?: T;
   webhookUrl?: T;
   webhookSecret?: T;
@@ -973,6 +1007,7 @@ export interface SiteAccountsSelect<T extends boolean = true> {
     | T
     | {
         planId?: T;
+        portfolioKey?: T;
         name?: T;
         description?: T;
         minDeposit?: T;
@@ -1006,6 +1041,7 @@ export interface SitePromotionsSelect<T extends boolean = true> {
     | T
     | {
         promoId?: T;
+        enginePromoId?: T;
         badge?: T;
         title?: T;
         description?: T;

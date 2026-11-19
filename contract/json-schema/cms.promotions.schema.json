@@ -12,6 +12,10 @@
               "id": {
                 "type": "string"
               },
+              "promoId": {
+                "type": "string",
+                "minLength": 1
+              },
               "badge": {
                 "type": "string"
               },

@@ -1,6 +1,7 @@
 import type { CollectionConfig, Field } from 'payload'
 
 import { fillSiteFromActive, siteListFilter } from '../../lib/active-site'
+import { liveParamsSummaryField, warnUnknownLiveParams, withLiveParams } from '../../lib/live-params-fields'
 import { notifyContentChange } from '../../lib/notify-site'
 import { sitePreviewUrl } from '../../lib/preview-url'
 
@@ -36,7 +37,7 @@ export function makeSiteContentCollection(def: SiteContentDef): CollectionConfig
     },
     versions: { drafts: true },
     hooks: {
-      afterChange: [notifyContentChange(def.resource)],
+      afterChange: [notifyContentChange(def.resource), warnUnknownLiveParams],
       // Поле site скрыто из формы — заполняем из рабочего сайта админки
       beforeValidate: [fillSiteFromActive],
     },
@@ -55,7 +56,8 @@ export function makeSiteContentCollection(def: SiteContentDef): CollectionConfig
           condition: () => false,
         },
       },
-      ...def.fields,
+      liveParamsSummaryField,
+      ...withLiveParams(def.fields),
     ],
   }
 }

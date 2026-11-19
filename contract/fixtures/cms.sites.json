@@ -3,6 +3,7 @@
   "name": "Apex Capital",
   "demoStartBalanceCents": 1000000,
   "instruments": [],
+  "heroBackground": "quotes",
   "languages": [
     "ru",
     "en"

@@ -122,6 +122,18 @@ export const Sites: CollectionConfig = {
         validateDefaultLanguage(value, siblingData?.languages),
     },
     {
+      name: 'heroBackground',
+      type: 'select',
+      required: true,
+      defaultValue: 'quotes',
+      options: [
+        { value: 'quotes', label: 'Живые котировки' },
+        { value: 'off', label: 'Выключен' },
+      ],
+      label: 'Фон главного экрана',
+      admin: { description: 'Что показывать фоном первого экрана витрины: живые котировки или ничего' },
+    },
+    {
       name: 'demoStartBalanceCents',
       type: 'number',
       required: true,

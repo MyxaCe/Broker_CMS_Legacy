@@ -7,7 +7,7 @@ type Doc = Record<string, any>
 
 export const TRANSLATED_LOCALES: Language[] = ['de', 'fr', 'es']
 
-const IDENTITY_KEYS = ['slug', 'planId', 'promoId', 'symbol', 'webinarId', 'serviceId', 'videoId', 'provider']
+const IDENTITY_KEYS = ['slug', 'planId', 'portfolioKey', 'promoId', 'enginePromoId', 'symbol', 'webinarId', 'serviceId', 'videoId', 'provider']
 const ISO_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})$/
 
 export interface TranslationsFile {

@@ -1,4 +1,6 @@
 import { MdsAllowListField as MdsAllowListField_36bfcefdd735aec95ef26bdbd207ec28 } from '../../../components/MdsAllowListField'
+import { LiveParamsSummary as LiveParamsSummary_11a0d187a30fc68b3101ac6010556f0f } from '../../../components/LiveParams'
+import { LiveParamsHint as LiveParamsHint_11a0d187a30fc68b3101ac6010556f0f } from '../../../components/LiveParams'
 import { ArrayRowLabel as ArrayRowLabel_1e7cbdce5a2838a4e35b012373a30412 } from '../../../components/RowLabel'
 import { MdsSymbolField as MdsSymbolField_8dac9c3ecee7f53a644e5c9194a63dbc } from '../../../components/MdsSymbolField'
 import { AdminNav as AdminNav_7bb4d8e8c04650469891d301029b44dd } from '../../../components/AdminNav'
@@ -8,6 +10,8 @@ import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } f
 /** @type import('payload').ImportMap */
 export const importMap = {
   "/components/MdsAllowListField#MdsAllowListField": MdsAllowListField_36bfcefdd735aec95ef26bdbd207ec28,
+  "/components/LiveParams#LiveParamsSummary": LiveParamsSummary_11a0d187a30fc68b3101ac6010556f0f,
+  "/components/LiveParams#LiveParamsHint": LiveParamsHint_11a0d187a30fc68b3101ac6010556f0f,
   "/components/RowLabel#ArrayRowLabel": ArrayRowLabel_1e7cbdce5a2838a4e35b012373a30412,
   "/components/MdsSymbolField#MdsSymbolField": MdsSymbolField_8dac9c3ecee7f53a644e5c9194a63dbc,
   "/components/AdminNav#AdminNav": AdminNav_7bb4d8e8c04650469891d301029b44dd,
