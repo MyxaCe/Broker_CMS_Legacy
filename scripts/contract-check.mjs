@@ -9,6 +9,8 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import assert from 'node:assert';
+import { Ajv } from 'ajv';
+import addFormats from 'ajv-formats';
 
 const CMS = (process.env.CMS_URL ?? 'http://localhost:3001').replace(/\/$/, '');
 const KEY = process.env.CMS_API_KEY ?? 'dev-cms-api-key';
@@ -79,6 +81,62 @@ noKey.status === 401 ? console.log('OK    auth 401') : fail(`auth -> ${noKey.sta
 
 const unknown = await fetch(`${CMS}/v1/cms/nope?locale=ru`, { headers: { 'X-API-Key': KEY } });
 unknown.status === 404 ? console.log('OK    unknown 404') : fail(`unknown -> ${unknown.status}`);
+
+const get = (path, headers = { 'X-API-Key': KEY }) => fetch(`${CMS}${path}`, { headers });
+const readJson = (...parts) => JSON.parse(readFileSync(join(process.cwd(), ...parts), 'utf8'));
+const same = (name, got, expected) => {
+  try {
+    assert.deepStrictEqual(normalize(got), normalize(expected));
+    console.log(`OK    ${name}`);
+  } catch {
+    const g = JSON.stringify(normalize(got));
+    const e = JSON.stringify(normalize(expected));
+    let i = 0;
+    while (i < Math.min(g.length, e.length) && g[i] === e[i]) i++;
+    fail(`${name}: расхождение @${i}\n  got:      …${g.slice(Math.max(0, i - 40), i + 160)}\n  expected: …${e.slice(Math.max(0, i - 40), i + 160)}`);
+  }
+};
+
+const sitesRes = await get('/v1/cms/sites/apex-ru');
+if (sitesRes.ok) same('sites/apex-ru', await sitesRes.json(), readJson('contract', 'fixtures', 'cms.sites.json'));
+else fail(`sites/apex-ru: HTTP ${sitesRes.status}`);
+
+const publicBrand = await get('/v1/cms/brand?site=apex-ru', {});
+const publicBody = publicBrand.ok ? await publicBrand.json() : null;
+if (publicBrand.status === 200 && publicBrand.headers.get('access-control-allow-origin') === '*' &&
+    JSON.stringify(publicBody?.languages) === '["ru","en"]' && publicBody?.defaultLanguage === 'ru') {
+  console.log('OK    public brand: languages, defaultLanguage');
+} else fail(`public brand: HTTP ${publicBrand.status} ${JSON.stringify(publicBody)}`);
+
+const ajv = new Ajv({ allErrors: true, strict: false });
+addFormats(ajv);
+const { languages: _l, defaultLanguage: _d, ...legacyBrand } = readJson('contract', 'fixtures', 'cms.brand.ru.json');
+for (const [resource, legacy] of [
+  ['brand', legacyBrand],
+  ['sites', { slug: 'apex-ru', name: 'Apex Capital', demoStartBalanceCents: 1000000, instruments: [] }],
+]) {
+  const validate = ajv.compile(readJson('contract', 'json-schema', `cms.${resource}.schema.json`));
+  if (validate(legacy)) console.log(`OK    ${resource}: ответ без languages/defaultLanguage валиден (старая CMS)`);
+  else fail(`${resource}: схема требует новые поля ${JSON.stringify(validate.errors)}`);
+  if (validate({ ...legacy, languages: [], defaultLanguage: 'it' })) fail(`${resource}: схема пропускает пустые languages и неизвестный код`);
+  else console.log(`OK    ${resource}: схема отвергает пустые languages и неизвестный код`);
+}
+
+const translations = readJson('scripts', 'i18n', 'content.de-fr-es.json').locales;
+const faqLive = readJson('scripts', 'i18n', 'faq-live.json').locales;
+for (const locale of ['de', 'fr', 'es']) {
+  const expected = { ...translations[locale], faq: faqLive[locale] };
+  for (const [resource, dto] of Object.entries(expected)) {
+    const res = await get(`/v1/cms/${resource}?locale=${locale}`);
+    if (!res.ok) { fail(`${resource} ${locale}: HTTP ${res.status}`); continue; }
+    same(`${resource} ${locale}`, await res.json(), dto);
+  }
+  const home = await get(`/v1/cms/cabinet-home?locale=${locale}`);
+  same(`cabinet-home ${locale}`, home.ok ? await home.json() : null, readJson('contract', 'fixtures', 'cms.cabinet-home.ru.json'));
+}
+
+const unknownLocale = await get('/v1/cms/navigation?locale=it');
+same('неизвестная локаль -> ru', unknownLocale.ok ? await unknownLocale.json() : null, readJson('contract', 'fixtures', 'cms.navigation.ru.json'));
 
 console.log(failures ? `\n${failures} FAILURES` : '\nALL OK');
 process.exit(failures ? 1 : 0);

@@ -1,0 +1,3680 @@
+{
+  "site": "apex-ru",
+  "locales": {
+    "de": {
+      "navigation": {
+        "header": [
+          {
+            "label": "Instrumente",
+            "href": "/instruments"
+          },
+          {
+            "label": "Konten & Preise",
+            "href": "/accounts"
+          },
+          {
+            "label": "Analysen",
+            "href": "/analytics/news"
+          },
+          {
+            "label": "Bildung",
+            "href": "/education"
+          },
+          {
+            "label": "Über uns",
+            "href": "/about"
+          }
+        ],
+        "footer": {
+          "columns": [
+            {
+              "title": "Handel",
+              "links": [
+                {
+                  "label": "Handelsinstrumente",
+                  "href": "/instruments"
+                },
+                {
+                  "label": "Kontotypen",
+                  "href": "/accounts"
+                },
+                {
+                  "label": "FAQ",
+                  "href": "/education/faq"
+                },
+                {
+                  "label": "Aktionen & Boni",
+                  "href": "/promotions"
+                }
+              ]
+            },
+            {
+              "title": "Analysen",
+              "links": [
+                {
+                  "label": "Marktnachrichten",
+                  "href": "/analytics/news"
+                },
+                {
+                  "label": "Wirtschaftskalender",
+                  "href": "/analytics/calendar"
+                },
+                {
+                  "label": "Bildung",
+                  "href": "/education/articles"
+                },
+                {
+                  "label": "Blog",
+                  "href": "/blog"
+                }
+              ]
+            },
+            {
+              "title": "Unternehmen",
+              "links": [
+                {
+                  "label": "Über uns",
+                  "href": "/about"
+                },
+                {
+                  "label": "Partner",
+                  "href": "/partners"
+                },
+                {
+                  "label": "Karriere",
+                  "href": "/company/careers"
+                },
+                {
+                  "label": "Kontakt",
+                  "href": "/company/contacts"
+                }
+              ]
+            },
+            {
+              "title": "Rechtliches",
+              "links": [
+                {
+                  "label": "Datenschutzerklärung",
+                  "href": "/legal/privacy"
+                },
+                {
+                  "label": "Nutzungsbedingungen",
+                  "href": "/legal/terms"
+                },
+                {
+                  "label": "Risikohinweis",
+                  "href": "/legal/risk-disclosure"
+                },
+                {
+                  "label": "Servicestatus",
+                  "href": "/status"
+                }
+              ]
+            }
+          ],
+          "riskWarning": "Risikowarnung: Der Handel mit CFDs und gehebelten Produkten ist mit einem hohen Risiko verbunden und kann zum Verlust Ihres gesamten eingesetzten Kapitals führen. Stellen Sie sicher, dass Sie die damit verbundenen Risiken vollständig verstehen, bevor Sie mit dem Handel beginnen."
+        }
+      },
+      "instruments": {
+        "items": [
+          {
+            "symbol": "EURUSD",
+            "name": "Euro / US-Dollar",
+            "category": "forex",
+            "digits": 5,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 Pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "GBPUSD",
+            "name": "Britisches Pfund / US-Dollar",
+            "category": "forex",
+            "digits": 5,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 Pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "USDJPY",
+            "name": "US-Dollar / Japanischer Yen",
+            "category": "forex",
+            "digits": 3,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 Pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "AUDUSD",
+            "name": "Australischer Dollar / US-Dollar",
+            "category": "forex",
+            "digits": 5,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 Pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "USDCHF",
+            "name": "US-Dollar / Schweizer Franken",
+            "category": "forex",
+            "digits": 5,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 Pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "USDCAD",
+            "name": "US-Dollar / Kanadischer Dollar",
+            "category": "forex",
+            "digits": 5,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 Pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "NZDUSD",
+            "name": "Neuseeland-Dollar / US-Dollar",
+            "category": "forex",
+            "digits": 5,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 Pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "EURGBP",
+            "name": "Euro / Britisches Pfund",
+            "category": "forex",
+            "digits": 5,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 Pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "EURJPY",
+            "name": "Euro / Japanischer Yen",
+            "category": "forex",
+            "digits": 3,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 Pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "XAUUSD",
+            "name": "Gold",
+            "category": "metals",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.1 Pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "XAGUSD",
+            "name": "Silber",
+            "category": "metals",
+            "digits": 3,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.1 Pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "XPTUSD",
+            "name": "Platin",
+            "category": "metals",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.1 Pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "BTCUSD",
+            "name": "Bitcoin",
+            "category": "crypto",
+            "digits": 0,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.15%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "ETHUSD",
+            "name": "Ethereum",
+            "category": "crypto",
+            "digits": 1,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.15%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "SOLUSD",
+            "name": "Solana",
+            "category": "crypto",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.15%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "XRPUSD",
+            "name": "Ripple",
+            "category": "crypto",
+            "digits": 4,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.15%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "BNBUSD",
+            "name": "BNB",
+            "category": "crypto",
+            "digits": 1,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.15%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "US500",
+            "name": "S&P 500",
+            "category": "indices",
+            "digits": 1,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.4 Pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "NAS100",
+            "name": "Nasdaq 100",
+            "category": "indices",
+            "digits": 1,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.4 Pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "US30",
+            "name": "Dow Jones 30",
+            "category": "indices",
+            "digits": 1,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.4 Pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "GER40",
+            "name": "DAX 40",
+            "category": "indices",
+            "digits": 1,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.4 Pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "UK100",
+            "name": "FTSE 100",
+            "category": "indices",
+            "digits": 1,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.4 Pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "JPN225",
+            "name": "Nikkei 225",
+            "category": "indices",
+            "digits": 0,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.4 Pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "AAPL",
+            "name": "Apple Inc.",
+            "category": "stocks",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.02%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "MSFT",
+            "name": "Microsoft Corp.",
+            "category": "stocks",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.02%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "NVDA",
+            "name": "NVIDIA Corp.",
+            "category": "stocks",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.02%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "AMZN",
+            "name": "Amazon.com Inc.",
+            "category": "stocks",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.02%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "META",
+            "name": "Meta Platforms Inc.",
+            "category": "stocks",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.02%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "GOOGL",
+            "name": "Alphabet Inc.",
+            "category": "stocks",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.02%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "TSLA",
+            "name": "Tesla Inc.",
+            "category": "stocks",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.02%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "USOIL",
+            "name": "Rohöl WTI",
+            "category": "energy",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.03",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "UKOIL",
+            "name": "Rohöl Brent",
+            "category": "energy",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.03",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "NGAS",
+            "name": "Erdgas",
+            "category": "energy",
+            "digits": 3,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.03",
+            "swapFree": true,
+            "icon": null
+          }
+        ]
+      },
+      "accounts": {
+        "items": [
+          {
+            "id": "standard",
+            "name": "Standard",
+            "description": "Für Ihre ersten Schritte am Markt",
+            "minDeposit": "$100",
+            "featured": false,
+            "features": [
+              {
+                "label": "Spread ab",
+                "value": "1.2 Pips"
+              },
+              {
+                "label": "Kommission",
+                "value": "$0"
+              },
+              {
+                "label": "Hebel bis zu",
+                "value": "1:500"
+              },
+              {
+                "label": "Mindestlot",
+                "value": "0.01"
+              },
+              {
+                "label": "Instrumente",
+                "value": "12,000+"
+              },
+              {
+                "label": "Ausführung",
+                "value": "Market, ab 14 ms"
+              },
+              {
+                "label": "Swap-frei",
+                "value": "Verfügbar"
+              },
+              {
+                "label": "Persönlicher Manager",
+                "value": "—"
+              }
+            ],
+            "pricing": {
+              "spreadPips": 1.2,
+              "commissionPerLotRT": 0
+            }
+          },
+          {
+            "id": "pro",
+            "name": "Pro",
+            "description": "Für aktive Trader",
+            "minDeposit": "$1,000",
+            "featured": true,
+            "features": [
+              {
+                "label": "Spread ab",
+                "value": "0.5 Pips"
+              },
+              {
+                "label": "Kommission",
+                "value": "$2.5 / Lot / Seite"
+              },
+              {
+                "label": "Hebel bis zu",
+                "value": "1:400"
+              },
+              {
+                "label": "Mindestlot",
+                "value": "0.01"
+              },
+              {
+                "label": "Instrumente",
+                "value": "12,000+"
+              },
+              {
+                "label": "Ausführung",
+                "value": "Market, ab 14 ms"
+              },
+              {
+                "label": "Swap-frei",
+                "value": "Verfügbar"
+              },
+              {
+                "label": "Persönlicher Manager",
+                "value": "Ja"
+              }
+            ],
+            "pricing": {
+              "spreadPips": 0.5,
+              "commissionPerLotRT": 5
+            }
+          },
+          {
+            "id": "ecn",
+            "name": "ECN Prime",
+            "description": "Interbanken-Liquidität",
+            "minDeposit": "$5,000",
+            "featured": false,
+            "features": [
+              {
+                "label": "Spread ab",
+                "value": "0.0 Pips"
+              },
+              {
+                "label": "Kommission",
+                "value": "$3 / Lot / Seite"
+              },
+              {
+                "label": "Hebel bis zu",
+                "value": "1:200"
+              },
+              {
+                "label": "Mindestlot",
+                "value": "0.01"
+              },
+              {
+                "label": "Instrumente",
+                "value": "12,000+"
+              },
+              {
+                "label": "Ausführung",
+                "value": "ECN, ab 9 ms"
+              },
+              {
+                "label": "Swap-frei",
+                "value": "Auf Anfrage"
+              },
+              {
+                "label": "Persönlicher Manager",
+                "value": "Ja"
+              }
+            ],
+            "pricing": {
+              "spreadPips": 0.1,
+              "commissionPerLotRT": 6
+            }
+          }
+        ]
+      },
+      "promotions": {
+        "items": [
+          {
+            "id": "promo-1",
+            "badge": "Für Neukunden",
+            "title": "30% Willkommensbonus",
+            "description": "Zahlen Sie erstmals $500 oder mehr auf Ihr Konto ein – und erhalten Sie +30% zusätzliche Handelsmittel. Der Bonus wird auf die Margin angerechnet und hilft Ihnen, Drawdowns zu überstehen.",
+            "terms": "Bonus bis zu $5,000. Einmalig verfügbar; freigeschaltet mit 1 Lot Handelsvolumen je $10 Bonus.",
+            "ctaLabel": "Bonus erhalten",
+            "ctaHref": "/register?promo=welcome30",
+            "featured": true,
+            "activeFrom": null,
+            "activeTo": null
+          },
+          {
+            "id": "promo-2",
+            "badge": "Für aktive Trader",
+            "title": "Bis zu 15% Spread-Cashback",
+            "description": "Handeln Sie 50+ Lots im Monat – wir erstatten einen Teil des Spreads als echtes Geld auf Ihr Konto. Je höher das Volumen, desto höher der Satz.",
+            "terms": "Automatische Gutschrift am ersten Tag des Folgemonats. Ohne Obergrenze für den Betrag.",
+            "ctaLabel": "Teilnehmen",
+            "ctaHref": "/register?promo=cashback",
+            "featured": false,
+            "activeFrom": null,
+            "activeTo": null
+          },
+          {
+            "id": "promo-3",
+            "badge": "Ohne Risiko",
+            "title": "Demo-Trading-Wettbewerb",
+            "description": "Ein monatlicher Wettbewerb auf Demokonten mit einem Preispool von $10,000. Drei Gewinner erhalten Live-Handelskonten, die mit dem Preisgeld aufgeladen sind.",
+            "terms": "Teilnahme kostenlos. Eine neue Runde startet am 1. jedes Monats.",
+            "ctaLabel": "Mitmachen",
+            "ctaHref": "/register?demo=1",
+            "featured": false,
+            "activeFrom": null,
+            "activeTo": null
+          },
+          {
+            "id": "promo-4",
+            "badge": "Empfehlungen",
+            "title": "Freunde werben – $50 erhalten",
+            "description": "Teilen Sie Ihren persönlichen Link: Sobald Ihr Freund ein Konto eröffnet und zu handeln beginnt, erhalten Sie beide jeweils $50 auf Ihr Handelskonto.",
+            "terms": "Ihr Freund muss mindestens $100 einzahlen und innerhalb von 30 Tagen 1 Lot handeln.",
+            "ctaLabel": "Link erhalten",
+            "ctaHref": "/register",
+            "featured": false,
+            "activeFrom": null,
+            "activeTo": null
+          }
+        ]
+      },
+      "partners": {
+        "models": [
+          {
+            "name": "Introducing Broker (IB)",
+            "description": "Empfehlen Sie uns Ihrem Publikum und erhalten Sie bis zu 40% des Spreads jedes geworbenen Kunden – lebenslang, solange der Kunde handelt.",
+            "features": [
+              "Tägliche Auszahlungen ohne Mindestbetrag",
+              "Empfehlungslinks, Werbematerialien und Landingpages",
+              "Partnerbereich mit Statistiken in Echtzeit",
+              "Sub-Partner-Netzwerk: 10% der Vergütung von Sub-Agenten"
+            ]
+          },
+          {
+            "name": "White Label",
+            "description": "Ihre eigene Brokermarke auf unserer Infrastruktur: Plattform, Liquidität, Backoffice und Support – schlüsselfertig.",
+            "features": [
+              "Handelsplattform und Kundenbereich unter Ihrer Marke",
+              "Aggregierte Tier-1-Liquidität",
+              "Risikomanagement und Reporting sofort einsatzbereit",
+              "Start ab 6 Wochen mit einem eigenen Projektmanager"
+            ]
+          }
+        ],
+        "tiers": [
+          {
+            "name": "Bronze",
+            "clients": "bis zu 20 aktive Kunden",
+            "share": "25%"
+          },
+          {
+            "name": "Silver",
+            "clients": "20–100 aktive Kunden",
+            "share": "30%"
+          },
+          {
+            "name": "Gold",
+            "clients": "100+ aktive Kunden",
+            "share": "40%",
+            "featured": true
+          }
+        ],
+        "steps": [
+          {
+            "title": "Antrag",
+            "text": "Füllen Sie das Formular aus – ein Manager meldet sich innerhalb eines Werktages bei Ihnen"
+          },
+          {
+            "title": "Werkzeuge",
+            "text": "Erhalten Sie Links, Werbematerialien und Zugang zum Partnerbereich"
+          },
+          {
+            "title": "Einkommen",
+            "text": "Werben Sie Kunden und erhalten Sie täglich Auszahlungen"
+          }
+        ]
+      },
+      "academy": {
+        "articles": [
+          {
+            "slug": "what-is-forex",
+            "title": "Was ist Forex und wie funktioniert der Devisenmarkt",
+            "excerpt": "Der größte Finanzmarkt der Welt mit einem Tagesumsatz von $7.5 Billionen: Wer dort handelt, woher der Preis kommt und was ein Währungspaar bedeutet.",
+            "level": "beginner",
+            "readingMinutes": 7,
+            "bodyMarkdown": "Forex (Foreign Exchange) ist der globale außerbörsliche Devisenmarkt. Anders als eine Aktienbörse hat er keinen zentralen Handelsplatz: Geschäfte werden direkt zwischen Banken, Fonds, Unternehmen und Brokern auf der ganzen Welt abgeschlossen – rund um die Uhr von Montag bis Freitag.\n\nDie Grundeinheit des Marktes ist das Währungspaar. EURUSD = 1.0850 bedeutet, dass man für einen Euro 1.0850 Dollar erhält. Die erste Währung des Paares heißt Basiswährung, die zweite Kurswährung (Quotierungswährung). Wer das Paar kauft, kauft die Basiswährung gegen die Kurswährung; beim Verkauf ist es umgekehrt.\n\nDer Preis entsteht aus dem Orderfluss der größten Marktteilnehmer – Market Maker und Banken der ersten Reihe. Ein Broker aggregiert diese Liquiditätsströme und gibt die besten Preise an seine Kunden weiter. Die Differenz zwischen Kaufpreis (Ask) und Verkaufspreis (Bid) ist der Spread – die wichtigste Transaktionskosten-Position eines Traders.\n\nDie kleinste Preisänderung ist ein Pip. Bei den meisten Paaren ist das die vierte Nachkommastelle: Eine Bewegung von EURUSD von 1.0850 auf 1.0851 entspricht einem Pip. Ein Standardlot entspricht 100,000 Einheiten der Basiswährung, während moderne Broker den Handel bereits ab 0.01 Lots ermöglichen.\n\nBeginnen Sie mit einem Demokonto: Es bildet den realen Handel vollständig ab – ohne Risiko für Ihr Kapital. Üben Sie dort die Ordermechanik, Stop-Loss-Orders und die Berechnung der Positionsgröße – und wechseln Sie erst dann zu einem Live-Konto mit einem Betrag, dessen Verlust Sie sich leisten können."
+          },
+          {
+            "slug": "leverage-risk-management",
+            "title": "Hebel: So nutzen Sie ihn ohne unnötiges Risiko",
+            "excerpt": "Ein Hebel von 1:500 kann sowohl Gewinn als auch Verlust vervielfachen. Wir erklären Margin, freie Mittel und die wichtigste Regel – Risiko von höchstens 1–2% pro Trade.",
+            "level": "beginner",
+            "readingMinutes": 6,
+            "bodyMarkdown": "Mit einem Hebel können Sie Positionen eröffnen, die größer sind als Ihr eigenes Kapital. Bei einem Hebel von 1:100 erfordert eine EURUSD-Position von 1 Lot (€100,000) nur etwa €1,000 an Sicherheitsleistung. Diese Sicherheitsleistung heißt Margin – sie wird auf Ihrem Konto gesperrt, solange die Position offen ist.\n\nMachen Sie sich klar: Der Hebel vervielfacht nicht nur den möglichen Gewinn, sondern auch den Verlust. Eine Kursbewegung von 1% gegen eine Position mit Hebel 1:100 bedeutet den Verlust von 100% der Margin. Genau deshalb nutzen erfahrene Trader nur einen kleinen Teil des verfügbaren Hebels.\n\nDie zentrale Kennzahl ist das Margin-Level: Eigenkapital geteilt durch die genutzte Margin. Fällt es auf das Margin-Call-Level, warnt Sie der Broker vor unzureichenden Mitteln; beim Stop-Out-Level werden Positionen zwangsweise geschlossen. Der Schutz vor negativem Kontostand garantiert, dass Sie nie mehr als Ihre Einzahlung verlieren.\n\nEine praktische Regel: Riskieren Sie pro Trade höchstens 1–2% Ihres Kapitals. Die Positionsgröße wird aus dem Stop-Loss abgeleitet, nicht umgekehrt: Legen Sie zuerst fest, ab wo Ihre Handelsidee ungültig wird, und wählen Sie dann das Volumen so, dass der Verlust beim Auslösen des Stops Ihr zulässiges Risiko nicht übersteigt."
+          },
+          {
+            "slug": "technical-analysis-basics",
+            "title": "Technische Analyse: fünf grundlegende Werkzeuge",
+            "excerpt": "Unterstützung und Widerstand, Trend, gleitende Durchschnitte, RSI und Volumen – das minimale Werkzeugset, mit dem das Lesen von Charts beginnt.",
+            "level": "intermediate",
+            "readingMinutes": 8,
+            "bodyMarkdown": "Die technische Analyse geht davon aus, dass alle verfügbaren Informationen bereits im Preis enthalten sind und sich das Verhalten der Masse wiederholt. Ihre Aufgabe ist nicht, die Zukunft vorherzusagen, sondern Zonen zu finden, in denen das Chance-Risiko-Verhältnis zugunsten des Traders ausfällt.\n\nUnterstützungs- und Widerstandsniveaus sind das Fundament. Das sind Preiszonen, in denen der Markt zuvor gedreht oder gestockt hat: Dort konzentriert sich das Interesse von Käufern und Verkäufern. Je öfter ein Niveau berührt wurde und je „älter“ es ist, desto stärker fällt die Reaktion aus.\n\nDer Trend bestimmt den Kontext: Eine Abfolge höherer Hochs und höherer Tiefs ist ein Aufwärtstrend; tiefere Hochs und tiefere Tiefs – ein Abwärtstrend. Der Handel mit dem Trend ist statistisch zuverlässiger als Trades gegen den Trend, deshalb lautet die erste Frage an jeden Chart: „Wohin bewegt sich der Markt im höheren Zeitrahmen?“\n\nGleitende Durchschnitte (MA) glätten das Rauschen und machen den Trend sichtbar. Beliebte Perioden sind 20, 50 und 200. Ein Preis über dem MA200 bedeutet einen bullischen übergeordneten Kontext; Kreuzungen schneller und langsamer Durchschnitte dienen als Signalfilter, nicht als eigenständiges System.\n\nDer Relative-Stärke-Index (RSI) misst das Momentum: Werte über 70 deuten auf eine überkaufte Lage hin, unter 30 – auf eine überverkaufte. In einem starken Trend kann der RSI lange in den Extremzonen verharren, deshalb werden Indikatorsignale stets mit Niveaus und der Marktstruktur abgeglichen.\n\nDas Volumen bestätigt die Bewegung: Ein Ausbruch bei steigendem Volumen verdient Vertrauen, ein dünner Ausschlag ohne Volumen ist dagegen oft eine Falle. Zusammen decken diese fünf Werkzeuge 90% des Bedarfs eines angehenden technischen Analysten ab."
+          },
+          {
+            "slug": "trading-psychology",
+            "title": "Trading-Psychologie: Warum Disziplin wichtiger ist als Prognosen",
+            "excerpt": "Tilt, die Angst, etwas zu verpassen, und Revenge Trading vernichten Konten schneller als eine schlechte Strategie. So bauen Sie einen Prozess auf, der Sie vor sich selbst schützt.",
+            "level": "intermediate",
+            "readingMinutes": 6,
+            "bodyMarkdown": "Die Statistiken von Brokern zeigen: Die meisten Verlustkonten scheitern nicht an schlechter Analyse, sondern am Bruch der eigenen Regeln. Der Markt ist ein Umfeld der Unsicherheit, und die Psyche reagiert darauf mit uralten Mechanismen: Angst, Gier und dem Drang, Verluste sofort wieder hereinzuholen.\n\nTilt ist der Zustand, in dem ein Trader nach einem Verlust die Positionsgrößen erhöht und ohne Setup in Trades einsteigt, um „sein Geld zurückzuholen“. Der einzige wirksame Schutz sind harte Limits: ein tägliches Verlustlimit (zum Beispiel 3% des Kapitals), nach dessen Erreichen der Handel bis zum nächsten Tag eingestellt wird.\n\nDie Angst, etwas zu verpassen (FOMO), lässt Sie einer bereits erfolgten Bewegung hinterherjagen – Sie steigen zu einem schlechteren Preis und mit unklarem Stop ein. Das Gegenmittel ist ein schriftlicher Handelsplan, der die Einstiegsbedingungen im Voraus festlegt. Keine Bedingungen – kein Trade, egal wie weit der Chart „davonfliegt“.\n\nFühren Sie ein Trading-Journal: Screenshot des Einstiegs, Grund, emotionaler Zustand, Ergebnis. Nach 50–100 Einträgen erkennen Sie Ihre eigenen systematischen Fehler – die wertvollste Analyse, die Ihnen kein Indikator liefern kann. Disziplin ist keine Charaktereigenschaft, sondern ein Prozess, den Sie gestalten können."
+          }
+        ],
+        "webinars": [
+          {
+            "id": "web-4",
+            "title": "Trading-Psychologie: Wie Sie aufhören, Ihre eigenen Regeln zu brechen",
+            "speaker": "Dmitry Sokolov",
+            "speakerRole": "Leitender Analyst",
+            "startsAt": "2026-07-11T18:00:00.000Z",
+            "durationMinutes": 60,
+            "level": "Einsteiger",
+            "description": "Tilt, FOMO und Revenge Trading: die Mechanik von Ausrutschern und praktische Techniken – Limits, Trading-Journal, Checkliste vor dem Einstieg."
+          },
+          {
+            "id": "web-3",
+            "title": "Technische Analyse von Gold: die Niveaus, an denen der Markt handelt",
+            "speaker": "Anna Vereshchagina",
+            "speakerRole": "Leiterin Research",
+            "startsAt": "2026-07-18T19:00:00.000Z",
+            "durationMinutes": 60,
+            "level": "Mittelstufe",
+            "description": "Analyse der Marktstruktur von XAUUSD: Schlüsselniveaus, Kursverhalten rund um das Allzeithoch und Szenarien bis zum Quartalsende."
+          },
+          {
+            "id": "web-0",
+            "title": "Erste Schritte im Forex-Handel: vom Demokonto zum ersten Trade",
+            "speaker": "Dmitry Sokolov",
+            "speakerRole": "Leitender Analyst",
+            "startsAt": "2026-07-25T19:00:00.000Z",
+            "durationMinutes": 60,
+            "level": "Einsteiger",
+            "description": "Wie der Markt funktioniert, Ordertypen, Berechnung der Positionsgröße und typische Fehler der ersten Monate. Live-Rundgang durch die Plattform und Fragen & Antworten."
+          },
+          {
+            "id": "web-1",
+            "title": "Nachrichtenhandel: eine Strategie für die Arbeit mit dem Wirtschaftskalender",
+            "speaker": "Anna Vereshchagina",
+            "speakerRole": "Leiterin Research",
+            "startsAt": "2026-07-27T18:00:00.000Z",
+            "durationMinutes": 90,
+            "level": "Mittelstufe",
+            "description": "Welche Veröffentlichungen den Markt bewegen, wie Sie die Abweichung des tatsächlichen Werts von der Prognose lesen und wo Sie Stops setzen, wenn sich die Volatilität vervielfacht."
+          },
+          {
+            "id": "web-2",
+            "title": "Money Management: ein Portfolio von Strategien statt eines einzigen „heiligen Grals“",
+            "speaker": "Marat Gareev",
+            "speakerRole": "Portfoliomanager",
+            "startsAt": "2026-08-01T19:00:00.000Z",
+            "durationMinutes": 75,
+            "level": "Fortgeschrittene",
+            "description": "Diversifikation über Strategien und Instrumente, Korrelationen von Positionen, Drawdown als Kennzahl und Risikoberechnung auf Portfolioebene."
+          }
+        ],
+        "glossary": [
+          {
+            "term": "Ask",
+            "definition": "Der Preis, zu dem der Broker Ihnen die Basiswährung verkauft (der Kaufpreis für den Trader). Immer höher als der Bid."
+          },
+          {
+            "term": "Bid",
+            "definition": "Der Preis, zu dem der Broker Ihnen die Basiswährung abkauft (der Verkaufspreis für den Trader)."
+          },
+          {
+            "term": "CFD",
+            "definition": "Contract for Difference (Differenzkontrakt). Ermöglicht es, von der Kursbewegung eines Vermögenswerts zu profitieren, ohne den Vermögenswert selbst zu besitzen."
+          },
+          {
+            "term": "ECN",
+            "definition": "Electronic Communication Network – ein Ausführungsmodell, bei dem Kundenorders direkt an ein Netzwerk von Liquiditätsanbietern weitergeleitet werden, mit minimalen Spreads zuzüglich einer Kommission."
+          },
+          {
+            "term": "Gap (Kurslücke)",
+            "definition": "Eine Lücke im Chart zwischen dem Schlusskurs und dem nächsten Eröffnungskurs. Tritt häufig nach Wochenenden oder wichtigen Nachrichten auf."
+          },
+          {
+            "term": "Hebel",
+            "definition": "Das Verhältnis der Positionsgröße zu den eigenen Mitteln des Traders. Ein Hebel von 1:100 ermöglicht es, eine Position zu steuern, die 100-mal größer ist als Ihre Sicherheitsleistung."
+          },
+          {
+            "term": "Lot",
+            "definition": "Die Standardeinheit des Handelsvolumens. Im Forex-Handel gilt 1 Lot = 100,000 Einheiten der Basiswährung; die meisten Broker ermöglichen den Handel ab 0.01 Lots."
+          },
+          {
+            "term": "Margin",
+            "definition": "Sicherheitsleistung, die beim Eröffnen einer gehebelten Position auf dem Konto gesperrt wird. Wird nach dem Schließen des Trades wieder freigegeben."
+          },
+          {
+            "term": "Margin Call",
+            "definition": "Eine Warnung des Brokers, dass die Mittel auf dem Konto kaum noch ausreichen, um die offenen Positionen aufrechtzuerhalten."
+          },
+          {
+            "term": "Pip",
+            "definition": "Die kleinste Preisänderung eines Währungspaares. Bei den meisten Paaren – eine Änderung der vierten Nachkommastelle (0.0001)."
+          },
+          {
+            "term": "Spread",
+            "definition": "Die Differenz zwischen Ask- und Bid-Preis – die wichtigste Transaktionskosten-Position des Traders."
+          },
+          {
+            "term": "Stop-Loss",
+            "definition": "Eine Order, die eine Position automatisch schließt, wenn ein festgelegter Verlust erreicht ist. Das wichtigste Instrument des Risikomanagements."
+          },
+          {
+            "term": "Stop-Out",
+            "definition": "Zwangsweise Schließung von Positionen durch den Broker, wenn das Margin-Level unter einen kritischen Wert fällt."
+          },
+          {
+            "term": "Unterstützungsniveau",
+            "definition": "Eine Preiszone, in der die Nachfrage zuvor einen Kursrückgang gestoppt hat. Das spiegelbildliche Konzept ist das Widerstandsniveau."
+          },
+          {
+            "term": "Swap",
+            "definition": "Eine Gebühr oder Gutschrift für das Halten einer Position über Nacht, basierend auf der Zinsdifferenz der Währungen des Paares."
+          },
+          {
+            "term": "Take-Profit",
+            "definition": "Eine Order, die automatisch den Gewinn sichert, wenn ein Zielpreis erreicht ist."
+          },
+          {
+            "term": "Trend",
+            "definition": "Eine anhaltende gerichtete Kursbewegung: aufwärts (steigende Hochs und Tiefs) oder abwärts."
+          },
+          {
+            "term": "Volatilität",
+            "definition": "Ein Maß für die Preisschwankung über einen Zeitraum. Hohe Volatilität – große Bewegungen und große Risiken; niedrige – enge Spannen."
+          }
+        ]
+      },
+      "streams": {
+        "items": [
+          {
+            "provider": "youtube",
+            "videoId": "mock-live-review",
+            "title": "Wöchentlicher Marktüberblick – live",
+            "poster": null,
+            "startsAt": "2026-08-05T18:00:00.000Z",
+            "status": "upcoming"
+          },
+          {
+            "provider": "youtube",
+            "videoId": "mock-gold-breakdown",
+            "title": "Technische Analyse von Gold",
+            "poster": null,
+            "startsAt": "2026-07-10T18:00:00.000Z",
+            "status": "past"
+          }
+        ]
+      },
+      "contacts": {
+        "channels": [
+          {
+            "title": "Live-Chat",
+            "value": "Antwort innerhalb von 40 Sekunden",
+            "detail": "Rund um die Uhr, ohne Ruhetage – die Chat-Schaltfläche befindet sich unten rechts in Ihrem Kundenbereich"
+          },
+          {
+            "title": "E-Mail",
+            "value": "support@apexcapital.example",
+            "detail": "Antwort innerhalb eines Werktages"
+          },
+          {
+            "title": "Telefon",
+            "value": "+357 25 000 000",
+            "detail": "Mo–Fr, 8:00–20:00 (UTC+2), gebührenfrei"
+          }
+        ],
+        "offices": [
+          {
+            "city": "Limassol",
+            "country": "Zypern · Hauptsitz",
+            "address": "Arch. Makariou III Ave 155, 3026"
+          },
+          {
+            "city": "Dubai",
+            "country": "VAE",
+            "address": "Business Bay, Bay Square 12, Büro 404"
+          },
+          {
+            "city": "Almaty",
+            "country": "Kasachstan",
+            "address": "77/7 Al-Farabi Ave, Esentai Tower, 12. Etage"
+          }
+        ]
+      },
+      "careers": {
+        "benefits": [
+          {
+            "title": "Flexibles Arbeitsmodell",
+            "text": "Büro, hybrid oder komplett remote – Sie entscheiden"
+          },
+          {
+            "title": "FinTech-Markt",
+            "text": "Aufgaben an der Schnittstelle von Finanzen und Hochlast: Millionen von Kursen pro Sekunde"
+          },
+          {
+            "title": "Weiterentwicklung",
+            "text": "Budget für Weiterbildung und Konferenzen, interne Kurse zu den Märkten"
+          },
+          {
+            "title": "Fürsorge",
+            "text": "Krankenversicherung inkl. Zahnbehandlung, Sport, 5 Wochen Urlaub"
+          }
+        ],
+        "vacancies": [
+          {
+            "title": "Senior Frontend Developer (React/Next.js)",
+            "department": "Entwicklung",
+            "location": "Remote / Limassol",
+            "type": "Vollzeit",
+            "applyEmail": "hr@apexcapital.example"
+          },
+          {
+            "title": "Backend Developer (Go, Liquidität & Ausführung)",
+            "department": "Entwicklung",
+            "location": "Limassol",
+            "type": "Vollzeit",
+            "applyEmail": "hr@apexcapital.example"
+          },
+          {
+            "title": "DevOps / SRE (Handelsinfrastruktur)",
+            "department": "Infrastruktur",
+            "location": "Remote",
+            "type": "Vollzeit",
+            "applyEmail": "hr@apexcapital.example"
+          },
+          {
+            "title": "Finanzanalyst (Devisenmärkte)",
+            "department": "Research",
+            "location": "Almaty / remote",
+            "type": "Vollzeit",
+            "applyEmail": "hr@apexcapital.example"
+          },
+          {
+            "title": "Support-Mitarbeiter (Russisch + Englisch)",
+            "department": "Kundenservice",
+            "location": "Remote",
+            "type": "Schichtdienst 2/2",
+            "applyEmail": "hr@apexcapital.example"
+          }
+        ]
+      },
+      "legal": {
+        "items": [
+          {
+            "slug": "privacy",
+            "title": "Datenschutzerklärung",
+            "updatedAt": "2026-06-01",
+            "intro": "Entwurfsübersetzung. Rechtlich verbindlich ist die Fassung in russischer bzw. englischer Sprache.\n\nDiese Richtlinie beschreibt, welche personenbezogenen Daten Apex Capital erhebt, zu welchen Zwecken sie verarbeitet werden und welche Rechte die betroffene Person hat.",
+            "sections": [
+              {
+                "heading": "1. Welche Daten wir erheben",
+                "paragraphsMarkdown": [
+                  "Bei der Registrierung und Verifizierung erheben wir Identifikationsdaten (vollständiger Name, Geburtsdatum, Staatsangehörigkeit), Kontaktdaten (E-Mail, Telefon, Adresse), Kopien von Dokumenten, die nach den KYC/AML-Vorschriften erforderlich sind, sowie technische Daten über Ihre Nutzung des Dienstes (IP-Adresse, Gerätetyp, Aktivitäten im Kundenbereich).",
+                  "Finanzdaten – Transaktionshistorie, Herkunft der Mittel, Zahlungsdaten – werden ausschließlich zur Erfüllung des Vertrags und zur Einhaltung gesetzlicher Anforderungen verarbeitet."
+                ]
+              },
+              {
+                "heading": "2. Zwecke und Rechtsgrundlagen der Verarbeitung",
+                "paragraphsMarkdown": [
+                  "Die Daten werden verarbeitet, um die Kundenvereinbarung abzuschließen und zu erfüllen, aufsichtsrechtliche Anforderungen (Identifizierung, Bekämpfung der Geldwäsche) einzuhalten, die Sicherheit des Kontos zu gewährleisten und – vorbehaltlich einer gesonderten Einwilligung – für Marketingkommunikation.",
+                  "Sie können Ihre Einwilligung in Marketingkommunikation jederzeit in den Einstellungen Ihres Kundenbereichs oder über den Support widerrufen; dies hat keinen Einfluss auf die Kontoführung."
+                ]
+              },
+              {
+                "heading": "3. Speicherung und Übermittlung von Daten",
+                "paragraphsMarkdown": [
+                  "Die Daten werden verschlüsselt in Rechenzentren in der EU gespeichert. Die Aufbewahrungsfrist richtet sich nach den gesetzlichen Anforderungen (in der Regel 5 Jahre nach Beendigung der Geschäftsbeziehung).",
+                  "Eine Übermittlung an Dritte ist nur an Dienstleister möglich, die an der Erbringung des Dienstes beteiligt sind (Zahlungsdienstleister, Verifizierungsdienste), auf Grundlage von Auftragsverarbeitungsverträgen, sowie an Aufsichtsbehörden auf rechtmäßige Anfrage."
+                ]
+              },
+              {
+                "heading": "4. Ihre Rechte",
+                "paragraphsMarkdown": [
+                  "Sie haben das Recht, Auskunft über Ihre Daten, deren Berichtigung, Löschung (unter Berücksichtigung gesetzlicher Aufbewahrungsfristen), Einschränkung der Verarbeitung sowie Datenübertragbarkeit zu verlangen. Anfragen richten Sie an den Support; sie werden innerhalb von 30 Tagen bearbeitet."
+                ]
+              }
+            ]
+          },
+          {
+            "slug": "terms",
+            "title": "Nutzungsbedingungen",
+            "updatedAt": "2026-06-01",
+            "intro": "Entwurfsübersetzung. Rechtlich verbindlich ist die Fassung in russischer bzw. englischer Sprache.\n\nDiese Bedingungen regeln die Nutzung der Website und der Dienste von Apex Capital. Mit der Eröffnung eines Kontos bestätigen Sie, dass Sie die Kundenvereinbarung in vollem Umfang akzeptieren.",
+            "sections": [
+              {
+                "heading": "1. Dienstleistungen",
+                "paragraphsMarkdown": [
+                  "Das Unternehmen bietet Zugang zum gehebelten Handel mit derivativen Finanzinstrumenten (CFDs) auf Währungen, Metalle, Indizes, Aktien, Kryptowährungen und Energieträger sowie zugehörige Analyse- und Bildungsmaterialien.",
+                  "Analysematerialien dienen ausschließlich Informationszwecken und stellen keine individuelle Anlageberatung dar."
+                ]
+              },
+              {
+                "heading": "2. Anforderungen an Kunden",
+                "paragraphsMarkdown": [
+                  "Die Dienste stehen geschäftsfähigen Personen ab 18 Jahren zur Verfügung, die das Identifizierungsverfahren abgeschlossen haben. Das Unternehmen kann die Betreuung von Einwohnern von Rechtsordnungen ablehnen, in denen die Erbringung der Dienste gesetzlich eingeschränkt ist.",
+                  "Der Kunde verpflichtet sich, zutreffende Angaben zu machen, Dritten keinen Zugang zum Konto zu gewähren und den Dienst ausschließlich zu rechtmäßigen Zwecken zu nutzen."
+                ]
+              },
+              {
+                "heading": "3. Haftung",
+                "paragraphsMarkdown": [
+                  "Das Unternehmen haftet nicht für Verluste, die durch Marktbewegungen, Verbindungsstörungen auf Seiten des Kunden oder Handlungen Dritter verursacht werden, außer in den Fällen, die in der Kundenvereinbarung ausdrücklich vorgesehen sind.",
+                  "Die Gesamthaftung des Unternehmens ist auf die Höhe der Mittel des Kunden auf dem Konto beschränkt."
+                ]
+              },
+              {
+                "heading": "4. Änderungen der Bedingungen",
+                "paragraphsMarkdown": [
+                  "Das Unternehmen kann diese Bedingungen mit einer Ankündigungsfrist von mindestens 10 Werktagen ändern; die Kunden werden über den Kundenbereich und per E-Mail benachrichtigt. Die weitere Nutzung des Dienstes gilt als Zustimmung zu den Änderungen."
+                ]
+              }
+            ]
+          },
+          {
+            "slug": "risk-disclosure",
+            "title": "Risikohinweis",
+            "updatedAt": "2026-06-01",
+            "intro": "Entwurfsübersetzung. Rechtlich verbindlich ist die Fassung in russischer bzw. englischer Sprache.\n\nDer Handel mit gehebelten Produkten ist mit einem hohen Risiko verbunden und nicht für alle Anleger geeignet. Lesen Sie diesen Hinweis sorgfältig, bevor Sie mit dem Handel beginnen.",
+            "sections": [
+              {
+                "heading": "1. Hebelrisiko",
+                "paragraphsMarkdown": [
+                  "Der Hebel vervielfacht sowohl den möglichen Gewinn als auch den Verlust. Eine relativ kleine Marktbewegung kann zum Verlust aller Mittel auf dem Konto führen. Handeln Sie niemals mit Geld, dessen Verlust Sie sich nicht leisten können."
+                ]
+              },
+              {
+                "heading": "2. Marktrisiken",
+                "paragraphsMarkdown": [
+                  "Die Preise von Finanzinstrumenten unterliegen starken Schwankungen, die von wirtschaftlichen Ereignissen, Nachrichten und der Liquidität ausgelöst werden. In Phasen erhöhter Volatilität kann die Ausführung zu einem anderen als dem angeforderten Preis erfolgen (Slippage), und Kurslücken können dazu führen, dass Stop-Orders zu einem schlechteren Preis ausgeführt werden.",
+                  "Vergangene Wertentwicklungen sind keine Garantie für zukünftige Erträge. Kryptowährungsinstrumente sind volatiler als traditionelle Märkte."
+                ]
+              },
+              {
+                "heading": "3. Technologische Risiken",
+                "paragraphsMarkdown": [
+                  "Der Handel über das Internet birgt Risiken von Verbindungs-, Hardware- und Softwareausfällen. Das Unternehmen unternimmt angemessene Anstrengungen, um die Kontinuität des Dienstes sicherzustellen, kann jedoch keine Unterbrechungsfreiheit garantieren."
+                ]
+              },
+              {
+                "heading": "4. Schutz vor negativem Kontostand",
+                "paragraphsMarkdown": [
+                  "Das Unternehmen garantiert, dass der Verlust eines Kunden die auf dem Handelskonto hinterlegten Mittel nicht übersteigt: Ein negativer Kontostand, der infolge einer Kurslücke am Markt entsteht, wird auf Kosten des Unternehmens auf null zurückgesetzt."
+                ]
+              }
+            ]
+          },
+          {
+            "slug": "kyc-aml",
+            "title": "KYC/AML-Richtlinie",
+            "updatedAt": "2026-06-01",
+            "intro": "Entwurfsübersetzung. Rechtlich verbindlich ist die Fassung in russischer bzw. englischer Sprache.\n\nDas Unternehmen hält internationale Standards zur Bekämpfung der Geldwäsche (AML) und der Terrorismusfinanzierung (CFT) ein, einschließlich der FATF-Empfehlungen und der Anforderungen der zuständigen Aufsichtsbehörden.",
+            "sections": [
+              {
+                "heading": "1. Identifizierung von Kunden (KYC)",
+                "paragraphsMarkdown": [
+                  "Vor Beginn der Geschäftsbeziehung durchläuft der Kunde die Identifizierung: Er legt ein Ausweisdokument, einen Nachweis der Wohnadresse und gegebenenfalls Angaben zur Herkunft der Mittel vor. Das Unternehmen kann in jeder Phase der Geschäftsbeziehung zusätzliche Dokumente anfordern."
+                ]
+              },
+              {
+                "heading": "2. Transaktionsüberwachung",
+                "paragraphsMarkdown": [
+                  "Das Unternehmen überwacht Transaktionen fortlaufend auf ungewöhnliche Aktivitäten. Transaktionen, die nicht dem Profil des Kunden entsprechen, können bis zur Klärung ausgesetzt werden.",
+                  "Einzahlungen und Auszahlungen sind nur von eigenen Konten und Karten des Kunden bzw. auf diese möglich: Zahlungen Dritter werden nicht angenommen und an den Absender zurückgeschickt."
+                ]
+              },
+              {
+                "heading": "3. Verweigerung der Geschäftsbeziehung",
+                "paragraphsMarkdown": [
+                  "Das Unternehmen kann die Eröffnung eines Kontos ablehnen oder die Geschäftsbeziehung aussetzen oder beenden, wenn Identifizierungsverfahren nicht abgeschlossen werden, unzutreffende Angaben gemacht werden oder Anzeichen rechtswidriger Aktivitäten festgestellt werden; soweit gesetzlich vorgeschrieben, werden die zuständigen Behörden benachrichtigt."
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "system-status": {
+        "services": [
+          {
+            "id": "svc-0",
+            "name": "Website & Registrierung",
+            "description": "Marketing-Website, Antragsformulare",
+            "status": "operational",
+            "uptime90d": "99.99%"
+          },
+          {
+            "id": "svc-1",
+            "name": "Trading-API",
+            "description": "Orderausführung, Handelsoperationen",
+            "status": "operational",
+            "uptime90d": "99.97%"
+          },
+          {
+            "id": "quotes-ws",
+            "name": "Kurse (WebSocket)",
+            "description": "Echtzeit-Preisstream – der Status Ihrer Verbindung",
+            "status": "operational",
+            "uptime90d": "99.98%"
+          },
+          {
+            "id": "svc-2",
+            "name": "Kundenbereich",
+            "description": "Authentifizierung, Profil, Dokumente",
+            "status": "operational",
+            "uptime90d": "99.95%"
+          },
+          {
+            "id": "svc-3",
+            "name": "Zahlungsgateway",
+            "description": "Einzahlungen und Auszahlungen",
+            "status": "operational",
+            "uptime90d": "99.92%"
+          }
+        ],
+        "incidents": [
+          {
+            "date": "2026-07-14",
+            "title": "Verzögerte Bearbeitung von Auszahlungen auf Karten",
+            "status": "Behoben",
+            "text": "Von 10:20 bis 12:45 UTC wurde ein Teil der Auszahlungsanträge aufgrund einer Störung beim Zahlungsdienstleister verzögert bearbeitet. Alle Anträge wurden ausgeführt und die Mittel gutgeschrieben."
+          },
+          {
+            "date": "2026-06-30",
+            "title": "Geplante Wartung der Trading-API",
+            "status": "Abgeschlossen",
+            "text": "In der Nacht vom 29. auf den 30. Juni (01:00–02:30 UTC, Märkte geschlossen) wurde die Ausführungsinfrastruktur aktualisiert. Die Ausfallzeit betrug 12 Minuten innerhalb des angekündigten Zeitfensters."
+          }
+        ]
+      },
+      "articles": {
+        "items": [
+          {
+            "slug": "fed-signals-rate-path-september",
+            "title": "Fed signalisiert ihren Zinspfad: Märkte preisen eine Senkung im September ein",
+            "excerpt": "Das Protokoll der Juli-Sitzung zeigte eine wachsende Zahl von Befürwortern einer Lockerung. Der Dollar gab gegenüber den wichtigsten Währungen nach, und die Renditen von US-Staatsanleihen sanken.",
+            "category": "economy",
+            "source": "Apex Capital Research Desk",
+            "publishedAt": "2026-07-23T08:30:00.000Z",
+            "readingMinutes": 4,
+            "bodyMarkdown": "Das gestern veröffentlichte Sitzungsprotokoll der Federal Reserve zeigte, dass die meisten Mitglieder des Ausschusses es für angemessen halten, den Lockerungszyklus bereits auf der September-Sitzung einzuleiten, sofern die Inflationsdynamik anhält. Zinsfutures preisen nun eine Wahrscheinlichkeit von 78% für eine Senkung um 25 Bp. ein.\n\nDer Dollar-Index DXY reagierte mit einem Rückgang um 0.4%, während EURUSD in Richtung 1.0850 stieg. Die Rendite 10-jähriger US-Staatsanleihen fiel unter 4.1% – ein Sechswochentief.\n\nFür Trader bleibt das wichtigste Ereignis der Woche die Veröffentlichung des Kern-PCE am Freitag: Ein Wert über der Prognose könnte die Markterwartungen schnell umkehren und die Nachfrage nach dem Dollar zurückbringen."
+          },
+          {
+            "slug": "gold-tests-record-highs",
+            "title": "Gold testet Rekordhochs bei schwächerem Dollar",
+            "excerpt": "XAUUSD legt die dritte Sitzung in Folge zu. Analysten sehen Kursziele im Bereich von $2,450–2,480, sofern sich der Preis über $2,420 hält.",
+            "category": "forex",
+            "source": "Apex Capital Research Desk",
+            "publishedAt": "2026-07-23T06:10:00.000Z",
+            "readingMinutes": 3,
+            "bodyMarkdown": "Gold hat sein Wochenhoch erneuert und notiert bei rund $2,417 je Unze. Gestützt wird das Edelmetall von Erwartungen einer Zinssenkung der Fed und anhaltenden Käufen asiatischer Zentralbanken.\n\nTechnisch hält sich der Preis über dem gleitenden 20-Tage-Durchschnitt, und der RSI hat den überkauften Bereich noch nicht erreicht. Der nächste Widerstand liegt bei $2,431, danach folgt das Allzeithoch.\n\nDas Hauptrisiko für die Bullen bleiben starke US-Konjunkturdaten: Unerwartet hohe Beschäftigungs- oder Inflationszahlen könnten eine Korrektur in Richtung der Unterstützung bei $2,380 auslösen."
+          },
+          {
+            "slug": "nvidia-earnings-preview",
+            "title": "NVIDIA-Zahlen im Vorfeld: Was vom größten Profiteur des KI-Booms zu erwarten ist",
+            "excerpt": "Der Konsens erwartet einen Umsatz von $37.5 Mrd. Der Optionsmarkt preist nach der Veröffentlichung eine Bewegung der Aktie von ±9% ein.",
+            "category": "stocks",
+            "source": "Apex Capital Research Desk",
+            "publishedAt": "2026-07-22T15:45:00.000Z",
+            "readingMinutes": 5,
+            "bodyMarkdown": "Nächste Woche legt NVIDIA Quartalszahlen vor, die traditionell den Ton für den gesamten Technologiesektor angeben. Der Analystenkonsens rechnet mit einem Umsatz von $37.5 Mrd. (+62% gegenüber dem Vorjahr) und einem bereinigten Gewinn je Aktie von $0.95.\n\nDie zentrale Frage ist die Dynamik im Rechenzentrumsgeschäft sowie die Aussagen des Managements zur Nachfrage nach der neuen Generation von Beschleunigern. Jedes Anzeichen einer Verlangsamung der Bestellungen von Hyperscalern würde schlecht aufgenommen: Die Aktie wird mit einem KGV von über 45 gehandelt.\n\nDer Optionsmarkt preist für den Tag nach den Zahlen eine Bewegung von ±9% ein. Für Inhaber von CFDs auf NVDA bedeutet das erhöhte Anforderungen an das Risikomanagement: Wir empfehlen, Ausstiegsniveaus im Voraus festzulegen und Ihre übliche Positionsgröße nicht zu überschreiten."
+          },
+          {
+            "slug": "bitcoin-etf-inflows-resume",
+            "title": "Zuflüsse in Bitcoin-ETFs setzen wieder ein: $850 Mio. in einer Woche",
+            "excerpt": "Nach drei Wochen mit Abflüssen ziehen Spot-ETFs wieder Kapital an. BTCUSD konsolidiert bei etwa $67,500, der wichtigste Widerstand liegt bei $69,000.",
+            "category": "crypto",
+            "source": "Apex Capital Research Desk",
+            "publishedAt": "2026-07-22T11:20:00.000Z",
+            "readingMinutes": 3,
+            "bodyMarkdown": "Nach Angaben von Datenanbietern erreichten die Nettozuflüsse in US-amerikanische Spot-Bitcoin-ETFs in der vergangenen Woche $850 Mio. – das beste Ergebnis seit anderthalb Monaten. Der Großteil des Volumens entfiel auf Fonds der größten Vermögensverwalter.\n\nBitcoin konsolidiert in der Spanne von $66,000–68,000. Ein Ausbruch über $69,000 würde den Weg für einen erneuten Test des Allzeithochs ebnen, während ein Verlust der Unterstützung bei $64,500 den Verkaufsdruck verstärken würde.\n\nDie Volatilität von Ethereum bleibt vor der Entscheidung der Aufsichtsbehörde über Staking innerhalb von ETFs erhöht – ein Ereignis, das zum Katalysator für das gesamte Altcoin-Segment werden könnte."
+          },
+          {
+            "slug": "ecb-holds-rates-lagarde-comments",
+            "title": "EZB hält die Zinsen: Lagarde verweist auf September als „offenes Fenster“",
+            "excerpt": "Die Notenbank legte wie erwartet eine Pause ein. Der Euro wertete nach der Pressekonferenz auf: Der Markt hörte weniger „taubenhafte“ Signale als erhofft.",
+            "category": "economy",
+            "source": "Apex Capital Research Desk",
+            "publishedAt": "2026-07-21T14:00:00.000Z",
+            "readingMinutes": 4,
+            "bodyMarkdown": "Die Europäische Zentralbank beließ die Leitzinsen unverändert und legte nach der Senkung im Juni eine Pause ein. Die Entscheidung entsprach den Markterwartungen, daher richtete sich die Aufmerksamkeit auf die Rhetorik der Präsidentin.\n\nChristine Lagarde betonte, dass die September-Sitzung „völlig offen“ sei und weitere Entscheidungen von den eingehenden Daten abhängen würden. Das Fehlen ausdrücklicher Lockerungszusagen wertete der Markt als leicht restriktives („falkenhaftes“) Signal.\n\nEURUSD legte während der Pressekonferenz um 0.3% zu. Der Renditeabstand zwischen deutschen und US-amerikanischen 10-jährigen Anleihen verengte sich auf den geringsten Stand seit dem Frühjahr und stützte die Gemeinschaftswährung."
+          },
+          {
+            "slug": "oil-inventories-draw-opec-outlook",
+            "title": "US-Ölvorräte sinken die fünfte Woche in Folge",
+            "excerpt": "Die EIA meldete einen Lagerabbau um 3.7 Mio. Barrel. Brent hält sich vor dem OPEC-Bericht über $85.",
+            "category": "economy",
+            "source": "Apex Capital Research Desk",
+            "publishedAt": "2026-07-21T09:05:00.000Z",
+            "readingMinutes": 3,
+            "bodyMarkdown": "Die kommerziellen Rohölvorräte in den USA sanken in der vergangenen Woche um 3.7 Millionen Barrel bei einer Prognose von −1.9 Mio. Fünf Wochen in Folge mit Lagerabbau – die längste Serie seit dem vergangenen Sommer – deuten auf eine robuste Nachfrage auf dem Höhepunkt der Reisesaison hin.\n\nBrent hält sich über $85 je Barrel, während WTI bei rund $81.6 gehandelt wird. Trader warten auf den Monatsbericht der OPEC: Eine Bestätigung der Prognose für das Wachstum der weltweiten Nachfrage würde den aktuellen Aufwärtsimpuls stützen.\n\nDas Angebot außerhalb der OPEC bleibt der begrenzende Faktor: Rekordfördermengen in den USA und Brasilien begrenzen das Potenzial für eine Rally über $90 ohne zusätzliche Angebotsschocks."
+          }
+        ],
+        "total": 6,
+        "page": 1,
+        "pageSize": 20
+      }
+    },
+    "fr": {
+      "navigation": {
+        "header": [
+          {
+            "label": "Instruments",
+            "href": "/instruments"
+          },
+          {
+            "label": "Comptes et tarifs",
+            "href": "/accounts"
+          },
+          {
+            "label": "Analyses",
+            "href": "/analytics/news"
+          },
+          {
+            "label": "Formation",
+            "href": "/education"
+          },
+          {
+            "label": "À propos",
+            "href": "/about"
+          }
+        ],
+        "footer": {
+          "columns": [
+            {
+              "title": "Trading",
+              "links": [
+                {
+                  "label": "Instruments de trading",
+                  "href": "/instruments"
+                },
+                {
+                  "label": "Types de comptes",
+                  "href": "/accounts"
+                },
+                {
+                  "label": "FAQ",
+                  "href": "/education/faq"
+                },
+                {
+                  "label": "Promotions et bonus",
+                  "href": "/promotions"
+                }
+              ]
+            },
+            {
+              "title": "Analyses",
+              "links": [
+                {
+                  "label": "Actualités des marchés",
+                  "href": "/analytics/news"
+                },
+                {
+                  "label": "Calendrier économique",
+                  "href": "/analytics/calendar"
+                },
+                {
+                  "label": "Formation",
+                  "href": "/education/articles"
+                },
+                {
+                  "label": "Blog",
+                  "href": "/blog"
+                }
+              ]
+            },
+            {
+              "title": "Société",
+              "links": [
+                {
+                  "label": "À propos",
+                  "href": "/about"
+                },
+                {
+                  "label": "Partenaires",
+                  "href": "/partners"
+                },
+                {
+                  "label": "Carrières",
+                  "href": "/company/careers"
+                },
+                {
+                  "label": "Contacts",
+                  "href": "/company/contacts"
+                }
+              ]
+            },
+            {
+              "title": "Mentions légales",
+              "links": [
+                {
+                  "label": "Politique de confidentialité",
+                  "href": "/legal/privacy"
+                },
+                {
+                  "label": "Conditions d’utilisation",
+                  "href": "/legal/terms"
+                },
+                {
+                  "label": "Divulgation des risques",
+                  "href": "/legal/risk-disclosure"
+                },
+                {
+                  "label": "État des services",
+                  "href": "/status"
+                }
+              ]
+            }
+          ],
+          "riskWarning": "Avertissement sur les risques : le trading de CFD et de produits à effet de levier comporte un niveau de risque élevé et peut entraîner la perte de la totalité du capital investi. Assurez-vous de bien comprendre les risques encourus avant de commencer à trader."
+        }
+      },
+      "instruments": {
+        "items": [
+          {
+            "symbol": "EURUSD",
+            "name": "Euro / Dollar américain",
+            "category": "forex",
+            "digits": 5,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "GBPUSD",
+            "name": "Livre sterling / Dollar américain",
+            "category": "forex",
+            "digits": 5,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "USDJPY",
+            "name": "Dollar américain / Yen japonais",
+            "category": "forex",
+            "digits": 3,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "AUDUSD",
+            "name": "Dollar australien / Dollar américain",
+            "category": "forex",
+            "digits": 5,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "USDCHF",
+            "name": "Dollar américain / Franc suisse",
+            "category": "forex",
+            "digits": 5,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "USDCAD",
+            "name": "Dollar américain / Dollar canadien",
+            "category": "forex",
+            "digits": 5,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "NZDUSD",
+            "name": "Dollar néo-zélandais / Dollar américain",
+            "category": "forex",
+            "digits": 5,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "EURGBP",
+            "name": "Euro / Livre sterling",
+            "category": "forex",
+            "digits": 5,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "EURJPY",
+            "name": "Euro / Yen japonais",
+            "category": "forex",
+            "digits": 3,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "XAUUSD",
+            "name": "Or",
+            "category": "metals",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.1 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "XAGUSD",
+            "name": "Argent",
+            "category": "metals",
+            "digits": 3,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.1 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "XPTUSD",
+            "name": "Platine",
+            "category": "metals",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.1 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "BTCUSD",
+            "name": "Bitcoin",
+            "category": "crypto",
+            "digits": 0,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.15%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "ETHUSD",
+            "name": "Ethereum",
+            "category": "crypto",
+            "digits": 1,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.15%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "SOLUSD",
+            "name": "Solana",
+            "category": "crypto",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.15%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "XRPUSD",
+            "name": "Ripple",
+            "category": "crypto",
+            "digits": 4,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.15%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "BNBUSD",
+            "name": "BNB",
+            "category": "crypto",
+            "digits": 1,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.15%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "US500",
+            "name": "S&P 500",
+            "category": "indices",
+            "digits": 1,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.4 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "NAS100",
+            "name": "Nasdaq 100",
+            "category": "indices",
+            "digits": 1,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.4 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "US30",
+            "name": "Dow Jones 30",
+            "category": "indices",
+            "digits": 1,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.4 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "GER40",
+            "name": "DAX 40",
+            "category": "indices",
+            "digits": 1,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.4 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "UK100",
+            "name": "FTSE 100",
+            "category": "indices",
+            "digits": 1,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.4 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "JPN225",
+            "name": "Nikkei 225",
+            "category": "indices",
+            "digits": 0,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.4 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "AAPL",
+            "name": "Apple Inc.",
+            "category": "stocks",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.02%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "MSFT",
+            "name": "Microsoft Corp.",
+            "category": "stocks",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.02%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "NVDA",
+            "name": "NVIDIA Corp.",
+            "category": "stocks",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.02%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "AMZN",
+            "name": "Amazon.com Inc.",
+            "category": "stocks",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.02%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "META",
+            "name": "Meta Platforms Inc.",
+            "category": "stocks",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.02%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "GOOGL",
+            "name": "Alphabet Inc.",
+            "category": "stocks",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.02%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "TSLA",
+            "name": "Tesla Inc.",
+            "category": "stocks",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.02%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "USOIL",
+            "name": "Pétrole brut WTI",
+            "category": "energy",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.03",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "UKOIL",
+            "name": "Pétrole brut Brent",
+            "category": "energy",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.03",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "NGAS",
+            "name": "Gaz naturel",
+            "category": "energy",
+            "digits": 3,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.03",
+            "swapFree": true,
+            "icon": null
+          }
+        ]
+      },
+      "accounts": {
+        "items": [
+          {
+            "id": "standard",
+            "name": "Standard",
+            "description": "Pour vos premiers pas sur le marché",
+            "minDeposit": "$100",
+            "featured": false,
+            "features": [
+              {
+                "label": "Spread à partir de",
+                "value": "1.2 pips"
+              },
+              {
+                "label": "Commission",
+                "value": "$0"
+              },
+              {
+                "label": "Effet de levier jusqu’à",
+                "value": "1:500"
+              },
+              {
+                "label": "Lot minimum",
+                "value": "0.01"
+              },
+              {
+                "label": "Instruments",
+                "value": "12,000+"
+              },
+              {
+                "label": "Exécution",
+                "value": "Market, à partir de 14 ms"
+              },
+              {
+                "label": "Sans swap (swap-free)",
+                "value": "Disponible"
+              },
+              {
+                "label": "Gestionnaire personnel",
+                "value": "—"
+              }
+            ],
+            "pricing": {
+              "spreadPips": 1.2,
+              "commissionPerLotRT": 0
+            }
+          },
+          {
+            "id": "pro",
+            "name": "Pro",
+            "description": "Pour les traders actifs",
+            "minDeposit": "$1,000",
+            "featured": true,
+            "features": [
+              {
+                "label": "Spread à partir de",
+                "value": "0.5 pips"
+              },
+              {
+                "label": "Commission",
+                "value": "$2.5 / lot / côté"
+              },
+              {
+                "label": "Effet de levier jusqu’à",
+                "value": "1:400"
+              },
+              {
+                "label": "Lot minimum",
+                "value": "0.01"
+              },
+              {
+                "label": "Instruments",
+                "value": "12,000+"
+              },
+              {
+                "label": "Exécution",
+                "value": "Market, à partir de 14 ms"
+              },
+              {
+                "label": "Sans swap (swap-free)",
+                "value": "Disponible"
+              },
+              {
+                "label": "Gestionnaire personnel",
+                "value": "Oui"
+              }
+            ],
+            "pricing": {
+              "spreadPips": 0.5,
+              "commissionPerLotRT": 5
+            }
+          },
+          {
+            "id": "ecn",
+            "name": "ECN Prime",
+            "description": "Liquidité interbancaire",
+            "minDeposit": "$5,000",
+            "featured": false,
+            "features": [
+              {
+                "label": "Spread à partir de",
+                "value": "0.0 pips"
+              },
+              {
+                "label": "Commission",
+                "value": "$3 / lot / côté"
+              },
+              {
+                "label": "Effet de levier jusqu’à",
+                "value": "1:200"
+              },
+              {
+                "label": "Lot minimum",
+                "value": "0.01"
+              },
+              {
+                "label": "Instruments",
+                "value": "12,000+"
+              },
+              {
+                "label": "Exécution",
+                "value": "ECN, à partir de 9 ms"
+              },
+              {
+                "label": "Sans swap (swap-free)",
+                "value": "Sur demande"
+              },
+              {
+                "label": "Gestionnaire personnel",
+                "value": "Oui"
+              }
+            ],
+            "pricing": {
+              "spreadPips": 0.1,
+              "commissionPerLotRT": 6
+            }
+          }
+        ]
+      },
+      "promotions": {
+        "items": [
+          {
+            "id": "promo-1",
+            "badge": "Pour les nouveaux clients",
+            "title": "Bonus de bienvenue de 30%",
+            "description": "Alimentez votre premier compte avec $500 ou plus — recevez +30% de fonds de trading. Le bonus est pris en compte dans la marge et vous aide à mieux résister aux drawdowns.",
+            "terms": "Bonus jusqu’à $5,000. Disponible une seule fois ; débloqué à raison de 1 lot tradé pour chaque tranche de $10 de bonus.",
+            "ctaLabel": "Obtenir le bonus",
+            "ctaHref": "/register?promo=welcome30",
+            "featured": true,
+            "activeFrom": null,
+            "activeTo": null
+          },
+          {
+            "id": "promo-2",
+            "badge": "Pour les traders actifs",
+            "title": "Jusqu’à 15% de cashback sur le spread",
+            "description": "Tradez 50 lots ou plus par mois — nous reversons une partie du spread en argent réel sur votre compte. Plus le volume est élevé, plus le taux est important.",
+            "terms": "Crédité automatiquement le premier jour du mois suivant. Aucun plafond de montant.",
+            "ctaLabel": "Participer",
+            "ctaHref": "/register?promo=cashback",
+            "featured": false,
+            "activeFrom": null,
+            "activeTo": null
+          },
+          {
+            "id": "promo-3",
+            "badge": "Sans risque",
+            "title": "Concours de trading sur compte démo",
+            "description": "Une compétition mensuelle sur comptes démo dotée d’une cagnotte de $10,000. Les trois gagnants reçoivent des comptes de trading réels alimentés avec les gains.",
+            "terms": "Participation gratuite. Une nouvelle manche commence le 1er de chaque mois.",
+            "ctaLabel": "Participer au concours",
+            "ctaHref": "/register?demo=1",
+            "featured": false,
+            "activeFrom": null,
+            "activeTo": null
+          },
+          {
+            "id": "promo-4",
+            "badge": "Parrainage",
+            "title": "Parrainez un ami — recevez $50",
+            "description": "Partagez votre lien personnel : lorsque votre ami ouvre un compte et commence à trader, vous recevez chacun $50 sur votre compte de trading.",
+            "terms": "Votre ami doit effectuer un dépôt d’au moins $100 et trader 1 lot dans un délai de 30 jours.",
+            "ctaLabel": "Obtenir votre lien",
+            "ctaHref": "/register",
+            "featured": false,
+            "activeFrom": null,
+            "activeTo": null
+          }
+        ]
+      },
+      "partners": {
+        "models": [
+          {
+            "name": "Introducing Broker (IB)",
+            "description": "Recommandez-nous à votre audience et recevez jusqu’à 40% du spread de chaque client apporté — à vie, tant que le client trade.",
+            "features": [
+              "Paiements quotidiens sans seuil minimum",
+              "Liens de parrainage, supports promotionnels et pages d’atterrissage",
+              "Espace partenaire avec statistiques en temps réel",
+              "Réseau de sous-partenaires : 10% des rémunérations des sous-agents"
+            ]
+          },
+          {
+            "name": "White Label",
+            "description": "Votre propre marque de courtage sur notre infrastructure : plateforme, liquidité, back-office et assistance — clés en main.",
+            "features": [
+              "Plateforme de trading et espace client à votre marque",
+              "Liquidité Tier-1 agrégée",
+              "Gestion des risques et reporting prêts à l’emploi",
+              "Lancement à partir de 6 semaines avec un chef de projet dédié"
+            ]
+          }
+        ],
+        "tiers": [
+          {
+            "name": "Bronze",
+            "clients": "jusqu’à 20 clients actifs",
+            "share": "25%"
+          },
+          {
+            "name": "Silver",
+            "clients": "20–100 clients actifs",
+            "share": "30%"
+          },
+          {
+            "name": "Gold",
+            "clients": "100+ clients actifs",
+            "share": "40%",
+            "featured": true
+          }
+        ],
+        "steps": [
+          {
+            "title": "Candidature",
+            "text": "Remplissez le formulaire — un gestionnaire vous contactera sous un jour ouvré"
+          },
+          {
+            "title": "Outils",
+            "text": "Obtenez vos liens, vos supports promotionnels et l’accès à l’espace partenaire"
+          },
+          {
+            "title": "Revenus",
+            "text": "Apportez des clients et recevez des paiements chaque jour"
+          }
+        ]
+      },
+      "academy": {
+        "articles": [
+          {
+            "slug": "what-is-forex",
+            "title": "Qu’est-ce que le Forex et comment fonctionne le marché des changes",
+            "excerpt": "Le plus grand marché financier du monde, avec $7.5 trillions de volume quotidien : qui y négocie, d’où vient le prix et ce que signifie une paire de devises.",
+            "level": "beginner",
+            "readingMinutes": 7,
+            "bodyMarkdown": "Le Forex (Foreign Exchange) est le marché mondial de gré à gré des devises. Contrairement à une bourse d’actions, il n’a pas de lieu d’échange unique : les transactions sont conclues directement entre banques, fonds, entreprises et courtiers du monde entier, 24 heures sur 24 du lundi au vendredi.\n\nL’unité de base du marché est la paire de devises. EURUSD = 1.0850 signifie qu’un euro permet d’acheter 1.0850 dollar. La première devise de la paire est appelée devise de base, la seconde — devise de cotation. Acheter la paire, c’est acheter la devise de base contre la devise de cotation ; la vendre, c’est l’inverse.\n\nLe prix se forme à partir du flux d’ordres des plus grands acteurs — les teneurs de marché et les banques de premier rang. Un courtier agrège ces flux de liquidité et transmet les meilleurs prix à ses clients. La différence entre le prix d’achat (Ask) et le prix de vente (Bid) est le spread — le principal coût de transaction du trader.\n\nLa variation minimale du prix est le pip. Pour la plupart des paires, il s’agit de la quatrième décimale : un mouvement de l’EURUSD de 1.0850 à 1.0851 correspond à un pip. Un lot standard équivaut à 100,000 unités de la devise de base, tandis que les courtiers modernes permettent de trader à partir de 0.01 lot.\n\nCommencez par un compte démo : il reproduit fidèlement le trading réel sans aucun risque pour votre capital. Exercez-vous à la mécanique des ordres, aux stop loss et au calcul de la taille de position — puis seulement passez à un compte réel, avec une somme que vous pouvez vous permettre de perdre."
+          },
+          {
+            "slug": "leverage-risk-management",
+            "title": "L’effet de levier : comment l’utiliser sans risque inutile",
+            "excerpt": "Un effet de levier de 1:500 peut multiplier aussi bien les gains que les pertes. Nous expliquons la marge, la marge libre et la règle principale — ne pas risquer plus de 1–2% par transaction.",
+            "level": "beginner",
+            "readingMinutes": 6,
+            "bodyMarkdown": "L’effet de levier permet d’ouvrir des positions supérieures à vos propres capitaux. Avec un effet de levier de 1:100, une position de 1 lot sur l’EURUSD (€100,000) ne nécessite qu’environ €1,000 de garantie. Cette garantie s’appelle la marge — elle est bloquée sur votre compte tant que la position est ouverte.\n\nComprenez-le bien : l’effet de levier multiplie non seulement le gain potentiel, mais aussi la perte. Un mouvement de prix de 1% contre une position avec un effet de levier de 1:100 signifie la perte de 100% de la marge. C’est précisément pourquoi les traders expérimentés n’utilisent qu’une petite partie de l’effet de levier disponible.\n\nL’indicateur clé est le niveau de marge : les fonds propres divisés par la marge utilisée. Lorsqu’il tombe au niveau du Margin Call, le courtier vous avertit d’une insuffisance de fonds ; au niveau du Stop Out, les positions commencent à être clôturées de force. La protection contre le solde négatif garantit que vous ne perdrez jamais plus que votre dépôt.\n\nUne règle pratique : ne risquez pas plus de 1–2% de votre dépôt par transaction. La taille de la position se déduit du stop loss, et non l’inverse : déterminez d’abord à quel niveau votre idée devient invalide, puis choisissez un volume tel que la perte au déclenchement du stop ne dépasse pas le risque que vous vous autorisez."
+          },
+          {
+            "slug": "technical-analysis-basics",
+            "title": "Analyse technique : cinq outils essentiels",
+            "excerpt": "Supports et résistances, tendance, moyennes mobiles, RSI et volume — la boîte à outils minimale par laquelle commence la lecture d’un graphique.",
+            "level": "intermediate",
+            "readingMinutes": 8,
+            "bodyMarkdown": "L’analyse technique part du principe que toute l’information disponible est déjà reflétée dans le prix et que le comportement de la foule se répète. Son but n’est pas de prédire l’avenir, mais de repérer les zones où le rapport gain/risque est favorable au trader.\n\nLes niveaux de support et de résistance en sont le fondement. Ce sont des zones de prix où le marché s’est auparavant retourné ou a marqué un arrêt : l’intérêt des acheteurs et des vendeurs y est concentré. Plus un niveau a été touché de fois et plus il est « ancien », plus la réaction est significative.\n\nLa tendance définit le contexte : une succession de sommets et de creux ascendants constitue une tendance haussière ; des sommets et des creux descendants — une tendance baissière. Trader dans le sens de la tendance est statistiquement plus fiable que les positions à contre-tendance, c’est pourquoi la première question à poser à tout graphique est : « où va le marché sur l’unité de temps supérieure ? »\n\nLes moyennes mobiles (MA) lissent le bruit et visualisent la tendance. Les périodes les plus utilisées sont 20, 50 et 200. Un prix au-dessus de la MA200 signifie que le contexte global est haussier ; les croisements des moyennes rapides et lentes servent de filtre de signaux, et non de système autonome.\n\nL’indice de force relative (RSI) mesure le momentum : des valeurs supérieures à 70 indiquent un surachat, inférieures à 30 — une survente. Dans une tendance forte, le RSI peut rester longtemps dans les zones extrêmes, c’est pourquoi les signaux de l’indicateur sont toujours vérifiés au regard des niveaux et de la structure du marché.\n\nLe volume confirme le mouvement : une cassure sur un volume croissant mérite la confiance, tandis qu’une pointe fine, sans volume, est souvent un piège. Ensemble, ces cinq outils couvrent 90% des besoins d’un analyste technique débutant."
+          },
+          {
+            "slug": "trading-psychology",
+            "title": "Psychologie du trading : pourquoi la discipline compte plus que les prévisions",
+            "excerpt": "Le tilt, la peur de rater une opportunité et le trading de revanche détruisent les dépôts plus vite qu’une mauvaise stratégie. Comment bâtir un processus qui vous protège de vous-même.",
+            "level": "intermediate",
+            "readingMinutes": 6,
+            "bodyMarkdown": "Les statistiques des courtiers montrent que la plupart des comptes perdants ne meurent pas d’une mauvaise analyse, mais du non-respect de ses propres règles. Le marché est un environnement d’incertitude, et l’esprit y réagit par des mécanismes ancestraux : la peur, l’avidité et l’envie de se refaire immédiatement.\n\nLe tilt est l’état dans lequel, après une perte, le trader augmente ses volumes et prend des positions sans setup, en essayant de « récupérer son argent ». La seule protection efficace consiste en des limites strictes : une limite de perte journalière (par exemple, 3% du dépôt) au-delà de laquelle le trading s’arrête jusqu’au lendemain.\n\nLa peur de rater une opportunité (FOMO) pousse à courir après un mouvement déjà réalisé — à entrer à un prix moins favorable avec un stop flou. L’antidote est un plan de trading écrit qui définit à l’avance les conditions d’entrée. Pas de conditions — pas de transaction, aussi loin que le graphique « s’envole ».\n\nTenez un journal de trading : capture d’écran de l’entrée, motif, état émotionnel, résultat. Après 50–100 entrées, vous verrez vos propres erreurs systématiques — l’analyse la plus précieuse, qu’aucun indicateur ne peut vous fournir. La discipline n’est pas un trait de caractère, mais un processus que l’on peut concevoir."
+          }
+        ],
+        "webinars": [
+          {
+            "id": "web-4",
+            "title": "Psychologie du trading : comment cesser d’enfreindre vos propres règles",
+            "speaker": "Dmitry Sokolov",
+            "speakerRole": "Analyste principal",
+            "startsAt": "2026-07-11T18:00:00.000Z",
+            "durationMinutes": 60,
+            "level": "Débutant",
+            "description": "Tilt, FOMO et trading de revanche : la mécanique des dérapages et des techniques pratiques — limites, journal de trading, check-list avant l’entrée."
+          },
+          {
+            "id": "web-3",
+            "title": "Analyse technique de l’or : les niveaux à partir desquels le marché se négocie",
+            "speaker": "Anna Vereshchagina",
+            "speakerRole": "Responsable de la recherche",
+            "startsAt": "2026-07-18T19:00:00.000Z",
+            "durationMinutes": 60,
+            "level": "Intermédiaire",
+            "description": "Analyse de la structure du marché XAUUSD : niveaux clés, comportement du prix autour du plus haut historique et scénarios jusqu’à la fin du trimestre."
+          },
+          {
+            "id": "web-0",
+            "title": "Premiers pas sur le Forex : du compte démo à votre première transaction",
+            "speaker": "Dmitry Sokolov",
+            "speakerRole": "Analyste principal",
+            "startsAt": "2026-07-25T19:00:00.000Z",
+            "durationMinutes": 60,
+            "level": "Débutant",
+            "description": "Le fonctionnement du marché, les types d’ordres, le calcul de la taille de position et les erreurs typiques des premiers mois. Une présentation de la plateforme en direct et une session de questions-réponses."
+          },
+          {
+            "id": "web-1",
+            "title": "Trading sur les actualités : une stratégie pour travailler avec le calendrier économique",
+            "speaker": "Anna Vereshchagina",
+            "speakerRole": "Responsable de la recherche",
+            "startsAt": "2026-07-27T18:00:00.000Z",
+            "durationMinutes": 90,
+            "level": "Intermédiaire",
+            "description": "Quelles publications font bouger le marché, comment lire l’écart entre le chiffre réel et la prévision et où placer ses stops lorsque la volatilité se multiplie."
+          },
+          {
+            "id": "web-2",
+            "title": "Gestion du capital : un portefeuille de stratégies plutôt qu’un seul « Graal »",
+            "speaker": "Marat Gareev",
+            "speakerRole": "Gestionnaire de portefeuille",
+            "startsAt": "2026-08-01T19:00:00.000Z",
+            "durationMinutes": 75,
+            "level": "Avancé",
+            "description": "Diversification entre stratégies et instruments, corrélations des positions, le drawdown comme indicateur et calcul du risque au niveau du portefeuille."
+          }
+        ],
+        "glossary": [
+          {
+            "term": "Ask",
+            "definition": "Le prix auquel le courtier vous vend la devise de base (le prix d’achat pour le trader). Toujours supérieur au Bid."
+          },
+          {
+            "term": "Bid",
+            "definition": "Le prix auquel le courtier vous achète la devise de base (le prix de vente pour le trader)."
+          },
+          {
+            "term": "CFD",
+            "definition": "Contract for Difference (contrat sur différence). Permet de tirer profit de l’évolution du prix d’un actif sans détenir l’actif lui-même."
+          },
+          {
+            "term": "ECN",
+            "definition": "Electronic Communication Network — un modèle d’exécution dans lequel les ordres des clients sont transmis directement à un réseau de fournisseurs de liquidité, avec des spreads minimaux plus une commission."
+          },
+          {
+            "term": "Gap",
+            "definition": "Un écart sur le graphique entre le prix de clôture et le prix d’ouverture suivant. Survient souvent après les week-ends ou des actualités importantes."
+          },
+          {
+            "term": "Effet de levier",
+            "definition": "Le rapport entre la taille de la position et les fonds propres du trader. Un effet de levier de 1:100 permet de contrôler une position 100 fois supérieure à votre garantie."
+          },
+          {
+            "term": "Lot",
+            "definition": "L’unité standard de volume d’une transaction. Sur le Forex, 1 lot = 100,000 unités de la devise de base ; la plupart des courtiers permettent de trader à partir de 0.01 lot."
+          },
+          {
+            "term": "Marge",
+            "definition": "La garantie bloquée sur le compte à l’ouverture d’une position avec effet de levier. Elle est libérée après la clôture de la transaction."
+          },
+          {
+            "term": "Appel de marge (Margin Call)",
+            "definition": "Un avertissement du courtier indiquant que les fonds du compte suffisent à peine à maintenir les positions ouvertes."
+          },
+          {
+            "term": "Pip",
+            "definition": "La variation minimale du prix d’une paire de devises. Pour la plupart des paires — une variation de la quatrième décimale (0.0001)."
+          },
+          {
+            "term": "Spread",
+            "definition": "La différence entre les prix Ask et Bid — le principal coût de transaction du trader."
+          },
+          {
+            "term": "Stop Loss",
+            "definition": "Un ordre qui clôture automatiquement une position lorsqu’une perte donnée est atteinte. Le principal outil de gestion du risque."
+          },
+          {
+            "term": "Stop Out",
+            "definition": "La clôture forcée des positions par le courtier lorsque le niveau de marge tombe sous une valeur critique."
+          },
+          {
+            "term": "Niveau de support",
+            "definition": "Une zone de prix où la demande a auparavant stoppé une baisse. La notion symétrique est le niveau de résistance."
+          },
+          {
+            "term": "Swap",
+            "definition": "Des frais ou un crédit pour le maintien d’une position overnight, en fonction du différentiel de taux d’intérêt entre les devises de la paire."
+          },
+          {
+            "term": "Take Profit",
+            "definition": "Un ordre qui sécurise automatiquement le gain lorsqu’un prix cible est atteint."
+          },
+          {
+            "term": "Tendance",
+            "definition": "Un mouvement de prix durable et orienté : haussier (sommets et creux ascendants) ou baissier."
+          },
+          {
+            "term": "Volatilité",
+            "definition": "Une mesure de la variabilité du prix sur une période. Forte volatilité — grands mouvements et risques élevés ; faible — fourchettes étroites."
+          }
+        ]
+      },
+      "streams": {
+        "items": [
+          {
+            "provider": "youtube",
+            "videoId": "mock-live-review",
+            "title": "Revue hebdomadaire des marchés — en direct",
+            "poster": null,
+            "startsAt": "2026-08-05T18:00:00.000Z",
+            "status": "upcoming"
+          },
+          {
+            "provider": "youtube",
+            "videoId": "mock-gold-breakdown",
+            "title": "Analyse technique de l’or",
+            "poster": null,
+            "startsAt": "2026-07-10T18:00:00.000Z",
+            "status": "past"
+          }
+        ]
+      },
+      "contacts": {
+        "channels": [
+          {
+            "title": "Chat en direct",
+            "value": "Réponse en 40 secondes",
+            "detail": "24 h/24, 7 j/7 — le bouton du chat se trouve en bas à droite de l’espace client"
+          },
+          {
+            "title": "E-mail",
+            "value": "support@apexcapital.example",
+            "detail": "Réponse sous un jour ouvré"
+          },
+          {
+            "title": "Téléphone",
+            "value": "+357 25 000 000",
+            "detail": "Lun–ven, 8:00–20:00 (UTC+2), appel gratuit"
+          }
+        ],
+        "offices": [
+          {
+            "city": "Limassol",
+            "country": "Chypre · Siège social",
+            "address": "Arch. Makariou III Ave 155, 3026"
+          },
+          {
+            "city": "Dubai",
+            "country": "Émirats arabes unis",
+            "address": "Business Bay, Bay Square 12, bureau 404"
+          },
+          {
+            "city": "Almaty",
+            "country": "Kazakhstan",
+            "address": "77/7 Al-Farabi Ave, Esentai Tower, 12e étage"
+          }
+        ]
+      },
+      "careers": {
+        "benefits": [
+          {
+            "title": "Format flexible",
+            "text": "Bureau, hybride ou entièrement à distance — c’est vous qui choisissez"
+          },
+          {
+            "title": "Le marché de la FinTech",
+            "text": "Des défis à la croisée de la finance et de la haute charge : des millions de cotations par seconde"
+          },
+          {
+            "title": "Évolution",
+            "text": "Budget formation et conférences, cours internes sur les marchés"
+          },
+          {
+            "title": "Bien-être",
+            "text": "Assurance santé incluant les soins dentaires, sport, 5 semaines de congés"
+          }
+        ],
+        "vacancies": [
+          {
+            "title": "Senior Frontend Developer (React/Next.js)",
+            "department": "Développement",
+            "location": "À distance / Limassol",
+            "type": "Temps plein",
+            "applyEmail": "hr@apexcapital.example"
+          },
+          {
+            "title": "Backend Developer (Go, liquidité et exécution)",
+            "department": "Développement",
+            "location": "Limassol",
+            "type": "Temps plein",
+            "applyEmail": "hr@apexcapital.example"
+          },
+          {
+            "title": "DevOps / SRE (infrastructure de trading)",
+            "department": "Infrastructure",
+            "location": "À distance",
+            "type": "Temps plein",
+            "applyEmail": "hr@apexcapital.example"
+          },
+          {
+            "title": "Analyste financier (marchés des changes)",
+            "department": "Recherche",
+            "location": "Almaty / à distance",
+            "type": "Temps plein",
+            "applyEmail": "hr@apexcapital.example"
+          },
+          {
+            "title": "Spécialiste de l’assistance (russe + anglais)",
+            "department": "Service client",
+            "location": "À distance",
+            "type": "Horaires en rotation 2/2",
+            "applyEmail": "hr@apexcapital.example"
+          }
+        ]
+      },
+      "legal": {
+        "items": [
+          {
+            "slug": "privacy",
+            "title": "Politique de confidentialité",
+            "updatedAt": "2026-06-01",
+            "intro": "Traduction provisoire. La version juridiquement contraignante est la version en langue russe ou anglaise.\n\nLa présente politique décrit les données personnelles collectées par Apex Capital, les finalités pour lesquelles elles sont traitées et les droits de la personne concernée.",
+            "sections": [
+              {
+                "heading": "1. Données que nous collectons",
+                "paragraphsMarkdown": [
+                  "Lors de l’inscription et de la vérification, nous collectons des données d’identification (nom complet, date de naissance, nationalité), des coordonnées (e-mail, téléphone, adresse), des copies des documents requis en vertu des règles KYC/AML, ainsi que des données techniques relatives à votre utilisation du service (adresse IP, type d’appareil, activité dans l’espace client).",
+                  "Les données financières — historique des opérations, origine des fonds, coordonnées de paiement — sont traitées exclusivement aux fins de l’exécution du contrat et du respect des exigences légales."
+                ]
+              },
+              {
+                "heading": "2. Finalités et bases juridiques du traitement",
+                "paragraphsMarkdown": [
+                  "Les données sont traitées aux fins de la conclusion et de l’exécution du contrat client, du respect des exigences réglementaires (identification, lutte contre le blanchiment de capitaux), de la sécurité du compte et — sous réserve d’un consentement distinct — des communications marketing.",
+                  "Vous pouvez retirer à tout moment votre consentement aux communications marketing dans les paramètres de l’espace client ou en contactant l’assistance ; cela n’affecte pas la gestion de votre compte."
+                ]
+              },
+              {
+                "heading": "3. Conservation et transfert des données",
+                "paragraphsMarkdown": [
+                  "Les données sont conservées sous forme chiffrée dans des centres de données situés dans l’UE. La durée de conservation est déterminée par les exigences légales (en règle générale, 5 ans après la fin de la relation).",
+                  "Les données ne peuvent être transférées à des tiers qu’aux prestataires participant à la fourniture du service (prestataires de paiement, services de vérification), sur la base d’accords de traitement des données, ainsi qu’aux régulateurs sur demande légale."
+                ]
+              },
+              {
+                "heading": "4. Vos droits",
+                "paragraphsMarkdown": [
+                  "Vous avez le droit de demander l’accès à vos données, leur rectification, leur effacement (sous réserve des durées de conservation obligatoires), la limitation du traitement et la portabilité des données. Les demandes sont adressées à l’assistance et traitées dans un délai de 30 jours."
+                ]
+              }
+            ]
+          },
+          {
+            "slug": "terms",
+            "title": "Conditions d’utilisation",
+            "updatedAt": "2026-06-01",
+            "intro": "Traduction provisoire. La version juridiquement contraignante est la version en langue russe ou anglaise.\n\nLes présentes conditions régissent l’utilisation du site web et des services d’Apex Capital. En ouvrant un compte, vous confirmez accepter intégralement le contrat client.",
+            "sections": [
+              {
+                "heading": "1. Services",
+                "paragraphsMarkdown": [
+                  "La société donne accès au trading avec effet de levier d’instruments financiers dérivés (CFD) sur devises, métaux, indices, actions, cryptomonnaies et énergies, ainsi qu’à des supports analytiques et pédagogiques associés.",
+                  "Les supports analytiques sont fournis à titre informatif uniquement et ne constituent pas un conseil en investissement personnalisé."
+                ]
+              },
+              {
+                "heading": "2. Conditions applicables au client",
+                "paragraphsMarkdown": [
+                  "Les services sont accessibles aux personnes juridiquement capables, âgées de 18 ans ou plus, ayant accompli la procédure d’identification. La société peut refuser de servir les résidents de juridictions dans lesquelles la fourniture des services est restreinte par la loi.",
+                  "Le client s’engage à fournir des données exactes, à ne pas donner à des tiers l’accès à son compte et à n’utiliser le service qu’à des fins licites."
+                ]
+              },
+              {
+                "heading": "3. Responsabilité",
+                "paragraphsMarkdown": [
+                  "La société n’est pas responsable des pertes causées par les mouvements du marché, les défaillances de connexion du côté du client ou les actions de tiers, sauf dans les cas expressément prévus par le contrat client.",
+                  "La responsabilité totale de la société est limitée au montant des fonds du client sur le compte."
+                ]
+              },
+              {
+                "heading": "4. Modification des conditions",
+                "paragraphsMarkdown": [
+                  "La société peut modifier les présentes conditions moyennant un préavis d’au moins 10 jours ouvrés adressé aux clients via l’espace client et par e-mail. La poursuite de l’utilisation du service vaut acceptation des modifications."
+                ]
+              }
+            ]
+          },
+          {
+            "slug": "risk-disclosure",
+            "title": "Divulgation des risques",
+            "updatedAt": "2026-06-01",
+            "intro": "Traduction provisoire. La version juridiquement contraignante est la version en langue russe ou anglaise.\n\nLe trading de produits à effet de levier comporte un niveau de risque élevé et ne convient pas à tous les investisseurs. Lisez attentivement le présent avertissement avant de commencer à trader.",
+            "sections": [
+              {
+                "heading": "1. Risque lié à l’effet de levier",
+                "paragraphsMarkdown": [
+                  "L’effet de levier multiplie aussi bien le gain potentiel que la perte. Un mouvement de marché relativement faible peut entraîner la perte de la totalité des fonds du compte. Ne tradez jamais avec de l’argent que vous ne pouvez pas vous permettre de perdre."
+                ]
+              },
+              {
+                "heading": "2. Risques de marché",
+                "paragraphsMarkdown": [
+                  "Les prix des instruments financiers sont sujets à de brusques variations sous l’effet des événements économiques, des actualités et de la liquidité. En période de volatilité accrue, l’exécution peut intervenir à un prix différent du prix demandé (slippage), et les gaps peuvent entraîner l’exécution des ordres stop à un prix moins favorable.",
+                  "Les performances passées ne préjugent pas des rendements futurs. Les instruments sur cryptomonnaies sont plus volatils que les marchés traditionnels."
+                ]
+              },
+              {
+                "heading": "3. Risques technologiques",
+                "paragraphsMarkdown": [
+                  "Le trading via Internet comporte des risques de défaillance de la connexion, du matériel et des logiciels. La société déploie des efforts raisonnables pour assurer la continuité du service, mais ne peut garantir l’absence d’interruptions."
+                ]
+              },
+              {
+                "heading": "4. Protection contre le solde négatif",
+                "paragraphsMarkdown": [
+                  "La société garantit que la perte d’un client ne dépassera pas les fonds déposés sur le compte de trading : tout solde négatif résultant d’un gap de marché est remis à zéro aux frais de la société."
+                ]
+              }
+            ]
+          },
+          {
+            "slug": "kyc-aml",
+            "title": "Politique KYC/AML",
+            "updatedAt": "2026-06-01",
+            "intro": "Traduction provisoire. La version juridiquement contraignante est la version en langue russe ou anglaise.\n\nLa société respecte les normes internationales de lutte contre le blanchiment de capitaux (AML) et le financement du terrorisme (CFT), y compris les recommandations du GAFI (FATF) et les exigences des régulateurs compétents.",
+            "sections": [
+              {
+                "heading": "1. Identification des clients (KYC)",
+                "paragraphsMarkdown": [
+                  "Avant le début de la relation, le client accomplit la procédure d’identification : il fournit une pièce d’identité, un justificatif d’adresse de résidence et, si nécessaire, des informations sur l’origine des fonds. La société peut demander des documents supplémentaires à tout moment de la relation."
+                ]
+              },
+              {
+                "heading": "2. Surveillance des opérations",
+                "paragraphsMarkdown": [
+                  "La société surveille en permanence les opérations afin de détecter toute activité inhabituelle. Les opérations non conformes au profil du client peuvent être suspendues dans l’attente d’éclaircissements.",
+                  "Les dépôts et retraits ne sont possibles qu’à partir des comptes et cartes propres au client : les paiements de tiers ne sont pas acceptés et sont restitués à l’expéditeur."
+                ]
+              },
+              {
+                "heading": "3. Refus de service",
+                "paragraphsMarkdown": [
+                  "La société peut refuser d’ouvrir un compte, ou suspendre ou résilier la relation, si les procédures d’identification ne sont pas accomplies, si des informations inexactes sont fournies ou si des indices d’activité illicite sont détectés, en informant les autorités compétentes lorsque la loi l’exige."
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "system-status": {
+        "services": [
+          {
+            "id": "svc-0",
+            "name": "Site web et inscription",
+            "description": "Site marketing, formulaires de demande",
+            "status": "operational",
+            "uptime90d": "99.99%"
+          },
+          {
+            "id": "svc-1",
+            "name": "API de trading",
+            "description": "Exécution des ordres, opérations de trading",
+            "status": "operational",
+            "uptime90d": "99.97%"
+          },
+          {
+            "id": "quotes-ws",
+            "name": "Cotations (WebSocket)",
+            "description": "Flux de prix en temps réel — l’état de votre connexion",
+            "status": "operational",
+            "uptime90d": "99.98%"
+          },
+          {
+            "id": "svc-2",
+            "name": "Espace client",
+            "description": "Authentification, profil, documents",
+            "status": "operational",
+            "uptime90d": "99.95%"
+          },
+          {
+            "id": "svc-3",
+            "name": "Passerelle de paiement",
+            "description": "Dépôts et retraits",
+            "status": "operational",
+            "uptime90d": "99.92%"
+          }
+        ],
+        "incidents": [
+          {
+            "date": "2026-07-14",
+            "title": "Retards dans le traitement des retraits vers les cartes bancaires",
+            "status": "Résolu",
+            "text": "De 10:20 à 12:45 UTC, une partie des demandes de retrait a été traitée avec retard en raison d’une dégradation du service chez le prestataire de paiement. Toutes les demandes ont été exécutées et les fonds crédités."
+          },
+          {
+            "date": "2026-06-30",
+            "title": "Maintenance planifiée de l’API de trading",
+            "status": "Terminée",
+            "text": "Dans la nuit du 29 au 30 juin (01:00–02:30 UTC, marchés fermés), l’infrastructure d’exécution a été mise à jour. L’indisponibilité a duré 12 minutes, dans la fenêtre annoncée."
+          }
+        ]
+      },
+      "articles": {
+        "items": [
+          {
+            "slug": "fed-signals-rate-path-september",
+            "title": "La Fed signale la trajectoire de ses taux : les marchés intègrent une baisse en septembre",
+            "excerpt": "Le compte rendu de la réunion de juillet a révélé un nombre croissant de partisans d’un assouplissement. Le dollar s’est affaibli face aux principales devises et les rendements des bons du Trésor ont reculé.",
+            "category": "economy",
+            "source": "Apex Capital Research Desk",
+            "publishedAt": "2026-07-23T08:30:00.000Z",
+            "readingMinutes": 4,
+            "bodyMarkdown": "Le compte rendu de la réunion de la Réserve fédérale publié hier montre que la plupart des membres du comité jugent opportun d’entamer le cycle d’assouplissement dès la réunion de septembre, à condition que la dynamique de l’inflation se maintienne. Les contrats à terme sur les taux intègrent désormais une probabilité de 78% d’une baisse de 25 pb.\n\nL’indice du dollar DXY a réagi par un recul de 0.4%, tandis que l’EURUSD est remonté vers 1.0850. Le rendement des bons du Trésor à 10 ans est passé sous 4.1% — un plus bas de six semaines.\n\nPour les traders, l’événement clé de la semaine reste la publication vendredi de l’indice PCE de base : un chiffre supérieur aux prévisions pourrait rapidement inverser les anticipations du marché et raviver la demande de dollars."
+          },
+          {
+            "slug": "gold-tests-record-highs",
+            "title": "L’or teste ses records sur fond d’affaiblissement du dollar",
+            "excerpt": "Le XAUUSD progresse pour la troisième séance consécutive. Les analystes voient des objectifs dans la zone $2,450–2,480 si le prix se maintient au-dessus de $2,420.",
+            "category": "forex",
+            "source": "Apex Capital Research Desk",
+            "publishedAt": "2026-07-23T06:10:00.000Z",
+            "readingMinutes": 3,
+            "bodyMarkdown": "L’or a inscrit un nouveau plus haut hebdomadaire et s’échange autour de $2,417 l’once. Le métal est soutenu par les anticipations d’une baisse des taux de la Fed et par la poursuite des achats des banques centrales asiatiques.\n\nSur le plan technique, le prix se maintient au-dessus de la moyenne mobile à 20 jours, et le RSI n’a pas encore atteint la zone de surachat. La résistance la plus proche se situe à $2,431, suivie du plus haut historique.\n\nLe principal risque pour les acheteurs reste la solidité des statistiques macroéconomiques américaines : des chiffres de l’emploi ou de l’inflation étonnamment élevés pourraient déclencher une correction vers le support de $2,380."
+          },
+          {
+            "slug": "nvidia-earnings-preview",
+            "title": "Avant-première des résultats de NVIDIA : qu’attendre du principal bénéficiaire de l’essor de l’IA",
+            "excerpt": "Le consensus anticipe un chiffre d’affaires de $37.5 milliards. Le marché des options intègre un mouvement de ±9% de l’action après la publication.",
+            "category": "stocks",
+            "source": "Apex Capital Research Desk",
+            "publishedAt": "2026-07-22T15:45:00.000Z",
+            "readingMinutes": 5,
+            "bodyMarkdown": "La semaine prochaine, NVIDIA publiera ses résultats trimestriels, qui donnent traditionnellement le ton à l’ensemble du secteur technologique. Le consensus des analystes table sur un chiffre d’affaires de $37.5 milliards (+62% sur un an) et un BPA ajusté de $0.95.\n\nLa question clé porte sur la dynamique du segment des centres de données et sur les commentaires de la direction concernant la demande pour la nouvelle génération d’accélérateurs. Tout signe de ralentissement des commandes des hyperscalers serait mal accueilli : le titre se négocie avec un P/E supérieur à 45.\n\nLe marché des options intègre un mouvement de ±9% le lendemain de la publication. Pour les détenteurs de CFD sur NVDA, cela implique des exigences accrues en matière de gestion du risque : définissez à l’avance vos niveaux de sortie et évitez de dépasser votre taille de position habituelle."
+          },
+          {
+            "slug": "bitcoin-etf-inflows-resume",
+            "title": "Reprise des flux entrants dans les ETF bitcoin : $850 millions en une semaine",
+            "excerpt": "Après trois semaines de sorties, les ETF au comptant attirent de nouveau des capitaux. Le BTCUSD consolide près de $67,500, avec une résistance clé à $69,000.",
+            "category": "crypto",
+            "source": "Apex Capital Research Desk",
+            "publishedAt": "2026-07-22T11:20:00.000Z",
+            "readingMinutes": 3,
+            "bodyMarkdown": "Selon les données des fournisseurs, les flux nets entrants dans les ETF bitcoin au comptant américains ont atteint $850 millions la semaine dernière — le meilleur résultat depuis un mois et demi. L’essentiel du volume est allé aux fonds gérés par les plus grandes sociétés de gestion.\n\nLe bitcoin consolide dans la zone $66,000–68,000. Un franchissement de $69,000 ouvrirait la voie à un nouveau test du plus haut historique, tandis que la perte du support à $64,500 renforcerait la pression vendeuse.\n\nLa volatilité de l’ether reste élevée dans l’attente de la décision du régulateur sur les demandes relatives au staking au sein des ETF — un événement qui pourrait servir de catalyseur pour l’ensemble du segment des altcoins."
+          },
+          {
+            "slug": "ecb-holds-rates-lagarde-comments",
+            "title": "La BCE maintient ses taux : Lagarde évoque septembre comme une « fenêtre ouverte »",
+            "excerpt": "Le régulateur a marqué une pause, comme attendu. L’euro s’est renforcé après la conférence de presse : le marché a perçu moins de signaux accommodants qu’il ne l’espérait.",
+            "category": "economy",
+            "source": "Apex Capital Research Desk",
+            "publishedAt": "2026-07-21T14:00:00.000Z",
+            "readingMinutes": 4,
+            "bodyMarkdown": "La Banque centrale européenne a laissé ses taux directeurs inchangés, marquant une pause après la baisse de juin. La décision étant conforme aux attentes du marché, l’attention s’est portée sur le discours de la présidente.\n\nChristine Lagarde a indiqué que la réunion de septembre restait « grande ouverte » et que les décisions futures dépendraient des données à venir. L’absence de promesses explicites d’assouplissement a été interprétée par le marché comme un signal modérément restrictif.\n\nL’EURUSD a gagné 0.3% pendant la conférence de presse. L’écart entre les rendements à 10 ans allemands et américains s’est resserré à son plus bas depuis le printemps, soutenant la monnaie unique."
+          },
+          {
+            "slug": "oil-inventories-draw-opec-outlook",
+            "title": "Les stocks de pétrole américains reculent pour la cinquième semaine consécutive",
+            "excerpt": "L’EIA a fait état d’une baisse de 3.7 millions de barils. Le Brent se maintient au-dessus de $85 avant le rapport de l’OPEP.",
+            "category": "economy",
+            "source": "Apex Capital Research Desk",
+            "publishedAt": "2026-07-21T09:05:00.000Z",
+            "readingMinutes": 3,
+            "bodyMarkdown": "Les stocks commerciaux de pétrole brut aux États-Unis ont diminué de 3.7 millions de barils la semaine dernière, contre une prévision de −1.9 million. Cinq semaines consécutives de baisse — la plus longue série depuis l’été dernier — témoignent d’une demande solide au plus fort de la saison des déplacements en voiture.\n\nLe Brent se maintient au-dessus de $85 le baril, tandis que le WTI s’échange près de $81.6. Les traders attendent le rapport mensuel de l’OPEP : la confirmation de la prévision de croissance de la demande mondiale soutiendrait l’impulsion haussière actuelle.\n\nL’offre hors OPEP reste le facteur limitant : la production record des États-Unis et du Brésil plafonne le potentiel d’un rallye au-delà de $90 sans chocs d’offre supplémentaires."
+          }
+        ],
+        "total": 6,
+        "page": 1,
+        "pageSize": 20
+      }
+    },
+    "es": {
+      "navigation": {
+        "header": [
+          {
+            "label": "Instrumentos",
+            "href": "/instruments"
+          },
+          {
+            "label": "Cuentas y tarifas",
+            "href": "/accounts"
+          },
+          {
+            "label": "Análisis",
+            "href": "/analytics/news"
+          },
+          {
+            "label": "Formación",
+            "href": "/education"
+          },
+          {
+            "label": "Sobre nosotros",
+            "href": "/about"
+          }
+        ],
+        "footer": {
+          "columns": [
+            {
+              "title": "Trading",
+              "links": [
+                {
+                  "label": "Instrumentos de trading",
+                  "href": "/instruments"
+                },
+                {
+                  "label": "Tipos de cuenta",
+                  "href": "/accounts"
+                },
+                {
+                  "label": "Preguntas frecuentes",
+                  "href": "/education/faq"
+                },
+                {
+                  "label": "Promociones y bonos",
+                  "href": "/promotions"
+                }
+              ]
+            },
+            {
+              "title": "Análisis",
+              "links": [
+                {
+                  "label": "Noticias del mercado",
+                  "href": "/analytics/news"
+                },
+                {
+                  "label": "Calendario económico",
+                  "href": "/analytics/calendar"
+                },
+                {
+                  "label": "Formación",
+                  "href": "/education/articles"
+                },
+                {
+                  "label": "Blog",
+                  "href": "/blog"
+                }
+              ]
+            },
+            {
+              "title": "Empresa",
+              "links": [
+                {
+                  "label": "Sobre nosotros",
+                  "href": "/about"
+                },
+                {
+                  "label": "Socios",
+                  "href": "/partners"
+                },
+                {
+                  "label": "Empleo",
+                  "href": "/company/careers"
+                },
+                {
+                  "label": "Contacto",
+                  "href": "/company/contacts"
+                }
+              ]
+            },
+            {
+              "title": "Información legal",
+              "links": [
+                {
+                  "label": "Política de privacidad",
+                  "href": "/legal/privacy"
+                },
+                {
+                  "label": "Condiciones de uso",
+                  "href": "/legal/terms"
+                },
+                {
+                  "label": "Divulgación de riesgos",
+                  "href": "/legal/risk-disclosure"
+                },
+                {
+                  "label": "Estado de los servicios",
+                  "href": "/status"
+                }
+              ]
+            }
+          ],
+          "riskWarning": "Advertencia de riesgo: operar con CFD y productos apalancados conlleva un alto nivel de riesgo y puede suponer la pérdida de la totalidad del capital invertido. Asegúrese de comprender plenamente los riesgos antes de empezar a operar."
+        }
+      },
+      "instruments": {
+        "items": [
+          {
+            "symbol": "EURUSD",
+            "name": "Euro / Dólar estadounidense",
+            "category": "forex",
+            "digits": 5,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "GBPUSD",
+            "name": "Libra esterlina / Dólar estadounidense",
+            "category": "forex",
+            "digits": 5,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "USDJPY",
+            "name": "Dólar estadounidense / Yen japonés",
+            "category": "forex",
+            "digits": 3,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "AUDUSD",
+            "name": "Dólar australiano / Dólar estadounidense",
+            "category": "forex",
+            "digits": 5,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "USDCHF",
+            "name": "Dólar estadounidense / Franco suizo",
+            "category": "forex",
+            "digits": 5,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "USDCAD",
+            "name": "Dólar estadounidense / Dólar canadiense",
+            "category": "forex",
+            "digits": 5,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "NZDUSD",
+            "name": "Dólar neozelandés / Dólar estadounidense",
+            "category": "forex",
+            "digits": 5,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "EURGBP",
+            "name": "Euro / Libra esterlina",
+            "category": "forex",
+            "digits": 5,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "EURJPY",
+            "name": "Euro / Yen japonés",
+            "category": "forex",
+            "digits": 3,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.0 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "XAUUSD",
+            "name": "Oro",
+            "category": "metals",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.1 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "XAGUSD",
+            "name": "Plata",
+            "category": "metals",
+            "digits": 3,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.1 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "XPTUSD",
+            "name": "Platino",
+            "category": "metals",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.1 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "BTCUSD",
+            "name": "Bitcoin",
+            "category": "crypto",
+            "digits": 0,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.15%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "ETHUSD",
+            "name": "Ethereum",
+            "category": "crypto",
+            "digits": 1,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.15%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "SOLUSD",
+            "name": "Solana",
+            "category": "crypto",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.15%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "XRPUSD",
+            "name": "Ripple",
+            "category": "crypto",
+            "digits": 4,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.15%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "BNBUSD",
+            "name": "BNB",
+            "category": "crypto",
+            "digits": 1,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.15%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "US500",
+            "name": "S&P 500",
+            "category": "indices",
+            "digits": 1,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.4 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "NAS100",
+            "name": "Nasdaq 100",
+            "category": "indices",
+            "digits": 1,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.4 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "US30",
+            "name": "Dow Jones 30",
+            "category": "indices",
+            "digits": 1,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.4 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "GER40",
+            "name": "DAX 40",
+            "category": "indices",
+            "digits": 1,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.4 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "UK100",
+            "name": "FTSE 100",
+            "category": "indices",
+            "digits": 1,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.4 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "JPN225",
+            "name": "Nikkei 225",
+            "category": "indices",
+            "digits": 0,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.4 pips",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "AAPL",
+            "name": "Apple Inc.",
+            "category": "stocks",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.02%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "MSFT",
+            "name": "Microsoft Corp.",
+            "category": "stocks",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.02%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "NVDA",
+            "name": "NVIDIA Corp.",
+            "category": "stocks",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.02%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "AMZN",
+            "name": "Amazon.com Inc.",
+            "category": "stocks",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.02%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "META",
+            "name": "Meta Platforms Inc.",
+            "category": "stocks",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.02%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "GOOGL",
+            "name": "Alphabet Inc.",
+            "category": "stocks",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.02%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "TSLA",
+            "name": "Tesla Inc.",
+            "category": "stocks",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.02%",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "USOIL",
+            "name": "Petróleo crudo WTI",
+            "category": "energy",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.03",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "UKOIL",
+            "name": "Petróleo crudo Brent",
+            "category": "energy",
+            "digits": 2,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.03",
+            "swapFree": true,
+            "icon": null
+          },
+          {
+            "symbol": "NGAS",
+            "name": "Gas natural",
+            "category": "energy",
+            "digits": 3,
+            "leverageMax": "1:500",
+            "spreadFrom": "0.03",
+            "swapFree": true,
+            "icon": null
+          }
+        ]
+      },
+      "accounts": {
+        "items": [
+          {
+            "id": "standard",
+            "name": "Standard",
+            "description": "Para sus primeros pasos en el mercado",
+            "minDeposit": "$100",
+            "featured": false,
+            "features": [
+              {
+                "label": "Spread desde",
+                "value": "1.2 pips"
+              },
+              {
+                "label": "Comisión",
+                "value": "$0"
+              },
+              {
+                "label": "Apalancamiento de hasta",
+                "value": "1:500"
+              },
+              {
+                "label": "Lote mínimo",
+                "value": "0.01"
+              },
+              {
+                "label": "Instrumentos",
+                "value": "12,000+"
+              },
+              {
+                "label": "Ejecución",
+                "value": "Market, desde 14 ms"
+              },
+              {
+                "label": "Sin swap",
+                "value": "Disponible"
+              },
+              {
+                "label": "Gestor personal",
+                "value": "—"
+              }
+            ],
+            "pricing": {
+              "spreadPips": 1.2,
+              "commissionPerLotRT": 0
+            }
+          },
+          {
+            "id": "pro",
+            "name": "Pro",
+            "description": "Para traders activos",
+            "minDeposit": "$1,000",
+            "featured": true,
+            "features": [
+              {
+                "label": "Spread desde",
+                "value": "0.5 pips"
+              },
+              {
+                "label": "Comisión",
+                "value": "$2.5 / lote / lado"
+              },
+              {
+                "label": "Apalancamiento de hasta",
+                "value": "1:400"
+              },
+              {
+                "label": "Lote mínimo",
+                "value": "0.01"
+              },
+              {
+                "label": "Instrumentos",
+                "value": "12,000+"
+              },
+              {
+                "label": "Ejecución",
+                "value": "Market, desde 14 ms"
+              },
+              {
+                "label": "Sin swap",
+                "value": "Disponible"
+              },
+              {
+                "label": "Gestor personal",
+                "value": "Sí"
+              }
+            ],
+            "pricing": {
+              "spreadPips": 0.5,
+              "commissionPerLotRT": 5
+            }
+          },
+          {
+            "id": "ecn",
+            "name": "ECN Prime",
+            "description": "Liquidez interbancaria",
+            "minDeposit": "$5,000",
+            "featured": false,
+            "features": [
+              {
+                "label": "Spread desde",
+                "value": "0.0 pips"
+              },
+              {
+                "label": "Comisión",
+                "value": "$3 / lote / lado"
+              },
+              {
+                "label": "Apalancamiento de hasta",
+                "value": "1:200"
+              },
+              {
+                "label": "Lote mínimo",
+                "value": "0.01"
+              },
+              {
+                "label": "Instrumentos",
+                "value": "12,000+"
+              },
+              {
+                "label": "Ejecución",
+                "value": "ECN, desde 9 ms"
+              },
+              {
+                "label": "Sin swap",
+                "value": "Bajo petición"
+              },
+              {
+                "label": "Gestor personal",
+                "value": "Sí"
+              }
+            ],
+            "pricing": {
+              "spreadPips": 0.1,
+              "commissionPerLotRT": 6
+            }
+          }
+        ]
+      },
+      "promotions": {
+        "items": [
+          {
+            "id": "promo-1",
+            "badge": "Para nuevos clientes",
+            "title": "Bono de bienvenida del 30%",
+            "description": "Realice un primer depósito de $500 o más y obtenga un +30% en fondos de trading. El bono computa como margen y le ayuda a resistir los drawdowns.",
+            "terms": "Bono de hasta $5,000. Disponible una sola vez; se libera al operar 1 lote por cada $10 de bono.",
+            "ctaLabel": "Obtener el bono",
+            "ctaHref": "/register?promo=welcome30",
+            "featured": true,
+            "activeFrom": null,
+            "activeTo": null
+          },
+          {
+            "id": "promo-2",
+            "badge": "Para traders activos",
+            "title": "Cashback de hasta el 15% del spread",
+            "description": "Si opera más de 50 lotes al mes, le devolvemos parte del spread en dinero real en su cuenta. Cuanto mayor sea el volumen, mayor será el porcentaje.",
+            "terms": "Se abona automáticamente el primer día del mes siguiente. Sin límite de importe.",
+            "ctaLabel": "Participar",
+            "ctaHref": "/register?promo=cashback",
+            "featured": false,
+            "activeFrom": null,
+            "activeTo": null
+          },
+          {
+            "id": "promo-3",
+            "badge": "Sin riesgo",
+            "title": "Concurso de trading en demo",
+            "description": "Una competición mensual en cuentas demo con un fondo de premios de $10,000. Los tres ganadores reciben cuentas reales de trading con el importe del premio.",
+            "terms": "Participación gratuita. Cada día 1 de mes comienza una nueva ronda.",
+            "ctaLabel": "Unirse",
+            "ctaHref": "/register?demo=1",
+            "featured": false,
+            "activeFrom": null,
+            "activeTo": null
+          },
+          {
+            "id": "promo-4",
+            "badge": "Referidos",
+            "title": "Recomiende a un amigo y obtenga $50",
+            "description": "Comparta su enlace personal: cuando su amigo abra una cuenta y empiece a operar, ambos recibirán $50 en sus cuentas de trading.",
+            "terms": "Su amigo debe depositar al menos $100 y operar 1 lote en un plazo de 30 días.",
+            "ctaLabel": "Obtener su enlace",
+            "ctaHref": "/register",
+            "featured": false,
+            "activeFrom": null,
+            "activeTo": null
+          }
+        ]
+      },
+      "partners": {
+        "models": [
+          {
+            "name": "Introducing Broker (IB)",
+            "description": "Recomiéndenos a su audiencia y reciba hasta el 40% del spread de cada cliente referido, de por vida, mientras el cliente siga operando.",
+            "features": [
+              "Pagos diarios sin umbral mínimo",
+              "Enlaces de referido, materiales promocionales y landing pages",
+              "Área de cliente para socios con estadísticas en tiempo real",
+              "Red de subsocios: 10% de las recompensas de los subagentes"
+            ]
+          },
+          {
+            "name": "White Label",
+            "description": "Su propia marca de bróker sobre nuestra infraestructura: plataforma, liquidez, back office y soporte, llave en mano.",
+            "features": [
+              "Plataforma de trading y área de cliente con su marca",
+              "Liquidez Tier-1 agregada",
+              "Gestión de riesgos e informes listos para usar",
+              "Lanzamiento desde 6 semanas con un gestor de proyecto dedicado"
+            ]
+          }
+        ],
+        "tiers": [
+          {
+            "name": "Bronze",
+            "clients": "hasta 20 clientes activos",
+            "share": "25%"
+          },
+          {
+            "name": "Silver",
+            "clients": "20–100 clientes activos",
+            "share": "30%"
+          },
+          {
+            "name": "Gold",
+            "clients": "100+ clientes activos",
+            "share": "40%",
+            "featured": true
+          }
+        ],
+        "steps": [
+          {
+            "title": "Solicitud",
+            "text": "Rellene el formulario: un gestor se pondrá en contacto con usted en un día hábil"
+          },
+          {
+            "title": "Herramientas",
+            "text": "Obtenga enlaces, materiales promocionales y acceso al área de cliente para socios"
+          },
+          {
+            "title": "Ingresos",
+            "text": "Refiera clientes y reciba pagos todos los días"
+          }
+        ]
+      },
+      "academy": {
+        "articles": [
+          {
+            "slug": "what-is-forex",
+            "title": "Qué es Forex y cómo funciona el mercado de divisas",
+            "excerpt": "El mayor mercado financiero del mundo, con un volumen diario de $7.5 billones: quién opera en él, de dónde sale el precio y qué significa un par de divisas.",
+            "level": "beginner",
+            "readingMinutes": 7,
+            "bodyMarkdown": "Forex (Foreign Exchange) es el mercado global extrabursátil (OTC) de divisas. A diferencia de una bolsa de valores, no tiene un centro de negociación único: las operaciones se cierran directamente entre bancos, fondos, empresas y brókers de todo el mundo, las 24 horas del día, de lunes a viernes.\n\nLa unidad básica del mercado es el par de divisas. EURUSD = 1.0850 significa que con un euro se compran 1.0850 dólares. La primera divisa del par se denomina divisa base y la segunda, divisa cotizada. Comprar el par significa comprar la divisa base con la divisa cotizada; vender es lo contrario.\n\nEl precio se forma a partir del flujo de órdenes de los mayores participantes: creadores de mercado y bancos de primer nivel. Un bróker agrega estos flujos de liquidez y traslada los mejores precios a sus clientes. La diferencia entre el precio de compra (Ask) y el de venta (Bid) es el spread, el principal coste de transacción para un trader.\n\nEl incremento mínimo de precio es el pip. En la mayoría de los pares corresponde al cuarto decimal: un movimiento de EURUSD de 1.0850 a 1.0851 equivale a un pip. Un lote estándar equivale a 100,000 unidades de la divisa base, aunque los brókers actuales permiten operar desde 0.01 lotes.\n\nEmpiece con una cuenta demo: reproduce fielmente el trading real sin ningún riesgo para su capital. Practique en ella la mecánica de las órdenes, los Stop Loss y el cálculo del tamaño de la posición, y solo después pase a una cuenta real con un importe que pueda permitirse perder."
+          },
+          {
+            "slug": "leverage-risk-management",
+            "title": "Apalancamiento: cómo utilizarlo sin riesgos innecesarios",
+            "excerpt": "Un apalancamiento de 1:500 puede multiplicar tanto las ganancias como las pérdidas. Analizamos el margen, el margen libre y la regla principal: no arriesgar más del 1–2% por operación.",
+            "level": "beginner",
+            "readingMinutes": 6,
+            "bodyMarkdown": "El apalancamiento le permite abrir posiciones mayores que su propio capital. Con un apalancamiento de 1:100, una posición de 1 lote en EURUSD (€100,000) requiere solo unos €1,000 de garantía. Esa garantía se denomina margen y queda bloqueada en su cuenta mientras la posición está abierta.\n\nEntiéndalo con claridad: el apalancamiento multiplica no solo la ganancia potencial, sino también la pérdida. Un movimiento del precio del 1% en contra de una posición con apalancamiento de 1:100 supone perder el 100% del margen. Precisamente por eso los traders experimentados solo utilizan una pequeña parte del apalancamiento disponible.\n\nLa métrica clave es el nivel de margen: el capital dividido entre el margen utilizado. Cuando cae hasta el nivel de Margin Call, el bróker le advierte de que los fondos son insuficientes; en el nivel de Stop Out, las posiciones empiezan a cerrarse de forma forzosa. La protección contra saldo negativo garantiza que nunca perderá más que su depósito.\n\nUna regla práctica: no arriesgue más del 1–2% de su depósito por operación. El tamaño de la posición se calcula a partir del Stop Loss, y no al revés: primero determine dónde deja de ser válida su idea y, después, elija un volumen tal que la pérdida al saltar el stop no supere el riesgo admisible."
+          },
+          {
+            "slug": "technical-analysis-basics",
+            "title": "Análisis técnico: cinco herramientas esenciales",
+            "excerpt": "Soportes y resistencias, tendencia, medias móviles, RSI y volumen: el conjunto mínimo con el que empieza la lectura de un gráfico.",
+            "level": "intermediate",
+            "readingMinutes": 8,
+            "bodyMarkdown": "El análisis técnico parte de la premisa de que toda la información disponible ya está reflejada en el precio y de que el comportamiento de la multitud se repite. Su objetivo no es predecir el futuro, sino encontrar zonas en las que la relación entre beneficio potencial y riesgo favorezca al trader.\n\nLos niveles de soporte y resistencia son la base. Se trata de zonas de precio en las que el mercado se dio la vuelta o se frenó anteriormente: allí se concentra el interés de compradores y vendedores. Cuantos más toques tiene un nivel y cuanto más «antiguo» es, más significativa es la reacción.\n\nLa tendencia define el contexto: una secuencia de máximos y mínimos crecientes es una tendencia alcista; de máximos y mínimos decrecientes, una tendencia bajista. Operar a favor de la tendencia es estadísticamente más fiable que hacerlo en contra, por lo que la primera pregunta ante cualquier gráfico es: «¿hacia dónde se dirige el mercado en el marco temporal superior?».\n\nLas medias móviles (MA) suavizan el ruido y hacen visible la tendencia. Los periodos más populares son 20, 50 y 200. Un precio por encima de la MA200 indica un contexto global alcista; los cruces de medias rápidas y lentas se utilizan como filtro de señales, no como sistema independiente.\n\nEl índice de fuerza relativa (RSI) mide el impulso: valores por encima de 70 indican sobrecompra; por debajo de 30, sobreventa. En una tendencia fuerte, el RSI puede permanecer mucho tiempo en zonas extremas, por lo que las señales del indicador siempre se contrastan con los niveles y la estructura del mercado.\n\nEl volumen confirma el movimiento: una ruptura con volumen creciente merece confianza, mientras que un pico débil y sin volumen suele ser una trampa. En conjunto, estas cinco herramientas cubren el 90% de las necesidades de un analista técnico principiante."
+          },
+          {
+            "slug": "trading-psychology",
+            "title": "Psicología del trading: por qué la disciplina importa más que las predicciones",
+            "excerpt": "El tilt, el miedo a perderse algo y el trading de venganza destruyen depósitos más rápido que una mala estrategia. Cómo crear un proceso que le proteja de sí mismo.",
+            "level": "intermediate",
+            "readingMinutes": 6,
+            "bodyMarkdown": "Las estadísticas de los brókers muestran que la mayoría de las cuentas con pérdidas no fracasan por un mal análisis, sino por incumplir sus propias reglas. El mercado es un entorno de incertidumbre, y la mente reacciona ante él con mecanismos ancestrales: miedo, codicia y el impulso de recuperarse de inmediato.\n\nEl tilt es el estado en el que, tras una pérdida, el trader aumenta el volumen y entra en operaciones sin un setup, intentando «recuperar lo suyo». La única protección eficaz son los límites estrictos: un límite de pérdida diaria (por ejemplo, el 3% del depósito), tras el cual se deja de operar hasta el día siguiente.\n\nEl miedo a perderse algo (FOMO) le empuja a perseguir un movimiento que ya se ha producido: entrar a un precio peor y con un stop poco claro. El antídoto es un plan de trading por escrito que defina de antemano las condiciones de entrada. Sin condiciones no hay operación, por mucho que el gráfico «se escape».\n\nLleve un diario de operaciones: captura de la entrada, motivo, estado emocional y resultado. Tras 50–100 registros verá sus propios errores sistemáticos: el análisis más valioso, que ningún indicador puede ofrecerle. La disciplina no es un rasgo de carácter, sino un proceso que se puede diseñar."
+          }
+        ],
+        "webinars": [
+          {
+            "id": "web-4",
+            "title": "Psicología del trading: cómo dejar de incumplir sus propias reglas",
+            "speaker": "Dmitry Sokolov",
+            "speakerRole": "Analista jefe",
+            "startsAt": "2026-07-11T18:00:00.000Z",
+            "durationMinutes": 60,
+            "level": "Principiante",
+            "description": "Tilt, FOMO y trading de venganza: la mecánica de las pérdidas de control y técnicas prácticas: límites, diario de operaciones y lista de comprobación antes de entrar."
+          },
+          {
+            "id": "web-3",
+            "title": "Análisis técnico del oro: los niveles desde los que opera el mercado",
+            "speaker": "Anna Vereshchagina",
+            "speakerRole": "Directora de Análisis",
+            "startsAt": "2026-07-18T19:00:00.000Z",
+            "durationMinutes": 60,
+            "level": "Intermedio",
+            "description": "Análisis de la estructura del mercado de XAUUSD: niveles clave, comportamiento del precio en torno al máximo histórico y escenarios hasta el final del trimestre."
+          },
+          {
+            "id": "web-0",
+            "title": "Primeros pasos en Forex: de la cuenta demo a su primera operación",
+            "speaker": "Dmitry Sokolov",
+            "speakerRole": "Analista jefe",
+            "startsAt": "2026-07-25T19:00:00.000Z",
+            "durationMinutes": 60,
+            "level": "Principiante",
+            "description": "Cómo funciona el mercado, tipos de órdenes, cálculo del tamaño de la posición y errores típicos de los primeros meses. Recorrido en directo por la plataforma y turno de preguntas."
+          },
+          {
+            "id": "web-1",
+            "title": "Trading con noticias: una estrategia para trabajar con el calendario económico",
+            "speaker": "Anna Vereshchagina",
+            "speakerRole": "Directora de Análisis",
+            "startsAt": "2026-07-27T18:00:00.000Z",
+            "durationMinutes": 90,
+            "level": "Intermedio",
+            "description": "Qué publicaciones mueven el mercado, cómo interpretar la desviación entre el dato real y la previsión, y dónde colocar los stops cuando la volatilidad se multiplica."
+          },
+          {
+            "id": "web-2",
+            "title": "Gestión del capital: una cartera de estrategias en lugar de un único «santo grial»",
+            "speaker": "Marat Gareev",
+            "speakerRole": "Gestor de carteras",
+            "startsAt": "2026-08-01T19:00:00.000Z",
+            "durationMinutes": 75,
+            "level": "Avanzado",
+            "description": "Diversificación por estrategias e instrumentos, correlación entre posiciones, el drawdown como métrica y cálculo del riesgo a nivel de cartera."
+          }
+        ],
+        "glossary": [
+          {
+            "term": "Ask",
+            "definition": "El precio al que el bróker le vende la divisa base (el precio de compra para el trader). Siempre es superior al Bid."
+          },
+          {
+            "term": "Bid",
+            "definition": "El precio al que el bróker le compra la divisa base (el precio de venta para el trader)."
+          },
+          {
+            "term": "CFD",
+            "definition": "Contract for Difference (contrato por diferencias). Permite obtener beneficios del movimiento del precio de un activo sin poseer el propio activo."
+          },
+          {
+            "term": "ECN",
+            "definition": "Electronic Communication Network: modelo de ejecución en el que las órdenes de los clientes se envían directamente a una red de proveedores de liquidez, con spreads mínimos más una comisión."
+          },
+          {
+            "term": "Gap",
+            "definition": "Un hueco en el gráfico entre el precio de cierre y el siguiente precio de apertura. Suele producirse tras los fines de semana o noticias importantes."
+          },
+          {
+            "term": "Apalancamiento",
+            "definition": "La relación entre el tamaño de la posición y los fondos propios del trader. Un apalancamiento de 1:100 permite controlar una posición 100 veces mayor que la garantía."
+          },
+          {
+            "term": "Lote",
+            "definition": "La unidad estándar de volumen de negociación. En Forex, 1 lote = 100,000 unidades de la divisa base; la mayoría de los brókers permiten operar desde 0.01 lotes."
+          },
+          {
+            "term": "Margen",
+            "definition": "Garantía que se bloquea en la cuenta al abrir una posición apalancada. Se libera una vez cerrada la operación."
+          },
+          {
+            "term": "Margin Call",
+            "definition": "Aviso del bróker de que los fondos de la cuenta apenas alcanzan para mantener las posiciones abiertas."
+          },
+          {
+            "term": "Pip",
+            "definition": "El incremento mínimo de precio de un par de divisas. En la mayoría de los pares, una variación en el cuarto decimal (0.0001)."
+          },
+          {
+            "term": "Spread",
+            "definition": "La diferencia entre los precios Ask y Bid: el principal coste de transacción del trader."
+          },
+          {
+            "term": "Stop Loss",
+            "definition": "Orden que cierra automáticamente una posición cuando se alcanza una pérdida determinada. La principal herramienta de gestión del riesgo."
+          },
+          {
+            "term": "Stop Out",
+            "definition": "Cierre forzoso de posiciones por parte del bróker cuando el nivel de margen cae por debajo de un valor crítico."
+          },
+          {
+            "term": "Nivel de soporte",
+            "definition": "Zona de precio en la que la demanda detuvo anteriormente una caída. El concepto opuesto es el nivel de resistencia."
+          },
+          {
+            "term": "Swap",
+            "definition": "Cargo o abono por mantener una posición abierta durante la noche, en función del diferencial de tipos de interés de las divisas del par."
+          },
+          {
+            "term": "Take Profit",
+            "definition": "Orden que asegura automáticamente el beneficio cuando se alcanza un precio objetivo."
+          },
+          {
+            "term": "Tendencia",
+            "definition": "Movimiento direccional sostenido del precio: alcista (máximos y mínimos crecientes) o bajista."
+          },
+          {
+            "term": "Volatilidad",
+            "definition": "Medida de la variabilidad del precio durante un periodo. Alta volatilidad: grandes movimientos y grandes riesgos; baja: rangos estrechos."
+          }
+        ]
+      },
+      "streams": {
+        "items": [
+          {
+            "provider": "youtube",
+            "videoId": "mock-live-review",
+            "title": "Revisión semanal del mercado: en directo",
+            "poster": null,
+            "startsAt": "2026-08-05T18:00:00.000Z",
+            "status": "upcoming"
+          },
+          {
+            "provider": "youtube",
+            "videoId": "mock-gold-breakdown",
+            "title": "Análisis técnico del oro",
+            "poster": null,
+            "startsAt": "2026-07-10T18:00:00.000Z",
+            "status": "past"
+          }
+        ]
+      },
+      "contacts": {
+        "channels": [
+          {
+            "title": "Chat en directo",
+            "value": "Respuesta en 40 segundos",
+            "detail": "Las 24 horas, sin días de descanso: el botón del chat está en la esquina inferior derecha del área de cliente"
+          },
+          {
+            "title": "Correo electrónico",
+            "value": "support@apexcapital.example",
+            "detail": "Respuesta en un día hábil"
+          },
+          {
+            "title": "Teléfono",
+            "value": "+357 25 000 000",
+            "detail": "Lun–Vie, 8:00–20:00 (UTC+2), llamada gratuita"
+          }
+        ],
+        "offices": [
+          {
+            "city": "Limassol",
+            "country": "Chipre · Sede central",
+            "address": "Arch. Makariou III Ave 155, 3026"
+          },
+          {
+            "city": "Dubai",
+            "country": "EAU",
+            "address": "Business Bay, Bay Square 12, oficina 404"
+          },
+          {
+            "city": "Almaty",
+            "country": "Kazajistán",
+            "address": "77/7 Al-Farabi Ave, Esentai Tower, planta 12"
+          }
+        ]
+      },
+      "careers": {
+        "benefits": [
+          {
+            "title": "Formato flexible",
+            "text": "Oficina, híbrido o totalmente en remoto: usted elige"
+          },
+          {
+            "title": "El mercado FinTech",
+            "text": "Retos en la intersección entre las finanzas y la alta carga: millones de cotizaciones por segundo"
+          },
+          {
+            "title": "Desarrollo",
+            "text": "Presupuesto para formación y conferencias, cursos internos sobre mercados"
+          },
+          {
+            "title": "Bienestar",
+            "text": "Seguro médico privado con cobertura dental, deporte, 5 semanas de vacaciones"
+          }
+        ],
+        "vacancies": [
+          {
+            "title": "Senior Frontend Developer (React/Next.js)",
+            "department": "Ingeniería",
+            "location": "En remoto / Limassol",
+            "type": "Jornada completa",
+            "applyEmail": "hr@apexcapital.example"
+          },
+          {
+            "title": "Backend Developer (Go, liquidez y ejecución)",
+            "department": "Ingeniería",
+            "location": "Limassol",
+            "type": "Jornada completa",
+            "applyEmail": "hr@apexcapital.example"
+          },
+          {
+            "title": "DevOps / SRE (infraestructura de trading)",
+            "department": "Infraestructura",
+            "location": "En remoto",
+            "type": "Jornada completa",
+            "applyEmail": "hr@apexcapital.example"
+          },
+          {
+            "title": "Analista financiero (mercados de divisas)",
+            "department": "Análisis",
+            "location": "Almaty / en remoto",
+            "type": "Jornada completa",
+            "applyEmail": "hr@apexcapital.example"
+          },
+          {
+            "title": "Especialista de soporte (ruso + inglés)",
+            "department": "Atención al cliente",
+            "location": "En remoto",
+            "type": "Turnos 2/2",
+            "applyEmail": "hr@apexcapital.example"
+          }
+        ]
+      },
+      "legal": {
+        "items": [
+          {
+            "slug": "privacy",
+            "title": "Política de privacidad",
+            "updatedAt": "2026-06-01",
+            "intro": "Traducción provisional. La versión jurídicamente vinculante es la redactada en ruso o en inglés.\n\nLa presente política describe qué datos personales recopila Apex Capital, con qué fines se tratan y qué derechos asisten al interesado.",
+            "sections": [
+              {
+                "heading": "1. Qué datos recopilamos",
+                "paragraphsMarkdown": [
+                  "Durante el registro y la verificación recopilamos datos identificativos (nombre y apellidos, fecha de nacimiento, nacionalidad), datos de contacto (correo electrónico, teléfono, dirección), copias de los documentos exigidos por la normativa KYC/AML, así como datos técnicos sobre el uso del servicio (dirección IP, tipo de dispositivo, actividad en el área de cliente).",
+                  "Los datos financieros —historial de operaciones, origen de los fondos, datos de pago— se tratan exclusivamente para la ejecución del contrato y el cumplimiento de los requisitos legales."
+                ]
+              },
+              {
+                "heading": "2. Fines y bases jurídicas del tratamiento",
+                "paragraphsMarkdown": [
+                  "Los datos se tratan para la celebración y ejecución del contrato con el cliente, el cumplimiento de los requisitos regulatorios (identificación, prevención del blanqueo de capitales), la seguridad de la cuenta y —previo consentimiento específico— para comunicaciones comerciales.",
+                  "Puede retirar su consentimiento a las comunicaciones comerciales en cualquier momento desde la configuración del área de cliente o mediante una solicitud al soporte; ello no afecta al servicio de la cuenta."
+                ]
+              },
+              {
+                "heading": "3. Conservación y transferencia de datos",
+                "paragraphsMarkdown": [
+                  "Los datos se almacenan cifrados en centros de datos situados en la UE. El plazo de conservación viene determinado por los requisitos legales (por regla general, 5 años tras la finalización de la relación).",
+                  "La transferencia a terceros solo es posible a proveedores que intervienen en la prestación del servicio (proveedores de pago, servicios de verificación) en virtud de contratos de encargo del tratamiento, así como a los reguladores previa solicitud legítima."
+                ]
+              },
+              {
+                "heading": "4. Sus derechos",
+                "paragraphsMarkdown": [
+                  "Tiene derecho a solicitar el acceso a sus datos, su rectificación, su supresión (sin perjuicio de los plazos obligatorios de conservación), la limitación del tratamiento y la portabilidad de los datos. Las solicitudes se dirigen al soporte y se atienden en un plazo de 30 días."
+                ]
+              }
+            ]
+          },
+          {
+            "slug": "terms",
+            "title": "Condiciones de uso",
+            "updatedAt": "2026-06-01",
+            "intro": "Traducción provisional. La versión jurídicamente vinculante es la redactada en ruso o en inglés.\n\nLas presentes condiciones regulan el uso del sitio web y de los servicios de Apex Capital. Al abrir una cuenta, usted confirma su aceptación íntegra del contrato con el cliente.",
+            "sections": [
+              {
+                "heading": "1. Servicios",
+                "paragraphsMarkdown": [
+                  "La empresa proporciona acceso a la negociación con apalancamiento de instrumentos financieros derivados (CFD) sobre divisas, metales, índices, acciones, criptomonedas y productos energéticos, así como a materiales analíticos y formativos relacionados.",
+                  "Los materiales analíticos tienen carácter meramente informativo y no constituyen asesoramiento de inversión personalizado."
+                ]
+              },
+              {
+                "heading": "2. Requisitos del cliente",
+                "paragraphsMarkdown": [
+                  "Los servicios están disponibles para personas con plena capacidad jurídica, mayores de 18 años, que hayan completado el procedimiento de identificación. La empresa podrá negarse a prestar servicio a residentes de jurisdicciones en las que la prestación de servicios esté restringida por la ley.",
+                  "El cliente se compromete a facilitar datos veraces, a no ceder a terceros el acceso a su cuenta y a utilizar el servicio únicamente con fines lícitos."
+                ]
+              },
+              {
+                "heading": "3. Responsabilidad",
+                "paragraphsMarkdown": [
+                  "La empresa no se responsabiliza de las pérdidas causadas por movimientos del mercado, fallos de conexión por parte del cliente o actuaciones de terceros, salvo en los casos expresamente previstos en el contrato con el cliente.",
+                  "La responsabilidad total de la empresa se limita al importe de los fondos del cliente en la cuenta."
+                ]
+              },
+              {
+                "heading": "4. Modificación de las condiciones",
+                "paragraphsMarkdown": [
+                  "La empresa podrá modificar las presentes condiciones notificándolo a los clientes con una antelación mínima de 10 días hábiles a través del área de cliente y del correo electrónico. El uso continuado del servicio implica la aceptación de los cambios."
+                ]
+              }
+            ]
+          },
+          {
+            "slug": "risk-disclosure",
+            "title": "Divulgación de riesgos",
+            "updatedAt": "2026-06-01",
+            "intro": "Traducción provisional. La versión jurídicamente vinculante es la redactada en ruso o en inglés.\n\nLa negociación de productos apalancados conlleva un alto nivel de riesgo y no es adecuada para todos los inversores. Lea detenidamente el presente aviso antes de empezar a operar.",
+            "sections": [
+              {
+                "heading": "1. Riesgo del apalancamiento",
+                "paragraphsMarkdown": [
+                  "El apalancamiento multiplica tanto las ganancias potenciales como las pérdidas. Un movimiento relativamente pequeño del mercado puede provocar la pérdida de la totalidad de los fondos de la cuenta. Nunca opere con dinero que no pueda permitirse perder."
+                ]
+              },
+              {
+                "heading": "2. Riesgos de mercado",
+                "paragraphsMarkdown": [
+                  "Los precios de los instrumentos financieros están sujetos a cambios bruscos derivados de acontecimientos económicos, noticias y la liquidez. En periodos de mayor volatilidad, la ejecución puede producirse a un precio distinto del solicitado (deslizamiento), y los gaps pueden hacer que las órdenes stop se ejecuten a un precio peor.",
+                  "Las rentabilidades pasadas no garantizan rentabilidades futuras. Los instrumentos sobre criptomonedas son más volátiles que los mercados tradicionales."
+                ]
+              },
+              {
+                "heading": "3. Riesgos tecnológicos",
+                "paragraphsMarkdown": [
+                  "Operar a través de internet conlleva riesgos de fallos de conexión, de hardware y de software. La empresa realiza esfuerzos razonables para garantizar la continuidad del servicio, pero no puede garantizar la ausencia de interrupciones."
+                ]
+              },
+              {
+                "heading": "4. Protección contra saldo negativo",
+                "paragraphsMarkdown": [
+                  "La empresa garantiza que la pérdida del cliente no superará los fondos depositados en la cuenta de trading: cualquier saldo negativo derivado de un gap del mercado se pone a cero a cargo de la empresa."
+                ]
+              }
+            ]
+          },
+          {
+            "slug": "kyc-aml",
+            "title": "Política KYC/AML",
+            "updatedAt": "2026-06-01",
+            "intro": "Traducción provisional. La versión jurídicamente vinculante es la redactada en ruso o en inglés.\n\nLa empresa cumple las normas internacionales de prevención del blanqueo de capitales (AML) y de la financiación del terrorismo (CFT), incluidas las recomendaciones del GAFI (FATF) y los requisitos de los reguladores aplicables.",
+            "sections": [
+              {
+                "heading": "1. Identificación de clientes (KYC)",
+                "paragraphsMarkdown": [
+                  "Antes de iniciar la prestación del servicio, el cliente completa la identificación: aporta un documento de identidad, un justificante del domicilio de residencia y, en caso necesario, información sobre el origen de los fondos. La empresa podrá solicitar documentación adicional en cualquier fase de la prestación del servicio."
+                ]
+              },
+              {
+                "heading": "2. Supervisión de operaciones",
+                "paragraphsMarkdown": [
+                  "La empresa supervisa de forma continua las operaciones para detectar actividad inusual. Las operaciones que no se correspondan con el perfil del cliente podrán suspenderse hasta que se aclaren las circunstancias.",
+                  "Los depósitos y retiros solo son posibles desde y hacia cuentas y tarjetas propias del cliente: los pagos de terceros no se aceptan y se devuelven al remitente."
+                ]
+              },
+              {
+                "heading": "3. Denegación del servicio",
+                "paragraphsMarkdown": [
+                  "La empresa podrá negarse a abrir una cuenta, o suspender o poner fin a la prestación del servicio, si no se completan los procedimientos de identificación, se facilita información inexacta o se detectan indicios de actividad ilícita, notificándolo a las autoridades competentes en los casos previstos por la ley."
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "system-status": {
+        "services": [
+          {
+            "id": "svc-0",
+            "name": "Sitio web y registro",
+            "description": "Sitio web comercial, formularios de solicitud",
+            "status": "operational",
+            "uptime90d": "99.99%"
+          },
+          {
+            "id": "svc-1",
+            "name": "API de trading",
+            "description": "Ejecución de órdenes, operaciones de trading",
+            "status": "operational",
+            "uptime90d": "99.97%"
+          },
+          {
+            "id": "quotes-ws",
+            "name": "Cotizaciones (WebSocket)",
+            "description": "Flujo de precios en tiempo real: estado de su conexión",
+            "status": "operational",
+            "uptime90d": "99.98%"
+          },
+          {
+            "id": "svc-2",
+            "name": "Área de cliente",
+            "description": "Autenticación, perfil, documentos",
+            "status": "operational",
+            "uptime90d": "99.95%"
+          },
+          {
+            "id": "svc-3",
+            "name": "Pasarela de pago",
+            "description": "Depósitos y retiros",
+            "status": "operational",
+            "uptime90d": "99.92%"
+          }
+        ],
+        "incidents": [
+          {
+            "date": "2026-07-14",
+            "title": "Retraso en el procesamiento de retiros a tarjetas bancarias",
+            "status": "Resuelto",
+            "text": "De 10:20 a 12:45 UTC, parte de las solicitudes de retiro se procesaron con retraso debido a una degradación del servicio en el lado del proveedor de pagos. Todas las solicitudes se han ejecutado y los fondos se han abonado."
+          },
+          {
+            "date": "2026-06-30",
+            "title": "Mantenimiento programado de la API de trading",
+            "status": "Completado",
+            "text": "En la noche del 29 al 30 de junio (01:00–02:30 UTC, mercados cerrados) se actualizó la infraestructura de ejecución. El tiempo de inactividad fue de 12 minutos dentro de la ventana anunciada."
+          }
+        ]
+      },
+      "articles": {
+        "items": [
+          {
+            "slug": "fed-signals-rate-path-september",
+            "title": "La Fed da señales sobre la trayectoria de los tipos: los mercados descuentan un recorte en septiembre",
+            "excerpt": "Las actas de la reunión de julio revelaron un número creciente de partidarios de la relajación. El dólar se debilitó frente a las principales divisas y bajaron las rentabilidades de los bonos del Tesoro.",
+            "category": "economy",
+            "source": "Apex Capital Research Desk",
+            "publishedAt": "2026-07-23T08:30:00.000Z",
+            "readingMinutes": 4,
+            "bodyMarkdown": "Las actas de la reunión de la Reserva Federal publicadas ayer mostraron que la mayoría de los miembros del comité considera oportuno iniciar el ciclo de relajación ya en la reunión de septiembre, siempre que se mantenga la dinámica de la inflación. Los futuros sobre tipos descuentan ahora una probabilidad del 78% de un recorte de 25 pb.\n\nEl índice del dólar DXY reaccionó con una caída del 0.4%, mientras que el EURUSD subió hacia 1.0850. La rentabilidad del bono del Tesoro a 10 años cayó por debajo del 4.1%, su nivel más bajo en seis semanas.\n\nPara los traders, el acontecimiento clave de la semana sigue siendo la publicación del PCE subyacente del viernes: un dato superior a lo previsto podría invertir rápidamente las expectativas del mercado y devolver la demanda al dólar."
+          },
+          {
+            "slug": "gold-tests-record-highs",
+            "title": "El oro pone a prueba sus máximos históricos ante el debilitamiento del dólar",
+            "excerpt": "El XAUUSD sube por tercera sesión consecutiva. Los analistas sitúan los objetivos en el rango de $2,450–2,480 si el precio se mantiene por encima de $2,420.",
+            "category": "forex",
+            "source": "Apex Capital Research Desk",
+            "publishedAt": "2026-07-23T06:10:00.000Z",
+            "readingMinutes": 3,
+            "bodyMarkdown": "El oro ha renovado su máximo semanal y cotiza en torno a $2,417 por onza. El metal se ve respaldado por las expectativas de una bajada de tipos de la Fed y por las compras continuadas de los bancos centrales asiáticos.\n\nDesde el punto de vista técnico, el precio se mantiene por encima de la media móvil de 20 días y el RSI aún no ha alcanzado la zona de sobrecompra. La resistencia más cercana se sitúa en $2,431 y, a continuación, en el máximo histórico.\n\nEl principal riesgo para los alcistas siguen siendo unos datos macroeconómicos sólidos en EE. UU.: unas cifras de empleo o inflación inesperadamente altas podrían desencadenar una corrección hacia el soporte de $2,380."
+          },
+          {
+            "slug": "nvidia-earnings-preview",
+            "title": "Previa de resultados de NVIDIA: qué esperar del mayor beneficiario del auge de la IA",
+            "excerpt": "El consenso espera unos ingresos de $37.5 mil millones. El mercado de opciones descuenta un movimiento de ±9% en las acciones tras la publicación.",
+            "category": "stocks",
+            "source": "Apex Capital Research Desk",
+            "publishedAt": "2026-07-22T15:45:00.000Z",
+            "readingMinutes": 5,
+            "bodyMarkdown": "La próxima semana NVIDIA presentará sus resultados trimestrales, que tradicionalmente marcan la pauta para todo el sector tecnológico. El consenso de analistas prevé unos ingresos de $37.5 mil millones (+62% interanual) y un BPA ajustado de $0.95.\n\nLa cuestión clave es la evolución del negocio de centros de datos y los comentarios de la dirección sobre la demanda de la nueva generación de aceleradores. Cualquier indicio de desaceleración en los pedidos de los hiperescaladores sería mal recibido: la acción cotiza con un PER superior a 45.\n\nEl mercado de opciones descuenta un movimiento de ±9% el día posterior a la publicación. Para los tenedores de CFD sobre NVDA, esto implica mayores exigencias en la gestión del riesgo: defina de antemano los niveles de salida y evite superar su tamaño de posición habitual."
+          },
+          {
+            "slug": "bitcoin-etf-inflows-resume",
+            "title": "Se reanudan las entradas en los ETF de bitcoin: $850 millones en una semana",
+            "excerpt": "Tras tres semanas de salidas, los ETF al contado vuelven a atraer capital. El BTCUSD consolida cerca de $67,500, con una resistencia clave en $69,000.",
+            "category": "crypto",
+            "source": "Apex Capital Research Desk",
+            "publishedAt": "2026-07-22T11:20:00.000Z",
+            "readingMinutes": 3,
+            "bodyMarkdown": "Según datos de los proveedores, las entradas netas en los ETF de bitcoin al contado de EE. UU. alcanzaron $850 millones durante la última semana, el mejor resultado en mes y medio. La mayor parte del volumen se dirigió a fondos gestionados por las mayores gestoras de activos.\n\nEl bitcoin consolida en el rango de $66,000–68,000. Una ruptura por encima de $69,000 abriría el camino a un nuevo test del máximo histórico, mientras que la pérdida del soporte de $64,500 intensificaría la presión vendedora.\n\nLa volatilidad de Ethereum sigue siendo elevada a la espera de la decisión del regulador sobre el staking dentro de los ETF, un acontecimiento que podría convertirse en catalizador para todo el segmento de altcoins."
+          },
+          {
+            "slug": "ecb-holds-rates-lagarde-comments",
+            "title": "El BCE mantiene los tipos: Lagarde señala septiembre como una «ventana abierta»",
+            "excerpt": "El regulador hizo una pausa, como se esperaba. El euro se fortaleció tras la rueda de prensa: el mercado percibió menos señales «dovish» de las que esperaba.",
+            "category": "economy",
+            "source": "Apex Capital Research Desk",
+            "publishedAt": "2026-07-21T14:00:00.000Z",
+            "readingMinutes": 4,
+            "bodyMarkdown": "El Banco Central Europeo mantuvo sin cambios los tipos de interés oficiales y se tomó una pausa tras el recorte de junio. La decisión coincidió con las expectativas del mercado, por lo que la atención se centró en el discurso de su presidenta.\n\nChristine Lagarde señaló que la reunión de septiembre sigue «totalmente abierta» y que las próximas decisiones dependerán de los datos que se vayan publicando. La ausencia de promesas explícitas de relajación fue interpretada por el mercado como una señal moderadamente «hawkish».\n\nEl EURUSD avanzó un 0.3% durante la rueda de prensa. El diferencial entre las rentabilidades a 10 años de Alemania y EE. UU. se estrechó hasta su nivel más bajo desde la primavera, lo que respaldó a la moneda única."
+          },
+          {
+            "slug": "oil-inventories-draw-opec-outlook",
+            "title": "Los inventarios de petróleo de EE. UU. caen por quinta semana consecutiva",
+            "excerpt": "La EIA informó de una reducción de 3.7 millones de barriles. El Brent se mantiene por encima de $85 a la espera del informe de la OPEP.",
+            "category": "economy",
+            "source": "Apex Capital Research Desk",
+            "publishedAt": "2026-07-21T09:05:00.000Z",
+            "readingMinutes": 3,
+            "bodyMarkdown": "Los inventarios comerciales de crudo de EE. UU. cayeron en 3.7 millones de barriles la semana pasada, frente a una previsión de −1.9 millones. Cinco semanas consecutivas de descensos —la racha más larga desde el verano pasado— apuntan a una demanda sólida en plena temporada alta de conducción.\n\nEl Brent se mantiene por encima de $85 por barril, mientras que el WTI cotiza cerca de $81.6. Los traders esperan el informe mensual de la OPEP: la confirmación de la previsión de crecimiento de la demanda mundial respaldaría el actual impulso alcista.\n\nLa oferta de fuera de la OPEP sigue siendo el factor limitante: la producción récord de EE. UU. y Brasil limita el potencial de un rally por encima de $90 sin nuevos shocks de oferta."
+          }
+        ],
+        "total": 6,
+        "page": 1,
+        "pageSize": 20
+      }
+    }
+  }
+}

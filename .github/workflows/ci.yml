@@ -62,7 +62,21 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
+      - name: Миграции на обжитой базе (сайты получают языки, ru/en не меняются)
+        run: |
+          PGPASSWORD=cms psql -h localhost -U cms -d broker_cms -c "CREATE DATABASE broker_cms_migration"
+          pnpm test:migration
+        env:
+          NODE_ENV: production
+          DATABASE_URL: postgres://cms:cms@localhost:5432/broker_cms_migration
+
       - name: Seed (dev-режим применяет схему БД + контент из фикстур)
+        run: pnpm seed
+
+      - name: Языки сайта, запасной язык, импорт переводов и живого FAQ
+        run: pnpm test:i18n
+
+      - name: Повторный сид не стирает de/fr/es (так мигратор работает при каждой выкатке)
         run: pnpm seed
 
       - name: Build (production)
@@ -77,7 +91,7 @@ jobs:
           done
           echo "CMS did not become healthy" && exit 1
 
-      - name: Contract check (все ресурсы × ru/en против фикстур)
+      - name: Contract check (все ресурсы × ru/en против фикстур, de/fr/es против переводов)
         run: node scripts/contract-check.mjs
         env:
           CMS_URL: http://localhost:3001

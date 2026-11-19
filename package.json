@@ -16,7 +16,10 @@
     "migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
     "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
     "migrate:status": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:status",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "i18n:import": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/i18n/import-translations.ts --",
+    "test:i18n": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/i18n/test-i18n.ts",
+    "test:migration": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/i18n/test-migration.ts"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.86.0",

@@ -1,0 +1,340 @@
+{
+  "site": "apex-ru",
+  "locales": {
+    "ru": {
+      "sections": [
+        {
+          "title": "Счёт и регистрация",
+          "items": [
+            {
+              "question": "Как открыть торговый счёт?",
+              "answer": "Зарегистрируйтесь на сайте — это займёт пару минут. Сразу после регистрации вам доступен демо-счёт. Чтобы торговать на реальном счёте, пополните его в личном кабинете."
+            },
+            {
+              "question": "Какой минимальный депозит?",
+              "answer": "Минимальная сумма пополнения — {{deposit.min}}. Демо-счёт бесплатный и пополнения не требует."
+            },
+            {
+              "question": "Есть ли демо-счёт и чем он отличается от реального?",
+              "answer": "Да. На демо-счёте {{demo.startBalance}} виртуальных средств, он открывается сразу после регистрации. Котировки и исполнение те же, что на реальном счёте. Демо и реальный счёт полностью разделены: сделки и деньги одного не влияют на другой."
+            },
+            {
+              "question": "Нужно ли проходить верификацию (KYC)?",
+              "answer": "Для полного доступа к выводу — да: загрузите документ, удостоверяющий личность, в личном кабинете. До верификации можно вывести не больше {{withdraw.unverifiedPercent}}; точный доступный лимит показан в кабинете."
+            }
+          ]
+        },
+        {
+          "title": "Торговля",
+          "items": [
+            {
+              "question": "Какие типы счетов есть и какое плечо доступно?",
+              "answer": "{{account.standard.name}} — плечо до {{account.standard.leverage}} (на криптовалюты — до {{account.standard.leverage.crypto}}). {{account.pro.name}} — до {{account.pro.leverage}}. {{account.enc_prime.name}} — до {{account.enc_prime.leverage}}."
+            },
+            {
+              "question": "Что такое защита от отрицательного баланса?",
+              "answer": "Вы не можете потерять больше, чем есть на счёте. Если резкое движение цены уводит баланс ниже нуля, отрицательный остаток обнуляется за счёт компании."
+            },
+            {
+              "question": "В какое время доступна торговля?",
+              "answer": "Криптовалюты торгуются круглосуточно, без выходных. Если у инструмента есть торговые часы, они указаны на его странице."
+            },
+            {
+              "question": "Где проходит торговля?",
+              "answer": "В веб-терминале прямо в личном кабинете — на компьютере и на телефоне, без установки программ. В терминале: график в реальном времени, стакан, лента сделок, рыночные и отложенные ордера, стоп-лосс и тейк-профит, которые можно изменить у открытой позиции."
+            }
+          ]
+        },
+        {
+          "title": "Пополнение и вывод",
+          "items": [
+            {
+              "question": "Как пополнить счёт?",
+              "answer": "Способ пополнения — {{deposit.methods}}. В личном кабинете показан адрес для перевода. После отправки укажите хэш транзакции — средства зачисляются после подтверждения перевода в сети. Платформа не берёт комиссию за пополнение; комиссию сети TRON оплачивает отправитель."
+            },
+            {
+              "question": "Как вывести средства?",
+              "answer": "Создайте заявку в личном кабинете и укажите свой адрес USDT в сети TRC20. Минимальная сумма вывода — {{withdraw.min}}. Каждую заявку проверяет и исполняет финансовый отдел, статус виден в кабинете."
+            },
+            {
+              "question": "Где хранятся средства клиентов?",
+              "answer": "Пополнения в USDT поступают на кошелёк компании в сети TRON. Баланс каждого счёта ведётся в торговой системе, каждая операция записывается в неизменяемый журнал. Выводы исполняются только после проверки финансовым отделом."
+            },
+            {
+              "question": "Как связаться с поддержкой?",
+              "answer": "Через чат в личном кабинете или по почте. Поддержка работает {{support.hours}}."
+            }
+          ]
+        }
+      ]
+    },
+    "en": {
+      "sections": [
+        {
+          "title": "Account and registration",
+          "items": [
+            {
+              "question": "How do I open a trading account?",
+              "answer": "Sign up on the website — it takes a couple of minutes. A demo account is available right after registration. To trade on a live account, make a deposit in the client area."
+            },
+            {
+              "question": "What is the minimum deposit?",
+              "answer": "The minimum deposit is {{deposit.min}}. The demo account is free and needs no deposit."
+            },
+            {
+              "question": "Is there a demo account, and how is it different from a live one?",
+              "answer": "Yes. The demo account comes with {{demo.startBalance}} in virtual funds and opens right after registration. Quotes and execution are the same as on a live account. Demo and live accounts are fully separate: trades and funds on one never affect the other."
+            },
+            {
+              "question": "Do I need to complete verification (KYC)?",
+              "answer": "For full access to withdrawals, yes: upload an identity document in the client area. Before verification you can withdraw no more than {{withdraw.unverifiedPercent}}; your exact available limit is shown in the client area."
+            }
+          ]
+        },
+        {
+          "title": "Trading",
+          "items": [
+            {
+              "question": "What account types are there, and what leverage is available?",
+              "answer": "{{account.standard.name}} — leverage up to {{account.standard.leverage}} (up to {{account.standard.leverage.crypto}} on cryptocurrencies). {{account.pro.name}} — up to {{account.pro.leverage}}. {{account.enc_prime.name}} — up to {{account.enc_prime.leverage}}."
+            },
+            {
+              "question": "What is negative balance protection?",
+              "answer": "You cannot lose more than you have in your account. If a sharp price move takes your balance below zero, the negative amount is written off at the company's expense."
+            },
+            {
+              "question": "When is trading available?",
+              "answer": "Cryptocurrencies trade around the clock, seven days a week. If an instrument has trading hours, they are listed on its page."
+            },
+            {
+              "question": "Where do I trade?",
+              "answer": "In the web terminal right inside the client area — on desktop and mobile, with nothing to install. The terminal has a real-time chart, order book, trade feed, market and pending orders, and Stop Loss and Take Profit that you can change on an open position."
+            }
+          ]
+        },
+        {
+          "title": "Deposits and withdrawals",
+          "items": [
+            {
+              "question": "How do I deposit?",
+              "answer": "Deposits are made in {{deposit.methods}}. The client area shows the address to send to. After sending, enter the transaction hash — funds are credited once the transfer is confirmed on the network. The platform charges no deposit fee; the TRON network fee is paid by the sender."
+            },
+            {
+              "question": "How do I withdraw funds?",
+              "answer": "Create a request in the client area and enter your USDT address on the TRC20 network. The minimum withdrawal is {{withdraw.min}}. Every request is reviewed and executed by the finance team, and its status is shown in the client area."
+            },
+            {
+              "question": "Where are client funds held?",
+              "answer": "USDT deposits arrive at the company's wallet on the TRON network. Each account's balance is kept in the trading system, and every operation is recorded in an immutable journal. Withdrawals are executed only after review by the finance team."
+            },
+            {
+              "question": "How do I contact support?",
+              "answer": "Through the chat in the client area or by email. Support is available {{support.hours}}."
+            }
+          ]
+        }
+      ]
+    },
+    "de": {
+      "sections": [
+        {
+          "title": "Konto und Registrierung",
+          "items": [
+            {
+              "question": "Wie eröffne ich ein Handelskonto?",
+              "answer": "Registrieren Sie sich auf der Website – das dauert nur wenige Minuten. Direkt nach der Registrierung steht Ihnen ein Demokonto zur Verfügung. Um auf einem Live-Konto zu handeln, nehmen Sie im Kundenbereich eine Einzahlung vor."
+            },
+            {
+              "question": "Wie hoch ist die Mindesteinzahlung?",
+              "answer": "Die Mindesteinzahlung beträgt {{deposit.min}}. Das Demokonto ist kostenlos und erfordert keine Einzahlung."
+            },
+            {
+              "question": "Gibt es ein Demokonto und wie unterscheidet es sich von einem Live-Konto?",
+              "answer": "Ja. Das Demokonto enthält {{demo.startBalance}} an virtuellem Guthaben und wird direkt nach der Registrierung eröffnet. Kurse und Ausführung sind dieselben wie auf einem Live-Konto. Demo- und Live-Konto sind vollständig getrennt: Trades und Gelder des einen wirken sich nie auf das andere aus."
+            },
+            {
+              "question": "Muss ich eine Verifizierung (KYC) durchlaufen?",
+              "answer": "Für den vollen Zugang zu Auszahlungen ja: Laden Sie im Kundenbereich ein Ausweisdokument hoch. Vor der Verifizierung können Sie höchstens {{withdraw.unverifiedPercent}} auszahlen; Ihr genaues verfügbares Limit wird im Kundenbereich angezeigt."
+            }
+          ]
+        },
+        {
+          "title": "Handel",
+          "items": [
+            {
+              "question": "Welche Kontotypen gibt es und welcher Hebel ist verfügbar?",
+              "answer": "{{account.standard.name}} – Hebel bis {{account.standard.leverage}} (bei Kryptowährungen bis {{account.standard.leverage.crypto}}). {{account.pro.name}} – bis {{account.pro.leverage}}. {{account.enc_prime.name}} – bis {{account.enc_prime.leverage}}."
+            },
+            {
+              "question": "Was ist der Schutz vor negativem Kontostand?",
+              "answer": "Sie können nicht mehr verlieren, als sich auf Ihrem Konto befindet. Wenn eine starke Kursbewegung Ihren Kontostand unter null drückt, wird der negative Betrag auf Kosten des Unternehmens ausgeglichen."
+            },
+            {
+              "question": "Wann ist der Handel möglich?",
+              "answer": "Kryptowährungen werden rund um die Uhr gehandelt, auch am Wochenende. Hat ein Instrument Handelszeiten, sind diese auf seiner Seite angegeben."
+            },
+            {
+              "question": "Wo findet der Handel statt?",
+              "answer": "Im Webterminal direkt im Kundenbereich – am Computer und auf dem Smartphone, ohne Installation. Das Terminal bietet einen Echtzeit-Chart, Orderbuch, Trade-Feed, Market- und Pending Orders sowie Stop-Loss und Take-Profit, die Sie bei einer offenen Position ändern können."
+            }
+          ]
+        },
+        {
+          "title": "Einzahlung und Auszahlung",
+          "items": [
+            {
+              "question": "Wie nehme ich eine Einzahlung vor?",
+              "answer": "Die Einzahlung erfolgt per {{deposit.methods}}. Im Kundenbereich wird die Adresse für die Überweisung angezeigt. Geben Sie nach dem Senden den Transaktions-Hash an – das Guthaben wird gutgeschrieben, sobald die Überweisung im Netzwerk bestätigt ist. Die Plattform erhebt keine Gebühr für Einzahlungen; die Gebühr des TRON-Netzwerks trägt der Absender."
+            },
+            {
+              "question": "Wie zahle ich Geld aus?",
+              "answer": "Erstellen Sie im Kundenbereich einen Auszahlungsantrag und geben Sie Ihre USDT-Adresse im TRC20-Netzwerk an. Die Mindestauszahlung beträgt {{withdraw.min}}. Jeder Antrag wird von der Finanzabteilung geprüft und ausgeführt; der Status ist im Kundenbereich sichtbar."
+            },
+            {
+              "question": "Wo werden die Kundengelder verwahrt?",
+              "answer": "Einzahlungen in USDT gehen auf die Wallet des Unternehmens im TRON-Netzwerk ein. Der Kontostand jedes Kontos wird im Handelssystem geführt, jede Operation wird in einem unveränderlichen Journal erfasst. Auszahlungen werden erst nach Prüfung durch die Finanzabteilung ausgeführt."
+            },
+            {
+              "question": "Wie erreiche ich den Support?",
+              "answer": "Über den Chat im Kundenbereich oder per E-Mail. Der Support ist {{support.hours}} erreichbar."
+            }
+          ]
+        }
+      ]
+    },
+    "fr": {
+      "sections": [
+        {
+          "title": "Compte et inscription",
+          "items": [
+            {
+              "question": "Comment ouvrir un compte de trading ?",
+              "answer": "Inscrivez-vous sur le site, cela ne prend que quelques minutes. Un compte démo est disponible dès l'inscription. Pour trader sur un compte réel, effectuez un dépôt depuis votre espace client."
+            },
+            {
+              "question": "Quel est le dépôt minimum ?",
+              "answer": "Le dépôt minimum est de {{deposit.min}}. Le compte démo est gratuit et ne nécessite aucun dépôt."
+            },
+            {
+              "question": "Existe-t-il un compte démo et en quoi diffère-t-il d'un compte réel ?",
+              "answer": "Oui. Le compte démo est crédité de {{demo.startBalance}} de fonds virtuels et s'ouvre dès l'inscription. Les cotations et l'exécution sont les mêmes que sur un compte réel. Le compte démo et le compte réel sont totalement séparés : les transactions et les fonds de l'un n'ont aucune incidence sur l'autre."
+            },
+            {
+              "question": "Dois-je passer une vérification (KYC) ?",
+              "answer": "Pour un accès complet aux retraits, oui : téléchargez une pièce d'identité dans votre espace client. Avant la vérification, vous pouvez retirer au maximum {{withdraw.unverifiedPercent}} ; votre limite exacte disponible est indiquée dans votre espace client."
+            }
+          ]
+        },
+        {
+          "title": "Trading",
+          "items": [
+            {
+              "question": "Quels types de comptes existe-t-il et quel effet de levier est disponible ?",
+              "answer": "{{account.standard.name}} : effet de levier jusqu'à {{account.standard.leverage}} (jusqu'à {{account.standard.leverage.crypto}} sur les cryptomonnaies). {{account.pro.name}} : jusqu'à {{account.pro.leverage}}. {{account.enc_prime.name}} : jusqu'à {{account.enc_prime.leverage}}."
+            },
+            {
+              "question": "Qu'est-ce que la protection contre le solde négatif ?",
+              "answer": "Vous ne pouvez pas perdre plus que ce que contient votre compte. Si un mouvement brusque des prix fait passer votre solde sous zéro, le montant négatif est remis à zéro aux frais de la société."
+            },
+            {
+              "question": "Quand le trading est-il disponible ?",
+              "answer": "Les cryptomonnaies se négocient 24 h/24, 7 j/7. Si un instrument a des horaires de négociation, ils sont indiqués sur sa page."
+            },
+            {
+              "question": "Où se déroule le trading ?",
+              "answer": "Dans le terminal web, directement dans votre espace client, sur ordinateur comme sur mobile, sans rien installer. Le terminal propose un graphique en temps réel, le carnet d'ordres, le flux des transactions, des ordres au marché et des ordres en attente, ainsi que des Stop Loss et Take Profit modifiables sur une position ouverte."
+            }
+          ]
+        },
+        {
+          "title": "Dépôts et retraits",
+          "items": [
+            {
+              "question": "Comment effectuer un dépôt ?",
+              "answer": "Les dépôts s'effectuent en {{deposit.methods}}. Votre espace client affiche l'adresse à laquelle envoyer les fonds. Après l'envoi, indiquez le hash de la transaction : les fonds sont crédités dès que le transfert est confirmé sur le réseau. La plateforme ne prélève aucune commission sur les dépôts ; les frais du réseau TRON sont à la charge de l'expéditeur."
+            },
+            {
+              "question": "Comment retirer des fonds ?",
+              "answer": "Créez une demande dans votre espace client et indiquez votre adresse USDT sur le réseau TRC20. Le retrait minimum est de {{withdraw.min}}. Chaque demande est vérifiée et exécutée par le service financier, et son statut est visible dans votre espace client."
+            },
+            {
+              "question": "Où sont conservés les fonds des clients ?",
+              "answer": "Les dépôts en USDT arrivent sur le portefeuille de la société sur le réseau TRON. Le solde de chaque compte est tenu dans le système de trading, et chaque opération est enregistrée dans un journal inaltérable. Les retraits ne sont exécutés qu'après vérification par le service financier."
+            },
+            {
+              "question": "Comment contacter l'assistance ?",
+              "answer": "Par le chat de votre espace client ou par e-mail. L'assistance est disponible {{support.hours}}."
+            }
+          ]
+        }
+      ]
+    },
+    "es": {
+      "sections": [
+        {
+          "title": "Cuenta y registro",
+          "items": [
+            {
+              "question": "¿Cómo abro una cuenta de trading?",
+              "answer": "Regístrese en el sitio web; solo le llevará un par de minutos. Justo después del registro tiene a su disposición una cuenta demo. Para operar con una cuenta real, realice un depósito en el área de cliente."
+            },
+            {
+              "question": "¿Cuál es el depósito mínimo?",
+              "answer": "El depósito mínimo es de {{deposit.min}}. La cuenta demo es gratuita y no requiere depósito."
+            },
+            {
+              "question": "¿Hay cuenta demo y en qué se diferencia de una cuenta real?",
+              "answer": "Sí. La cuenta demo incluye {{demo.startBalance}} en fondos virtuales y se abre justo después del registro. Las cotizaciones y la ejecución son las mismas que en una cuenta real. La cuenta demo y la cuenta real están completamente separadas: las operaciones y los fondos de una nunca afectan a la otra."
+            },
+            {
+              "question": "¿Tengo que pasar la verificación (KYC)?",
+              "answer": "Para tener acceso completo a los retiros, sí: suba un documento de identidad en el área de cliente. Antes de la verificación puede retirar como máximo {{withdraw.unverifiedPercent}}; su límite disponible exacto se muestra en el área de cliente."
+            }
+          ]
+        },
+        {
+          "title": "Trading",
+          "items": [
+            {
+              "question": "¿Qué tipos de cuenta hay y qué apalancamiento está disponible?",
+              "answer": "{{account.standard.name}}: apalancamiento de hasta {{account.standard.leverage}} (hasta {{account.standard.leverage.crypto}} en criptomonedas). {{account.pro.name}}: hasta {{account.pro.leverage}}. {{account.enc_prime.name}}: hasta {{account.enc_prime.leverage}}."
+            },
+            {
+              "question": "¿Qué es la protección contra saldo negativo?",
+              "answer": "No puede perder más de lo que tiene en su cuenta. Si un movimiento brusco del precio lleva su saldo por debajo de cero, el importe negativo se pone a cero a cargo de la empresa."
+            },
+            {
+              "question": "¿En qué horario se puede operar?",
+              "answer": "Las criptomonedas se negocian las 24 horas, todos los días de la semana. Si un instrumento tiene horario de negociación, este se indica en su página."
+            },
+            {
+              "question": "¿Dónde se opera?",
+              "answer": "En el terminal web, directamente en el área de cliente, en el ordenador y en el móvil, sin instalar nada. El terminal ofrece gráfico en tiempo real, libro de órdenes, flujo de operaciones, órdenes de mercado y órdenes pendientes, además de Stop Loss y Take Profit que puede modificar en una posición abierta."
+            }
+          ]
+        },
+        {
+          "title": "Depósitos y retiros",
+          "items": [
+            {
+              "question": "¿Cómo realizo un depósito?",
+              "answer": "Los depósitos se realizan en {{deposit.methods}}. En el área de cliente se muestra la dirección a la que enviar la transferencia. Tras el envío, indique el hash de la transacción: los fondos se abonan una vez confirmada la transferencia en la red. La plataforma no cobra comisión por los depósitos; la comisión de la red TRON corre a cargo del remitente."
+            },
+            {
+              "question": "¿Cómo retiro fondos?",
+              "answer": "Cree una solicitud en el área de cliente e indique su dirección USDT en la red TRC20. El retiro mínimo es de {{withdraw.min}}. Cada solicitud la revisa y ejecuta el departamento financiero, y su estado se muestra en el área de cliente."
+            },
+            {
+              "question": "¿Dónde se guardan los fondos de los clientes?",
+              "answer": "Los depósitos en USDT llegan a la billetera de la empresa en la red TRON. El saldo de cada cuenta se lleva en el sistema de trading y cada operación queda registrada en un registro inalterable. Los retiros se ejecutan solo tras la revisión del departamento financiero."
+            },
+            {
+              "question": "¿Cómo contacto con soporte?",
+              "answer": "A través del chat del área de cliente o por correo electrónico. El soporte está disponible {{support.hours}}."
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

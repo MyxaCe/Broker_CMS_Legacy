@@ -6,6 +6,8 @@ import path from 'node:path'
 import config from '@payload-config'
 import { getPayload } from 'payload'
 
+import { CONTENT_BUILDERS } from './builders'
+
 /**
  * Seed мульти-тенантной CMS из эталонных фикстур контракта:
  * админ+редактор, сайт по умолчанию (apex-ru), per-site контентные
@@ -82,150 +84,6 @@ if (siteId === undefined) {
 /* ---------------------------------------------------------------- */
 /* 3. Per-site контент: фикстура → данные документа                   */
 /* ---------------------------------------------------------------- */
-const CONTENT_BUILDERS: Record<string, { collection: string; build: (f: any) => Record<string, unknown> }> = {
-  navigation: {
-    collection: 'site-navigation',
-    build: (f) => ({ header: f.header, footerColumns: f.footer.columns, riskWarning: f.footer.riskWarning }),
-  },
-  faq: { collection: 'site-faq', build: (f) => ({ sections: f.sections }) },
-  instruments: {
-    collection: 'site-instruments',
-    build: (f) => ({
-      items: f.items.map((i: any) => ({
-        symbol: i.symbol,
-        name: i.name,
-        category: i.category,
-        digits: i.digits,
-        leverageMax: i.leverageMax,
-        spreadFrom: i.spreadFrom,
-        swapFree: i.swapFree,
-      })),
-    }),
-  },
-  accounts: {
-    collection: 'site-accounts',
-    build: (f) => ({
-      items: f.items.map((p: any) => ({
-        planId: p.id,
-        name: p.name,
-        description: p.description,
-        minDeposit: p.minDeposit,
-        featured: p.featured,
-        features: p.features,
-        pricing: p.pricing,
-      })),
-    }),
-  },
-  promotions: {
-    collection: 'site-promotions',
-    build: (f) => ({
-      items: f.items.map((p: any) => ({
-        promoId: p.id,
-        badge: p.badge,
-        title: p.title,
-        description: p.description,
-        terms: p.terms,
-        ctaLabel: p.ctaLabel,
-        ctaHref: p.ctaHref,
-        featured: p.featured,
-        ...(p.activeFrom ? { activeFrom: p.activeFrom } : {}),
-        ...(p.activeTo ? { activeTo: p.activeTo } : {}),
-      })),
-    }),
-  },
-  partners: {
-    collection: 'site-partners',
-    build: (f) => ({
-      models: f.models.map((m: any) => ({
-        name: m.name,
-        description: m.description,
-        features: m.features.map((text: string) => ({ text })),
-      })),
-      tiers: f.tiers.map((t: any) => ({
-        name: t.name,
-        clients: t.clients,
-        share: t.share,
-        featured: t.featured ?? false,
-      })),
-      steps: f.steps,
-    }),
-  },
-  academy: {
-    collection: 'site-academy',
-    build: (f) => ({
-      articles: f.articles,
-      webinars: f.webinars.map((w: any) => ({
-        webinarId: w.id,
-        title: w.title,
-        speaker: w.speaker,
-        speakerRole: w.speakerRole,
-        startsAt: w.startsAt,
-        durationMinutes: w.durationMinutes,
-        level: w.level,
-        description: w.description,
-      })),
-      glossary: f.glossary,
-    }),
-  },
-  streams: {
-    collection: 'site-streams',
-    build: (f) => ({
-      items: f.items.map((s: any) => ({
-        provider: s.provider,
-        videoId: s.videoId,
-        title: s.title,
-        startsAt: s.startsAt,
-        status: s.status,
-      })),
-    }),
-  },
-  contacts: { collection: 'site-contacts', build: (f) => ({ channels: f.channels, offices: f.offices }) },
-  careers: { collection: 'site-careers', build: (f) => ({ benefits: f.benefits, vacancies: f.vacancies }) },
-  legal: {
-    collection: 'site-legal',
-    build: (f) => ({
-      items: f.items.map((d: any) => ({
-        slug: d.slug,
-        title: d.title,
-        updatedAt: d.updatedAt,
-        intro: d.intro,
-        sections: d.sections.map((s: any) => ({
-          heading: s.heading,
-          paragraphsMarkdown: s.paragraphsMarkdown.map((text: string) => ({ text })),
-        })),
-      })),
-    }),
-  },
-  'system-status': {
-    collection: 'site-system-status',
-    build: (f) => ({
-      services: f.services.map((s: any) => ({
-        serviceId: s.id,
-        name: s.name,
-        description: s.description,
-        status: s.status,
-        uptime90d: s.uptime90d,
-      })),
-      incidents: f.incidents,
-    }),
-  },
-  'cabinet-home': {
-    collection: 'site-cabinet-home',
-    build: (f) => ({
-      modules: f.modules.map((m: any) => ({
-        type: m.type,
-        enabled: m.enabled,
-        ...(m.steps ? { steps: m.steps } : {}),
-        ...(m.buttons ? { buttons: m.buttons } : {}),
-        ...(m.tabs ? { tabs: m.tabs } : {}),
-        ...(m.newListingSymbols
-          ? { newListingSymbols: m.newListingSymbols.map((symbol: string) => ({ symbol })) }
-          : {}),
-      })),
-    }),
-  },
-}
-
 for (const [resource, def] of Object.entries(CONTENT_BUILDERS)) {
   const existing = await payload.find({
     collection: def.collection as never,
