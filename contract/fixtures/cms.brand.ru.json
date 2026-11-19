@@ -18,5 +18,10 @@
       "name": "youtube",
       "url": "https://www.youtube.com/@apexcapital"
     }
-  ]
+  ],
+  "languages": [
+    "ru",
+    "en"
+  ],
+  "defaultLanguage": "ru"
 }

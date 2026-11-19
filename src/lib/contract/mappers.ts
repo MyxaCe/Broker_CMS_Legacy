@@ -1,3 +1,5 @@
+import { siteLanguages } from '../languages'
+
 /**
  * Мапперы Payload-документов в контрактные DTO.
  * Схемы контракта объявлены с additionalProperties: false,
@@ -46,6 +48,7 @@ export function mapBrand(doc: PayloadDoc) {
       name: String(s.name ?? ''),
       url: String(s.url ?? ''),
     })),
+    ...siteLanguages(doc),
   }
 }
 

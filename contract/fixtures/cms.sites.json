@@ -1,0 +1,11 @@
+{
+  "slug": "apex-ru",
+  "name": "Apex Capital",
+  "demoStartBalanceCents": 1000000,
+  "instruments": [],
+  "languages": [
+    "ru",
+    "en"
+  ],
+  "defaultLanguage": "ru"
+}

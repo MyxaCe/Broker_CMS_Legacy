@@ -10,6 +10,7 @@ import { CONTENT_COLLECTIONS } from './collections/content/index'
 import { Media } from './collections/Media'
 import { Sites } from './collections/Sites'
 import { Users } from './collections/Users'
+import { FALLBACK_LOCALE, LANGUAGE_NAMES, LANGUAGES } from './lib/languages'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -48,9 +49,12 @@ export default buildConfig({
     migrationDir: path.resolve(dirname, 'migrations'),
   }),
   sharp,
-  // Локали контента совпадают с локалями сайтов (next-intl): ru — основная, en — fallback на ru
   localization: {
-    locales: ['ru', 'en'],
+    locales: LANGUAGES.map((code) => ({
+      code,
+      label: LANGUAGE_NAMES[code],
+      ...(FALLBACK_LOCALE[code] ? { fallbackLocale: FALLBACK_LOCALE[code] } : {}),
+    })),
     defaultLocale: 'ru',
     fallback: true,
   },

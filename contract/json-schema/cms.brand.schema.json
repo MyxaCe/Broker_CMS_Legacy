@@ -79,6 +79,31 @@
             ],
             "additionalProperties": false
           }
+        },
+        "languages": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "ru",
+              "en",
+              "de",
+              "fr",
+              "es"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "defaultLanguage": {
+          "type": "string",
+          "enum": [
+            "ru",
+            "en",
+            "de",
+            "fr",
+            "es"
+          ]
         }
       },
       "required": [

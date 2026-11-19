@@ -116,10 +116,15 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('ru' | 'en') | ('ru' | 'en')[];
+  fallbackLocale:
+    | ('false' | 'none' | 'null')
+    | false
+    | null
+    | ('ru' | 'en' | 'de' | 'fr' | 'es')
+    | ('ru' | 'en' | 'de' | 'fr' | 'es')[];
   globals: {};
   globalsSelect: {};
-  locale: 'ru' | 'en';
+  locale: 'ru' | 'en' | 'de' | 'fr' | 'es';
   widgets: {
     collections: CollectionsWidget;
   };
@@ -222,6 +227,14 @@ export interface Site {
     | number
     | boolean
     | null;
+  /**
+   * Языки, на которых открываются витрина и кабинет. Порядок важен: в таком порядке языки показываются в переключателе
+   */
+  languages: ('ru' | 'en' | 'de' | 'fr' | 'es')[];
+  /**
+   * Открывается без префикса в адресе. Должен входить в список языков сайта
+   */
+  defaultLanguage: 'ru' | 'en' | 'de' | 'fr' | 'es';
   demoStartBalanceCents: number;
   /**
    * Пусто — используется SITE_WEBHOOK_URL из окружения
@@ -847,6 +860,8 @@ export interface SitesSelect<T extends boolean = true> {
         id?: T;
       };
   instruments?: T;
+  languages?: T;
+  defaultLanguage?: T;
   demoStartBalanceCents?: T;
   webhookUrl?: T;
   webhookSecret?: T;

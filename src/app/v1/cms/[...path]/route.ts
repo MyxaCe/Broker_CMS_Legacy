@@ -6,11 +6,12 @@ import { RESOURCE_TO_COLLECTION } from '@/collections/content/index'
 import { mapArticle } from '@/lib/contract/mappers'
 import { RESOURCE_MAPPERS } from '@/lib/contract/resources'
 import { validateContract } from '@/lib/contract/validate'
+import { parseLocale, siteLanguages } from '@/lib/languages'
 import { defaultSiteSlug } from '@/lib/notify-site'
 
 /**
  * Контрактные эндпоинты CMS (мульти-тенантные):
- *   GET /v1/cms/{resource}?site=<slug>&locale=ru|en[&draft=true]
+ *   GET /v1/cms/{resource}?site=<slug>&locale=ru|en|de|fr|es[&draft=true]
  *   GET /v1/cms/articles[?page=N] · /v1/cms/articles/{slug} — то же с ?site=
  *   GET /v1/cms/sites/{slug} — конфиг тенанта (server-side)
  * Без ?site= — сайт по умолчанию (DEFAULT_SITE): обратная совместимость,
@@ -45,7 +46,7 @@ export async function GET(
 ) {
   const { path: segments } = await params
   const url = new URL(request.url)
-  const locale: 'ru' | 'en' = url.searchParams.get('locale') === 'en' ? 'en' : 'ru'
+  const locale = parseLocale(url.searchParams.get('locale'))
   const draft = url.searchParams.get('draft') === 'true'
   const resource = segments[0] ?? ''
   const siteSlug = url.searchParams.get('site') ?? defaultSiteSlug()
@@ -81,16 +82,17 @@ export async function GET(
         return NextResponse.json({ error: 'invalid_site' }, { status: 400 })
       }
       if (!site) return NextResponse.json({ error: 'unknown_site' }, { status: 404 })
-      return jsonWithVersion(
-        {
-          slug: String(site.slug),
-          name: String(site.name ?? ''),
-          demoStartBalanceCents: Number(site.demoStartBalanceCents ?? 1000000),
-          // Доступ сайта к вселенной MDS (allow-list канонических символов)
-          instruments: Array.isArray(site.instruments) ? site.instruments.map(String) : [],
-        },
-        site.updatedAt,
-      )
+      const dto = {
+        slug: String(site.slug),
+        name: String(site.name ?? ''),
+        demoStartBalanceCents: Number(site.demoStartBalanceCents ?? 1000000),
+        // Доступ сайта к вселенной MDS (allow-list канонических символов)
+        instruments: Array.isArray(site.instruments) ? site.instruments.map(String) : [],
+        ...siteLanguages(site),
+      }
+      const check = validateContract('sites', dto)
+      if (!check.valid) return contractViolation('sites', String(site.slug), check.errors)
+      return jsonWithVersion(dto, site.updatedAt)
     }
 
     if (!site) return NextResponse.json({ error: 'unknown_site' }, { status: 404 })

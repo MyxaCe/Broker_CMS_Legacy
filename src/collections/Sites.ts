@@ -1,6 +1,16 @@
 import type { CollectionConfig } from 'payload'
 
+import {
+  DEFAULT_SITE_LANGUAGE,
+  DEFAULT_SITE_LANGUAGES,
+  LANGUAGE_NAMES,
+  LANGUAGES,
+  validateDefaultLanguage,
+  validateLanguages,
+} from '../lib/languages'
 import { defaultSiteSlug, notifySiteFor } from '../lib/notify-site'
+
+const languageOptions = LANGUAGES.map((code) => ({ value: code, label: `${LANGUAGE_NAMES[code]} (${code})` }))
 
 /**
  * Реестр сайтов платформы (мульти-тенантность, ADR-023/024 сайта):
@@ -83,6 +93,33 @@ export const Sites: CollectionConfig = {
         description:
           'Доступ сайта к вселенной MDS: сайт получает котировки и может показывать только выбранные инструменты',
       },
+    },
+    {
+      name: 'languages',
+      type: 'select',
+      hasMany: true,
+      required: true,
+      options: languageOptions,
+      defaultValue: DEFAULT_SITE_LANGUAGES,
+      label: 'Языки сайта',
+      admin: {
+        description:
+          'Языки, на которых открываются витрина и кабинет. Порядок важен: в таком порядке языки показываются в переключателе',
+      },
+      validate: (value: unknown) => validateLanguages(value),
+    },
+    {
+      name: 'defaultLanguage',
+      type: 'select',
+      required: true,
+      options: languageOptions,
+      defaultValue: DEFAULT_SITE_LANGUAGE,
+      label: 'Язык по умолчанию',
+      admin: {
+        description: 'Открывается без префикса в адресе. Должен входить в список языков сайта',
+      },
+      validate: (value: unknown, { siblingData }: { siblingData: Record<string, unknown> }) =>
+        validateDefaultLanguage(value, siblingData?.languages),
     },
     {
       name: 'demoStartBalanceCents',
