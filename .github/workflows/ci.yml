@@ -65,6 +65,9 @@ jobs:
       - name: Живые параметры и контракт новых полей
         run: pnpm test:live-params
 
+      - name: Каталог инструментов платформы (категории, сегменты, поиск, группировка, 5000 элементов)
+        run: pnpm test:instrument-catalog
+
       - name: Миграции на обжитой базе (языки, фон, портфели тарифов; ru/en не меняются)
         run: |
           PGPASSWORD=cms psql -h localhost -U cms -d broker_cms -c "CREATE DATABASE broker_cms_migration"

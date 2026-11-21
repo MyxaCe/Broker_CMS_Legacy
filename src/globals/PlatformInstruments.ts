@@ -54,7 +54,6 @@ export const PlatformInstruments: GlobalConfig = {
       label: 'Версия списка',
       admin: {
         readOnly: true,
-        position: 'sidebar',
         description: 'Растёт при каждом сохранении. По ней модуль рыночных данных и терминал понимают, что список изменился',
       },
     },
