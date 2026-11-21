@@ -18,16 +18,23 @@ export type MdsFailureReason =
   | 'mds_unavailable'
   | 'no_active_site'
   | 'allow_list_unavailable'
+  | 'platform_list_unavailable'
   /** Прокси не ответил или ответил не тем — причина неизвестна, но это отказ. */
   | 'unreachable'
 
-const KNOWN: MdsFailureReason[] = ['mds_unavailable', 'no_active_site', 'allow_list_unavailable']
+const KNOWN: MdsFailureReason[] = [
+  'mds_unavailable',
+  'no_active_site',
+  'allow_list_unavailable',
+  'platform_list_unavailable',
+]
 
 /** Человеку: что именно случилось и что с этим делать. */
 export const MDS_FAILURE_TEXT: Record<MdsFailureReason, string> = {
   mds_unavailable: 'MDS недоступен — список инструментов показать нельзя.',
   no_active_site: 'Рабочий сайт не выбран — выберите его на дашборде.',
   allow_list_unavailable: 'Не удалось прочитать доступ сайта — список показать нельзя.',
+  platform_list_unavailable: 'Не удалось прочитать «Инструменты платформы» — список показать нельзя.',
   unreachable: 'Сервис инструментов не ответил — список показать нельзя.',
 }
 

@@ -3,6 +3,7 @@ import * as migration_20260725_163338_cabinet_home from './20260725_163338_cabin
 import * as migration_20260727_095512_allow_list from './20260727_095512_allow_list';
 import * as migration_20261119_145051_site_languages from './20261119_145051_site_languages';
 import * as migration_20261119_155549_live_params from './20261119_155549_live_params';
+import * as migration_20261121_120722_platform_instruments from './20261121_120722_platform_instruments';
 
 export const migrations = [
   {
@@ -29,5 +30,10 @@ export const migrations = [
     up: migration_20261119_155549_live_params.up,
     down: migration_20261119_155549_live_params.down,
     name: '20261119_155549_live_params',
+  },
+  {
+    up: migration_20261121_120722_platform_instruments.up,
+    down: migration_20261121_120722_platform_instruments.down,
+    name: '20261121_120722_platform_instruments'
   },
 ];

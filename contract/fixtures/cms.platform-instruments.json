@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "updatedAt": "2026-11-21T10:00:00.000Z",
+  "instruments": [
+    {
+      "symbol": "BTCUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "ETHUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "BNBUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "SOLUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "XRPUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "DOGEUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "ADAUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "TRXUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "AVAXUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "LINKUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "DOTUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "LTCUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "BCHUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "UNIUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "ATOMUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "XLMUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "ETCUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "NEARUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "FILUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "APTUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "ARBUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "OPUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "INJUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "AAVEUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "HBARUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "VETUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "ICPUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "SHIBUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "SANDUSD",
+      "mode": "trade"
+    },
+    {
+      "symbol": "MANAUSD",
+      "mode": "trade"
+    }
+  ]
+}

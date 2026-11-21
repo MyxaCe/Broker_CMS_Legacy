@@ -248,7 +248,7 @@ function InstrumentPanel({
 }
 
 export function MdsAllowListField({ path }: { path: string }) {
-  const { value, setValue } = useField<string[]>({ path })
+  const { value, setValue, showError, errorMessage } = useField<string[]>({ path })
   const selected = useMemo(() => new Set(Array.isArray(value) ? value : []), [value])
   const [universe, setUniverse] = useState<MdsInstrument[] | null>(null)
   // Р-027: отказ — это ПРИЧИНА, а не флаг. Раньше здесь стояло
@@ -259,7 +259,7 @@ export function MdsAllowListField({ path }: { path: string }) {
 
   useEffect(() => {
     let alive = true
-    loadMdsInstruments<MdsInstrument>('/admin-mds/instruments?all=1').then((result) => {
+    loadMdsInstruments<MdsInstrument>('/admin-mds/instruments?platform=1').then((result) => {
       if (!alive) return
       if (result.state === 'ok') setUniverse(result.items)
       else setFailure(result.reason)
@@ -286,7 +286,7 @@ export function MdsAllowListField({ path }: { path: string }) {
     const orphans: MdsInstrument[] = orphanSymbols.map((s) => ({
       symbol: s,
       name: '?',
-      group: 'Нет в MDS',
+      group: 'Нет в списке платформы',
       icon: null,
     }))
     return [...inUniverse, ...orphans]
@@ -308,12 +308,27 @@ export function MdsAllowListField({ path }: { path: string }) {
   return (
     <div style={{ marginBottom: 'var(--base, 20px)' }}>
       <label style={{ display: 'block', marginBottom: '6px', fontSize: '13px' }}>
-        Инструменты сайта (доступ из вселенной MDS)
+        Инструменты сайта (доступ из инструментов платформы)
       </label>
       <p style={{ margin: '0 0 10px', fontSize: '12px', color: 'var(--theme-elevation-500)' }}>
-        Сайт получает котировки и может ставить на страницы только выбранное здесь.
+        Сайт получает котировки и может ставить на страницы только выбранное здесь. Выбирать можно из раздела
+        «Инструменты платформы».
       </p>
 
+      {showError && errorMessage && (
+        <p
+          role="alert"
+          style={{
+            fontSize: '13px',
+            color: 'var(--theme-error-500, #d93025)',
+            border: '1px solid var(--theme-error-500, #d93025)',
+            borderRadius: '6px',
+            padding: '8px 10px',
+          }}
+        >
+          {errorMessage}
+        </p>
+      )}
       {failure && (
         <p style={{ fontSize: '12px', color: 'var(--theme-error-500, #d93025)' }}>
           {MDS_FAILURE_TEXT[failure]} Сохранённый выбор не изменится.
@@ -323,7 +338,7 @@ export function MdsAllowListField({ path }: { path: string }) {
         // Живой MDS с пустой вселенной — не отказ. Разные причины, разные
         // действия: здесь чинить нечего, инструментов нет у источника.
         <p style={{ fontSize: '12px', color: 'var(--theme-elevation-500)' }}>
-          MDS ответил, но вселенная инструментов пуста — выбирать не из чего.
+          В «Инструментах платформы» пока ничего нет — выбирать не из чего.
         </p>
       )}
       {!universe && !failure && (
@@ -339,9 +354,9 @@ export function MdsAllowListField({ path }: { path: string }) {
             providers={providersOf(available)}
             emptyText={
               universe.length === 0
-                ? 'Вселенная MDS пуста'
+                ? 'Список платформы пуст'
                 : available.length === 0
-                  ? 'Вся вселенная уже выбрана'
+                  ? 'Все инструменты платформы уже выбраны'
                   : 'Ничего не найдено'
             }
             actionLabel="+"
@@ -363,7 +378,9 @@ export function MdsAllowListField({ path }: { path: string }) {
             onAction={(s) => remove([s])}
             bulkLabel="Убрать все"
             onBulk={remove}
-            extraBadge={(i) => (i.group === 'Нет в MDS' ? '(нет в MDS)' : null)}
+            extraBadge={(i) =>
+              i.group === 'Нет в списке платформы' ? '(нет в списке платформы)' : i.group === 'Нет в MDS' ? '(нет в MDS)' : null
+            }
           />
         </div>
       )}

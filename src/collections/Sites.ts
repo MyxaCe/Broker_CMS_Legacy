@@ -9,6 +9,7 @@ import {
   validateLanguages,
 } from '../lib/languages'
 import { defaultSiteSlug, notifySiteFor } from '../lib/notify-site'
+import { validateSiteInstruments } from '../lib/platform-instruments'
 
 const languageOptions = LANGUAGES.map((code) => ({ value: code, label: `${LANGUAGE_NAMES[code]} (${code})` }))
 
@@ -91,8 +92,10 @@ export const Sites: CollectionConfig = {
       admin: {
         components: { Field: '/components/MdsAllowListField#MdsAllowListField' },
         description:
-          'Доступ сайта к вселенной MDS: сайт получает котировки и может показывать только выбранные инструменты',
+          'Доступ сайта к инструментам платформы: сайт получает котировки и может показывать только выбранные инструменты',
       },
+      validate: (value: unknown, { req }: { req: Parameters<typeof validateSiteInstruments>[1] }) =>
+        validateSiteInstruments(value, req),
     },
     {
       name: 'languages',

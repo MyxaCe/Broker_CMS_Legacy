@@ -12,7 +12,7 @@ export function defaultSiteSlug(): string {
   return process.env.DEFAULT_SITE ?? 'apex-ru'
 }
 
-async function sendWebhook(url: string, secret: string, tags: string[]): Promise<void> {
+export async function sendWebhook(url: string, secret: string, tags: string[]): Promise<void> {
   const body = JSON.stringify({
     event_id: randomUUID(),
     occurred_at: new Date().toISOString(),

@@ -1,7 +1,7 @@
 /**
  * Контрактный тест: ответы живой CMS сравниваются с эталонными фикстурами
  * platform-contracts (contract/fixtures) по всем 14 ресурсам × ru/en,
- * плюс деталка статьи, auth и 404. Datetime-поля сравниваются по моменту
+ * плюс деталка статьи, инструменты платформы, auth и 404. Datetime-поля сравниваются по моменту
  * времени (CMS отдаёт канонический ISO с миллисекундами).
  *
  * Запуск: node scripts/contract-check.mjs   (нужны env CMS_URL?, CMS_API_KEY?)
@@ -97,9 +97,41 @@ const same = (name, got, expected) => {
   }
 };
 
+const ajv = new Ajv({ allErrors: true, strict: false });
+addFormats(ajv);
+
 const sitesRes = await get('/v1/cms/sites/apex-ru');
 if (sitesRes.ok) same('sites/apex-ru', await sitesRes.json(), readJson('contract', 'fixtures', 'cms.sites.json'));
 else fail(`sites/apex-ru: HTTP ${sitesRes.status}`);
+
+const platformRes = await get('/v1/cms/platform/instruments');
+if (platformRes.ok) {
+  const platformBody = await platformRes.json();
+  const platformFixture = readJson('contract', 'fixtures', 'cms.platform-instruments.json');
+  const validatePlatform = ajv.compile(readJson('contract', 'json-schema', 'cms.platform-instruments.schema.json'));
+  if (!validatePlatform(platformBody)) fail(`platform/instruments: схема ${JSON.stringify(validatePlatform.errors)}`);
+  else console.log('OK    platform/instruments: ответ валиден по схеме');
+  if (platformRes.headers.get('x-content-version') === String(platformBody.version)) console.log('OK    platform/instruments: X-Content-Version = version');
+  else fail(`platform/instruments: X-Content-Version ${platformRes.headers.get('x-content-version')} != ${platformBody.version}`);
+  if (typeof platformBody.updatedAt === 'string' && ISO_RE.test(platformBody.updatedAt)) platformFixture.updatedAt = platformBody.updatedAt;
+  same('platform/instruments', platformBody, platformFixture);
+} else fail(`platform/instruments: HTTP ${platformRes.status}`);
+const platformNoKey = await get('/v1/cms/platform/instruments', {});
+platformNoKey.status === 401 ? console.log('OK    platform/instruments без ключа 401') : fail(`platform/instruments без ключа -> ${platformNoKey.status}`);
+const platformUnknown = await get('/v1/cms/platform/other');
+platformUnknown.status === 404 ? console.log('OK    platform/other 404') : fail(`platform/other -> ${platformUnknown.status}`);
+for (const [name, body, valid] of [
+  ['пустой список', { version: 0, updatedAt: '2026-11-21T10:00:00Z', instruments: [] }, true],
+  ['closeOnly', { version: 12, updatedAt: '2026-11-21T10:00:00Z', instruments: [{ symbol: 'LTCUSD', mode: 'closeOnly' }] }, true],
+  ['неизвестный режим', { version: 1, updatedAt: '2026-11-21T10:00:00Z', instruments: [{ symbol: 'LTCUSD', mode: 'halt' }] }, false],
+  ['без version', { updatedAt: '2026-11-21T10:00:00Z', instruments: [] }, false],
+  ['лишнее поле', { version: 1, updatedAt: '2026-11-21T10:00:00Z', instruments: [{ symbol: 'LTCUSD', mode: 'trade', digits: 2 }] }, false],
+]) {
+  const validatePlatform = ajv.compile(readJson('contract', 'json-schema', 'cms.platform-instruments.schema.json'));
+  validatePlatform(body) === valid
+    ? console.log(`OK    platform/instruments схема: ${name} — ${valid ? 'принят' : 'отвергнут'}`)
+    : fail(`platform/instruments схема: ${name} — ожидалось ${valid ? 'принять' : 'отвергнуть'}`);
+}
 
 const publicBrand = await get('/v1/cms/brand?site=apex-ru', {});
 const publicBody = publicBrand.ok ? await publicBrand.json() : null;
@@ -109,8 +141,6 @@ if (publicBrand.status === 200 && publicBrand.headers.get('access-control-allow-
   console.log('OK    public brand: languages, defaultLanguage, heroBackground');
 } else fail(`public brand: HTTP ${publicBrand.status} ${JSON.stringify(publicBody)}`);
 
-const ajv = new Ajv({ allErrors: true, strict: false });
-addFormats(ajv);
 const { languages: _l, defaultLanguage: _d, heroBackground: _h, ...legacyBrand } = readJson('contract', 'fixtures', 'cms.brand.ru.json');
 for (const [resource, legacy] of [
   ['brand', legacyBrand],

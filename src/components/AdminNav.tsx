@@ -108,6 +108,7 @@ export async function AdminNav() {
 
       <NavLink href="/admin">Дашборд (сайты)</NavLink>
       <NavLink href="/admin/collections/sites">Настройки сайтов</NavLink>
+      <NavLink href="/admin/globals/platform-instruments">Инструменты платформы</NavLink>
 
       {active && (
         <>

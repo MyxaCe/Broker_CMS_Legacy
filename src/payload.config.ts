@@ -10,6 +10,7 @@ import { CONTENT_COLLECTIONS } from './collections/content/index'
 import { Media } from './collections/Media'
 import { Sites } from './collections/Sites'
 import { Users } from './collections/Users'
+import { PlatformInstruments } from './globals/PlatformInstruments'
 import { FALLBACK_LOCALE, LANGUAGE_NAMES, LANGUAGES } from './lib/languages'
 
 const filename = fileURLToPath(import.meta.url)
@@ -34,8 +35,9 @@ export default buildConfig({
     },
   },
   // Мульти-тенантность: бывшие глобалы — per-site коллекции (один док на сайт);
-  // бренд — поля карточки sites; глобалов в конфиге больше нет
+  // бренд — поля карточки sites
   collections: [Users, Media, Sites, Articles, ...CONTENT_COLLECTIONS],
+  globals: [PlatformInstruments],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

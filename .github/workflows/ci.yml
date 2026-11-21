@@ -81,6 +81,14 @@ jobs:
           NODE_ENV: production
           DATABASE_URL: postgres://cms:cms@localhost:5432/broker_cms_redeploy
 
+      - name: Инструменты платформы (отдача по договору, version, подмножество сайтов, отказ удаления, вебхук)
+        run: |
+          PGPASSWORD=cms psql -h localhost -U cms -d broker_cms -c "CREATE DATABASE broker_cms_platform"
+          pnpm test:platform-instruments
+        env:
+          NODE_ENV: production
+          DATABASE_URL: postgres://cms:cms@localhost:5432/broker_cms_platform
+
       - name: Seed (dev-режим применяет схему БД + контент из фикстур)
         run: pnpm seed
 
@@ -102,7 +110,7 @@ jobs:
           done
           echo "CMS did not become healthy" && exit 1
 
-      - name: Contract check (все ресурсы × ru/en против фикстур, de/fr/es против переводов)
+      - name: Contract check (все ресурсы × ru/en против фикстур, de/fr/es против переводов, инструменты платформы)
         run: node scripts/contract-check.mjs
         env:
           CMS_URL: http://localhost:3001

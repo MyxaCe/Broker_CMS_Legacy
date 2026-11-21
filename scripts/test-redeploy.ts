@@ -10,6 +10,7 @@ import { getPayload } from 'payload'
 
 import { RESOURCE_TO_COLLECTION } from '../src/collections/content/index'
 import { mapFaq } from '../src/lib/contract/mappers'
+import { loadPlatformInstruments, PLATFORM_INSTRUMENTS_SLUG, TERMINAL_PAIRS } from '../src/lib/platform-instruments'
 import { ensureSiteSkeleton } from '../src/lib/site-skeleton'
 import { runSeed } from '../src/seed/run'
 
@@ -72,6 +73,7 @@ async function snapshot(site: number) {
     SELECT (SELECT count(*)::int FROM "_site_faq_v") AS faq, (SELECT count(*)::int FROM "_site_accounts_v") AS accounts,
            (SELECT count(*)::int FROM "_site_promotions_v") AS promotions, (SELECT count(*)::int FROM "_articles_v") AS articles`)
   out.versions = versions.rows[0]
+  out.platform = await payload.findGlobal({ slug: PLATFORM_INSTRUMENTS_SLUG as never, depth: 0 })
   return JSON.parse(JSON.stringify(out))
 }
 
@@ -81,7 +83,11 @@ const site = await siteId(SITE)
 for (const locale of LOCALES) {
   assert.deepEqual(mapFaq(await doc('site-faq', site, locale)), fixture('faq', locale))
 }
-console.info('OK    первая выкатка на пустую базу: сайт и контент ru/en из фикстур')
+const platformFirst = await loadPlatformInstruments(payload)
+assert.equal(platformFirst.version, 1)
+assert.deepEqual(platformFirst.instruments, TERMINAL_PAIRS.map((symbol) => ({ symbol, mode: 'trade' })))
+assert.ok(first.kept.includes('platform-instruments'))
+console.info('OK    первая выкатка на пустую базу: сайт и контент ru/en из фикстур, инструменты платформы — 30 пар (version 1)')
 
 const faqRu = await doc('site-faq', site, 'ru')
 faqRu.sections[0].items[0].answer = 'Правка редактора: минимальное пополнение {{deposit.min}}.'
@@ -100,15 +106,26 @@ const navigationRu = await doc('site-navigation', site, 'ru')
 await payload.update({ collection: 'site-navigation', id: navigationRu.id, locale: 'ru', data: { header: [], _status: 'published' } as never })
 const article = (await payload.find({ collection: 'articles', where: { site: { equals: site } }, limit: 1, depth: 0 })).docs[0] as Doc
 await payload.update({ collection: 'articles', id: article.id, locale: 'ru', data: { title: 'Правка редактора', _status: 'published' } as never })
-await payload.update({ collection: 'sites', id: site, data: { name: 'Edited Brand', heroBackground: 'off' } as never })
-console.info('OK    редактор поправил ru и en (FAQ, тарифы, акции, навигация, статья, бренд)')
+await payload.update({ collection: 'sites', id: site, data: { name: 'Edited Brand', heroBackground: 'off', instruments: ['ETHUSD', 'BTCUSD'] } as never })
+await payload.updateGlobal({
+  slug: PLATFORM_INSTRUMENTS_SLUG as never,
+  data: {
+    instruments: [
+      { symbol: 'ETHUSD', mode: 'trade' },
+      { symbol: 'BTCUSD', mode: 'trade' },
+      { symbol: 'LTCUSD', mode: 'closeOnly' },
+    ],
+  } as never,
+})
+assert.equal((await loadPlatformInstruments(payload)).version, 2)
+console.info('OK    редактор поправил ru и en (FAQ, тарифы, акции, навигация, статья, бренд, доступ сайта) и список инструментов платформы')
 
 const before = await snapshot(site)
 const second = await deploy()
 assert.deepEqual(second.created, [])
 const after = await snapshot(site)
 assert.deepEqual(after, before)
-console.info('OK    повторная выкатка (миграции + сид): ru/en и бренд не изменились, новых версий нет')
+console.info('OK    повторная выкатка (миграции + сид): ru/en, бренд и инструменты платформы не изменились, новых версий нет')
 
 const third = await deploy()
 assert.deepEqual(third.created, [])

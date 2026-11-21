@@ -122,8 +122,12 @@ export interface Config {
     | null
     | ('ru' | 'en' | 'de' | 'fr' | 'es')
     | ('ru' | 'en' | 'de' | 'fr' | 'es')[];
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'platform-instruments': PlatformInstrument;
+  };
+  globalsSelect: {
+    'platform-instruments': PlatformInstrumentsSelect<false> | PlatformInstrumentsSelect<true>;
+  };
   locale: 'ru' | 'en' | 'de' | 'fr' | 'es';
   widgets: {
     collections: CollectionsWidget;
@@ -216,7 +220,7 @@ export interface Site {
       }[]
     | null;
   /**
-   * Доступ сайта к вселенной MDS: сайт получает котировки и может показывать только выбранные инструменты
+   * Доступ сайта к инструментам платформы: сайт получает котировки и может показывать только выбранные инструменты
    */
   instruments?:
     | {
@@ -1357,6 +1361,41 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * Инструменты, которые использует вся платформа: на этот список подписываются модуль рыночных данных и терминал. Сайтам можно включать только инструменты отсюда
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "platform-instruments".
+ */
+export interface PlatformInstrument {
+  id: number;
+  instruments?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Растёт при каждом сохранении. По ней модуль рыночных данных и терминал понимают, что список изменился
+   */
+  version?: number | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "platform-instruments_select".
+ */
+export interface PlatformInstrumentsSelect<T extends boolean = true> {
+  instruments?: T;
+  version?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

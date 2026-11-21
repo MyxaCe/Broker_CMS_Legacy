@@ -8,12 +8,14 @@ import { RESOURCE_MAPPERS } from '@/lib/contract/resources'
 import { validateContract } from '@/lib/contract/validate'
 import { parseLocale, siteLanguages } from '@/lib/languages'
 import { defaultSiteSlug } from '@/lib/notify-site'
+import { loadPlatformInstruments, toPlatformInstrumentsDto } from '@/lib/platform-instruments'
 
 /**
  * Контрактные эндпоинты CMS (мульти-тенантные):
  *   GET /v1/cms/{resource}?site=<slug>&locale=ru|en|de|fr|es[&draft=true]
  *   GET /v1/cms/articles[?page=N] · /v1/cms/articles/{slug} — то же с ?site=
  *   GET /v1/cms/sites/{slug} — конфиг тенанта (server-side)
+ *   GET /v1/cms/platform/instruments — инструменты платформы (server-side)
  * Без ?site= — сайт по умолчанию (DEFAULT_SITE): обратная совместимость,
  * действующие потребители работают без правок. Формы ответов не менялись.
  * Аутентификация X-API-Key; публичное исключение — brand?site= (тема
@@ -66,6 +68,16 @@ export async function GET(
 
   try {
     const payload = await getPayload({ config })
+
+    if (resource === 'platform') {
+      if (segments.length !== 2 || segments[1] !== 'instruments') {
+        return NextResponse.json({ error: 'unknown_resource' }, { status: 404 })
+      }
+      const dto = toPlatformInstrumentsDto(await loadPlatformInstruments(payload))
+      const check = validateContract('platform-instruments', dto)
+      if (!check.valid) return contractViolation('platform-instruments', '-', check.errors)
+      return jsonWithVersion(dto, dto.version)
+    }
 
     // Реестр сайтов нужен всем веткам
     const sites = await payload.find({

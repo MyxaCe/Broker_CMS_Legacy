@@ -21,7 +21,8 @@
     "test:i18n": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/i18n/test-i18n.ts",
     "test:migration": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/i18n/test-migration.ts",
     "test:redeploy": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/test-redeploy.ts",
-    "test:live-params": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/test-live-params.ts"
+    "test:live-params": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/test-live-params.ts",
+    "test:platform-instruments": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/test-platform-instruments.ts"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.86.0",

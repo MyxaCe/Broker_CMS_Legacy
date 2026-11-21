@@ -8,10 +8,17 @@ import { getPayload } from 'payload'
 
 import { mapAccounts, mapBrand, mapPromotions } from '../../src/lib/contract/mappers'
 import { validateContract } from '../../src/lib/contract/validate'
+import {
+  loadPlatformInstruments,
+  TERMINAL_PAIRS,
+  toPlatformInstrumentsDto,
+  validateSiteInstruments,
+} from '../../src/lib/platform-instruments'
 import { migrations } from '../../src/migrations/index'
 
 const TARGET = '20261119_145051_site_languages'
 const LIVE_PARAMS = '20261119_155549_live_params'
+const PLATFORM = '20261121_120722_platform_instruments'
 
 const payload = await getPayload({ config })
 const db = (payload.db as unknown as { drizzle: { execute: (q: unknown) => Promise<{ rows: any[] }> } }).drizzle
@@ -26,7 +33,11 @@ for (const migration of migrations.slice(0, index)) await migration.up(args)
 
 await db.execute(sql`
   INSERT INTO "sites" ("slug", "name", "primary_color", "demo_start_balance_cents", "updated_at", "created_at")
-  VALUES ('old-a', 'Old A', '#d4a437', 1000000, now(), now()), ('old-b', 'Old B', '#d4a437', 500, now(), now());
+  VALUES ('old-a', 'Old A', '#d4a437', 1000000, now(), now()), ('old-b', 'Old B', '#d4a437', 500, now(), now()),
+    ('old-c', 'Old C', '#d4a437', 0, now(), now()), ('old-d', 'Old D', '#d4a437', 0, now(), now());
+  UPDATE "sites" SET "instruments" = '["EURUSD", "BTCUSD", "XAUUSD"]'::jsonb WHERE "slug" = 'old-a';
+  UPDATE "sites" SET "instruments" = '["XAUUSD", "AAPL.US", "ETHUSD", "US500"]'::jsonb WHERE "slug" = 'old-b';
+  UPDATE "sites" SET "instruments" = NULL WHERE "slug" = 'old-c';
   INSERT INTO "site_navigation" ("site_id", "_status", "updated_at", "created_at")
   SELECT "id", 'published', now(), now() FROM "sites" WHERE "slug" = 'old-a';
   INSERT INTO "site_navigation_locales" ("risk_warning", "_locale", "_parent_id")
@@ -71,6 +82,8 @@ assert.deepEqual(
   [
     ['old-a', 'ru', ['ru', 'en']],
     ['old-b', 'ru', ['ru', 'en']],
+    ['old-c', 'ru', ['ru', 'en']],
+    ['old-d', 'ru', ['ru', 'en']],
   ],
 )
 console.info('OK    миграция: существующие сайты получили ["ru","en"] и "ru"')
@@ -85,6 +98,8 @@ assert.deepEqual(
   [
     ['old-a', 'quotes'],
     ['old-b', 'quotes'],
+    ['old-c', 'quotes'],
+    ['old-d', 'quotes'],
   ],
 )
 console.info('OK    миграция: существующие сайты получили heroBackground "quotes"')
@@ -142,8 +157,51 @@ assert.equal('promoId' in promotions.items[0], false)
 assert.ok(validateContract('promotions', promotions).valid)
 console.info('OK    миграция: brand, accounts, promotions после миграции валидны по контракту')
 
+const platformRows = await db.execute(sql`SELECT "instruments", "version"::int AS version FROM "platform_instruments"`)
+assert.equal(platformRows.rows.length, 1)
+const expectedPlatform = [...TERMINAL_PAIRS, 'EURUSD', 'XAUUSD', 'AAPL.US', 'US500'].map((symbol) => ({ symbol, mode: 'trade' }))
+assert.deepEqual(platformRows.rows[0].instruments, expectedPlatform)
+assert.equal(platformRows.rows[0].version, 1)
+const sitesInstruments = await db.execute(sql`SELECT "slug", "instruments" FROM "sites" ORDER BY "slug"`)
+assert.deepEqual(
+  sitesInstruments.rows.map((r) => [r.slug, r.instruments]),
+  [
+    ['old-a', ['EURUSD', 'BTCUSD', 'XAUUSD']],
+    ['old-b', ['XAUUSD', 'AAPL.US', 'ETHUSD', 'US500']],
+    ['old-c', null],
+    ['old-d', []],
+  ],
+)
+const platformSymbols = new Set(expectedPlatform.map((i) => i.symbol))
+for (const row of sitesInstruments.rows) {
+  for (const symbol of (row.instruments ?? []) as string[]) assert.ok(platformSymbols.has(symbol), `${row.slug}: ${symbol}`)
+}
+console.info(`OK    миграция: инструменты платформы = 30 пар терминала + инструменты сайтов (${expectedPlatform.length}), trade, version 1; у сайтов ничего не пропало`)
+
+const platformDto = toPlatformInstrumentsDto(await loadPlatformInstruments(payload))
+assert.equal(platformDto.version, 1)
+assert.deepEqual(platformDto.instruments, expectedPlatform)
+assert.ok(validateContract('platform-instruments', platformDto).valid)
+for (const row of sitesInstruments.rows) {
+  assert.equal(await validateSiteInstruments(row.instruments, { payload } as never), true, row.slug)
+}
+console.info('OK    миграция: Payload читает список, ответ валиден по контракту, доступ каждого сайта проходит проверку подмножества')
+
+const platformIndex = migrations.findIndex((m) => m.name === PLATFORM)
+assert.equal(platformIndex, migrations.length - 1)
+await db.execute(sql`UPDATE "platform_instruments" SET "instruments" = '[{"symbol": "BTCUSD", "mode": "closeOnly"}]'::jsonb, "version" = 7`)
+await migrations[platformIndex]!.up(args)
+const reapplied = await db.execute(sql`SELECT "instruments", "version"::int AS version FROM "platform_instruments"`)
+assert.deepEqual(reapplied.rows.map((r) => [r.instruments, r.version]), [[[{ symbol: 'BTCUSD', mode: 'closeOnly' }], 7]])
+console.info('OK    миграция: повторный прогон не трогает существующий список')
+
+await migrations[platformIndex]!.down(args)
+const platformDown = await db.execute(sql`SELECT to_regclass('public.platform_instruments') AS t`)
+assert.equal(platformDown.rows[0]?.t ?? null, null)
+console.info('OK    миграция: откат инструментов платформы проходит')
+
 const liveParams = migrations.findIndex((m) => m.name === LIVE_PARAMS)
-assert.equal(liveParams, migrations.length - 1)
+assert.equal(liveParams, platformIndex - 1)
 await migrations[liveParams]!.down(args)
 const liveDown = await db.execute(sql`
   SELECT count(*)::int AS n FROM information_schema.columns
