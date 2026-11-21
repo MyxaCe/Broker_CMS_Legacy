@@ -4,6 +4,7 @@ import * as migration_20260727_095512_allow_list from './20260727_095512_allow_l
 import * as migration_20261119_145051_site_languages from './20261119_145051_site_languages';
 import * as migration_20261119_155549_live_params from './20261119_155549_live_params';
 import * as migration_20261121_120722_platform_instruments from './20261121_120722_platform_instruments';
+import * as migration_20261121_133912_site_instruments from './20261121_133912_site_instruments';
 
 export const migrations = [
   {
@@ -34,6 +35,11 @@ export const migrations = [
   {
     up: migration_20261121_120722_platform_instruments.up,
     down: migration_20261121_120722_platform_instruments.down,
-    name: '20261121_120722_platform_instruments'
+    name: '20261121_120722_platform_instruments',
+  },
+  {
+    up: migration_20261121_133912_site_instruments.up,
+    down: migration_20261121_133912_site_instruments.down,
+    name: '20261121_133912_site_instruments',
   },
 ];

@@ -8,14 +8,14 @@ import { RESOURCE_MAPPERS } from '@/lib/contract/resources'
 import { validateContract } from '@/lib/contract/validate'
 import { parseLocale, siteLanguages } from '@/lib/languages'
 import { defaultSiteSlug } from '@/lib/notify-site'
-import { loadPlatformInstruments, toPlatformInstrumentsDto } from '@/lib/platform-instruments'
+import { readSymbols, refreshPlatformInstruments, toPlatformInstrumentsDto } from '@/lib/platform-instruments'
 
 /**
  * Контрактные эндпоинты CMS (мульти-тенантные):
  *   GET /v1/cms/{resource}?site=<slug>&locale=ru|en|de|fr|es[&draft=true]
  *   GET /v1/cms/articles[?page=N] · /v1/cms/articles/{slug} — то же с ?site=
  *   GET /v1/cms/sites/{slug} — конфиг тенанта (server-side)
- *   GET /v1/cms/platform/instruments — инструменты платформы (server-side)
+ *   GET /v1/cms/platform/instruments — инструменты платформы (server-side), объединение инструментов сайтов
  * Без ?site= — сайт по умолчанию (DEFAULT_SITE): обратная совместимость,
  * действующие потребители работают без правок. Формы ответов не менялись.
  * Аутентификация X-API-Key; публичное исключение — brand?site= (тема
@@ -73,7 +73,7 @@ export async function GET(
       if (segments.length !== 2 || segments[1] !== 'instruments') {
         return NextResponse.json({ error: 'unknown_resource' }, { status: 404 })
       }
-      const dto = toPlatformInstrumentsDto(await loadPlatformInstruments(payload))
+      const dto = toPlatformInstrumentsDto(await refreshPlatformInstruments(payload))
       const check = validateContract('platform-instruments', dto)
       if (!check.valid) return contractViolation('platform-instruments', '-', check.errors)
       return jsonWithVersion(dto, dto.version)
@@ -100,6 +100,9 @@ export async function GET(
         demoStartBalanceCents: Number(site.demoStartBalanceCents ?? 1000000),
         // Доступ сайта к вселенной MDS (allow-list канонических символов)
         instruments: Array.isArray(site.instruments) ? site.instruments.map(String) : [],
+        closeOnlyInstruments: readSymbols(site.closeOnlyInstruments).filter(
+          (symbol) => Array.isArray(site.instruments) && site.instruments.includes(symbol),
+        ),
         heroBackground: heroBackground(site),
         ...siteLanguages(site),
       }

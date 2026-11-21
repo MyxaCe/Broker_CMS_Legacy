@@ -219,10 +219,16 @@ export interface Site {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Доступ сайта к инструментам платформы: сайт получает котировки и может показывать только выбранные инструменты
-   */
   instruments?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  closeOnlyInstruments?:
     | {
         [k: string]: unknown;
       }
@@ -897,6 +903,7 @@ export interface SitesSelect<T extends boolean = true> {
         id?: T;
       };
   instruments?: T;
+  closeOnlyInstruments?: T;
   languages?: T;
   defaultLanguage?: T;
   heroBackground?: T;
@@ -1363,7 +1370,7 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   createdAt?: T;
 }
 /**
- * Инструменты, которые использует вся платформа: на этот список подписываются модуль рыночных данных и терминал. Сайтам можно включать только инструменты отсюда
+ * Только просмотр. Выбор делается в карточках сайтов
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "platform-instruments".
@@ -1379,10 +1386,8 @@ export interface PlatformInstrument {
     | number
     | boolean
     | null;
-  /**
-   * Растёт при каждом сохранении. По ней модуль рыночных данных и терминал понимают, что список изменился
-   */
   version?: number | null;
+  computedHash?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1393,6 +1398,7 @@ export interface PlatformInstrument {
 export interface PlatformInstrumentsSelect<T extends boolean = true> {
   instruments?: T;
   version?: T;
+  computedHash?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

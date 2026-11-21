@@ -101,8 +101,12 @@ const ajv = new Ajv({ allErrors: true, strict: false });
 addFormats(ajv);
 
 const sitesRes = await get('/v1/cms/sites/apex-ru');
-if (sitesRes.ok) same('sites/apex-ru', await sitesRes.json(), readJson('contract', 'fixtures', 'cms.sites.json'));
+const sitesBody = sitesRes.ok ? await sitesRes.json() : null;
+if (sitesBody) same('sites/apex-ru', sitesBody, readJson('contract', 'fixtures', 'cms.sites.json'));
 else fail(`sites/apex-ru: HTTP ${sitesRes.status}`);
+if (sitesBody && Array.isArray(sitesBody.closeOnlyInstruments) && sitesBody.closeOnlyInstruments.every((s) => sitesBody.instruments.includes(s))) {
+  console.log('OK    sites/apex-ru: closeOnlyInstruments ⊆ instruments');
+} else fail(`sites/apex-ru: closeOnlyInstruments ${JSON.stringify(sitesBody?.closeOnlyInstruments)}`);
 
 const platformRes = await get('/v1/cms/platform/instruments');
 if (platformRes.ok) {
@@ -115,6 +119,13 @@ if (platformRes.ok) {
   else fail(`platform/instruments: X-Content-Version ${platformRes.headers.get('x-content-version')} != ${platformBody.version}`);
   if (typeof platformBody.updatedAt === 'string' && ISO_RE.test(platformBody.updatedAt)) platformFixture.updatedAt = platformBody.updatedAt;
   same('platform/instruments', platformBody, platformFixture);
+  if (sitesBody && JSON.stringify(platformBody.instruments.map((i) => i.symbol)) === JSON.stringify(sitesBody.instruments)) {
+    console.log('OK    platform/instruments = объединение инструментов сайтов (один сайт apex-ru)');
+  } else fail('platform/instruments: не совпадает с инструментами сайта apex-ru');
+  const platformAgain = await (await get('/v1/cms/platform/instruments')).json();
+  platformAgain.version === platformBody.version && platformAgain.updatedAt === platformBody.updatedAt
+    ? console.log('OK    platform/instruments: повторный запрос без изменений — version и updatedAt прежние')
+    : fail(`platform/instruments: version ${platformBody.version} → ${platformAgain.version} без изменений`);
 } else fail(`platform/instruments: HTTP ${platformRes.status}`);
 const platformNoKey = await get('/v1/cms/platform/instruments', {});
 platformNoKey.status === 401 ? console.log('OK    platform/instruments без ключа 401') : fail(`platform/instruments без ключа -> ${platformNoKey.status}`);
@@ -153,6 +164,16 @@ for (const [resource, legacy] of [
   else console.log(`OK    ${resource}: схема отвергает пустые languages и неизвестный код`);
   if (validate({ ...legacy, heroBackground: 'video' })) fail(`${resource}: схема пропускает неизвестный heroBackground`);
   else console.log(`OK    ${resource}: схема отвергает неизвестный heroBackground`);
+}
+{
+  const validateSites = ajv.compile(readJson('contract', 'json-schema', 'cms.sites.schema.json'));
+  const base = { slug: 'apex-ru', name: 'Apex Capital', demoStartBalanceCents: 1000000, instruments: ['BTCUSD', 'LTCUSD'] };
+  validateSites({ ...base, closeOnlyInstruments: ['LTCUSD'] })
+    ? console.log('OK    sites: closeOnlyInstruments принят')
+    : fail(`sites: closeOnlyInstruments отвергнут ${JSON.stringify(validateSites.errors)}`);
+  validateSites({ ...base, closeOnlyInstruments: 'LTCUSD' }) || validateSites({ ...base, closeOnlyInstruments: ['LTCUSD', 'LTCUSD'] })
+    ? fail('sites: схема пропускает closeOnlyInstruments не списком или с повтором')
+    : console.log('OK    sites: схема отвергает closeOnlyInstruments не списком и с повтором');
 }
 
 for (const [resource, strip] of [

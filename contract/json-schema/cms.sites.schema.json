@@ -21,6 +21,13 @@
             "type": "string"
           }
         },
+        "closeOnlyInstruments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
         "heroBackground": {
           "type": "string",
           "enum": [

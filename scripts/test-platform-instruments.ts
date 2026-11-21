@@ -2,8 +2,10 @@ import 'dotenv/config'
 
 import assert from 'node:assert/strict'
 import { createHmac } from 'node:crypto'
+import { readFileSync } from 'node:fs'
 import { createServer, type IncomingMessage } from 'node:http'
 import type { AddressInfo } from 'node:net'
+import path from 'node:path'
 
 import config from '@payload-config'
 import { sql } from '@payloadcms/db-postgres'
@@ -13,9 +15,11 @@ import { GET } from '../src/app/v1/cms/[...path]/route'
 import { validateContract } from '../src/lib/contract/validate'
 import {
   checkOpenPositions,
-  PLATFORM_INSTRUMENTS_SLUG,
+  computePlatformInstruments,
+  EMPTY_PLATFORM_ERROR,
+  platformChecks,
+  platformInstrumentsHash,
   PLATFORM_INSTRUMENTS_TAG,
-  TERMINAL_PAIRS,
   type PlatformInstrument,
 } from '../src/lib/platform-instruments'
 
@@ -32,6 +36,28 @@ const empty = await db.execute(sql`SELECT to_regclass('public.sites') AS t`)
 assert.equal(empty.rows[0]?.t ?? null, null, 'нужна пустая база: тест создаёт схему миграциями сам')
 await payload.db.migrate()
 
+assert.deepEqual(
+  computePlatformInstruments([
+    { id: 10, slug: 'b', instruments: ['EURUSD', 'ETHUSD', 'BTCUSD', 'EURUSD'], closeOnlyInstruments: ['BTCUSD'] },
+    { id: 2, slug: 'a', instruments: ['BTCUSD', 'ETHUSD', 'LTCUSD', 42], closeOnlyInstruments: ['ETHUSD', 'LTCUSD'] },
+    { id: 3, slug: 'c', instruments: null, closeOnlyInstruments: null },
+    { id: '11', slug: 'd', instruments: ['XAUUSD'], closeOnlyInstruments: ['XAUUSD'] },
+  ]),
+  [
+    { symbol: 'BTCUSD', mode: 'trade' },
+    { symbol: 'ETHUSD', mode: 'trade' },
+    { symbol: 'LTCUSD', mode: 'closeOnly' },
+    { symbol: 'EURUSD', mode: 'trade' },
+    { symbol: 'XAUUSD', mode: 'closeOnly' },
+  ],
+)
+assert.deepEqual(computePlatformInstruments([]), [])
+assert.notEqual(
+  platformInstrumentsHash([{ symbol: 'BTCUSD', mode: 'trade' }]),
+  platformInstrumentsHash([{ symbol: 'BTCUSD', mode: 'closeOnly' }]),
+)
+console.info('OK    объединение: порядок сайтов по id, без повторов, trade если хоть один сайт торгует, иначе closeOnly')
+
 async function fetchPlatform(headers: Record<string, string> = { 'X-API-Key': API_KEY }) {
   const res = await GET(new Request('http://cms.test/v1/cms/platform/instruments', { headers }), {
     params: Promise.resolve({ path: ['platform', 'instruments'] }),
@@ -39,15 +65,18 @@ async function fetchPlatform(headers: Record<string, string> = { 'X-API-Key': AP
   return { status: res.status, version: res.headers.get('x-content-version'), body: (await res.json()) as Doc }
 }
 
-async function save(instruments: PlatformInstrument[]) {
-  return (await payload.updateGlobal({
-    slug: PLATFORM_INSTRUMENTS_SLUG as never,
-    data: { instruments } as never,
-  })) as Doc
+async function fetchSite(slug: string) {
+  const res = await GET(new Request(`http://cms.test/v1/cms/sites/${slug}`, { headers: { 'X-API-Key': API_KEY } }), {
+    params: Promise.resolve({ path: ['sites', slug] }),
+  })
+  return { status: res.status, body: (await res.json()) as Doc }
 }
 
-async function current(): Promise<{ version: number; instruments: PlatformInstrument[] }> {
+async function current(): Promise<{ version: number; updatedAt: string; instruments: PlatformInstrument[] }> {
   const res = await fetchPlatform()
+  assert.equal(res.status, 200)
+  assert.ok(validateContract('platform-instruments', res.body).valid, JSON.stringify(res.body))
+  assert.equal(res.version, String(res.body.version))
   return res.body as never
 }
 
@@ -56,24 +85,32 @@ async function expectInvalid(action: () => Promise<unknown>, ...fragments: strin
     await action()
   } catch (error) {
     const details = (error as { data?: { errors?: { message?: string }[] } }).data?.errors ?? []
-    const text = details.map((d) => d.message ?? '').join(' | ')
+    const text = [(error as Error).message, ...details.map((d) => d.message ?? '')].join(' | ')
     for (const fragment of fragments) assert.ok(text.includes(fragment), `в ошибке нет «${fragment}»: ${text}`)
     return text
   }
-  assert.fail('ожидался отказ валидации')
+  assert.fail('ожидался отказ')
 }
 
-const first = await fetchPlatform()
-assert.equal(first.status, 200)
-assert.ok(validateContract('platform-instruments', first.body).valid)
-assert.equal(first.body.version, 1)
-assert.equal(first.version, '1')
-assert.ok(!Number.isNaN(Date.parse(first.body.updatedAt)))
-assert.deepEqual(
-  first.body.instruments,
-  TERMINAL_PAIRS.map((symbol) => ({ symbol, mode: 'trade' })),
-)
-console.info('OK    отдача по договору: version 1, updatedAt, 30 пар терминала в режиме trade')
+function createSite(slug: string, instruments: string[], closeOnlyInstruments: string[] = []) {
+  return payload.create({
+    collection: 'sites',
+    data: { slug, name: slug, primaryColor: '#d4a437', demoStartBalanceCents: 0, instruments, closeOnlyInstruments } as never,
+  }) as Promise<Doc>
+}
+
+function updateSite(id: number, data: Record<string, unknown>) {
+  return payload.update({ collection: 'sites', id, data: data as never }) as Promise<Doc>
+}
+
+const legacy = await db.execute(sql`SELECT "instruments", "version"::int AS version FROM "platform_instruments"`)
+assert.equal(legacy.rows[0].instruments.length, 30)
+const start = await current()
+assert.deepEqual(start.instruments, [])
+assert.equal(start.version, legacy.rows[0].version + 1)
+assert.equal((await current()).version, start.version)
+assert.equal((await current()).updatedAt, start.updatedAt)
+console.info(`OK    пустая база: вычисленный список пуст, version ${start.version}; повторный запрос версию не меняет`)
 
 assert.equal((await fetchPlatform({})).status, 401)
 assert.equal((await fetchPlatform({ 'X-API-Key': 'wrong' })).status, 401)
@@ -83,72 +120,106 @@ const unknown = await GET(new Request('http://cms.test/v1/cms/platform/other', {
 assert.equal(unknown.status, 404)
 console.info('OK    отдача: без ключа и с чужим ключом 401, неизвестный ресурс 404')
 
-const initial = first.body.instruments as PlatformInstrument[]
-const reordered: PlatformInstrument[] = [
-  initial.find((i) => i.symbol === 'ETHUSD')!,
-  ...initial.filter((i) => i.symbol !== 'ETHUSD'),
-].map((i) => (i.symbol === 'LTCUSD' ? { symbol: i.symbol, mode: 'closeOnly' } : i))
-await save(reordered)
-const second = await fetchPlatform()
-assert.equal(second.body.version, 2)
-assert.equal(second.version, '2')
-assert.deepEqual(second.body.instruments, reordered)
-assert.ok(Date.parse(second.body.updatedAt) >= Date.parse(first.body.updatedAt))
-await save(reordered)
-assert.equal((await current()).version, 3)
-console.info('OK    version растёт при каждом сохранении (1 → 2 → 3), порядок и closeOnly отдаются как сохранены')
+const a = await createSite('pi-a', ['BTCUSD', 'ETHUSD', 'LTCUSD'], ['LTCUSD', 'ETHUSD'])
+const v1 = await current()
+assert.equal(v1.version, start.version + 1)
+assert.deepEqual(v1.instruments, [
+  { symbol: 'BTCUSD', mode: 'trade' },
+  { symbol: 'ETHUSD', mode: 'closeOnly' },
+  { symbol: 'LTCUSD', mode: 'closeOnly' },
+])
+const b = await createSite('pi-b', ['EURUSD', 'ETHUSD', 'BTCUSD'], ['BTCUSD'])
+const v2 = await current()
+assert.equal(v2.version, v1.version + 1)
+assert.deepEqual(v2.instruments, [
+  { symbol: 'BTCUSD', mode: 'trade' },
+  { symbol: 'ETHUSD', mode: 'trade' },
+  { symbol: 'LTCUSD', mode: 'closeOnly' },
+  { symbol: 'EURUSD', mode: 'trade' },
+])
+assert.ok(Date.parse(v2.updatedAt) >= Date.parse(v1.updatedAt))
+console.info('OK    сайты → платформа: объединение по id сайтов, ETHUSD trade (pi-b торгует), LTCUSD closeOnly; version растёт')
 
-await expectInvalid(() => save([...reordered, { symbol: 'BTCUSD', mode: 'trade' }]), 'BTCUSD', 'дважды')
-await expectInvalid(() => save([{ symbol: 'BTCUSD', mode: 'halt' as never }]), 'BTCUSD', 'режим')
-await expectInvalid(() => save([{ symbol: 'BTC USD', mode: 'trade' }]), 'Некорректный символ')
-await expectInvalid(() => save([]), 'не может быть пустым')
-assert.equal((await current()).version, 3)
-console.info('OK    валидация формы: повтор символа, неизвестный режим, некорректный символ, пустой список — отказ, версия не меняется')
+await updateSite(b.id, { name: 'Другое имя' })
+await updateSite(b.id, { instruments: ['ETHUSD', 'BTCUSD', 'EURUSD'], closeOnlyInstruments: ['BTCUSD'] })
+await updateSite(b.id, { closeOnlyInstruments: [] })
+const same = await current()
+assert.equal(same.version, v2.version)
+assert.equal(same.updatedAt, v2.updatedAt)
+assert.deepEqual(same.instruments, v2.instruments)
+console.info('OK    сохранения сайта без изменения вычисленного списка (имя, порядок у второго сайта, режим перекрытый торговлей) — version прежняя')
 
-const site = (await payload.create({
-  collection: 'sites',
-  data: { slug: 'pi-site', name: 'PI', primaryColor: '#d4a437', demoStartBalanceCents: 0, instruments: ['BTCUSD', 'LTCUSD'] } as never,
-})) as Doc
-const other = (await payload.create({
-  collection: 'sites',
-  data: { slug: 'pi-other', name: 'PI 2', primaryColor: '#d4a437', demoStartBalanceCents: 0, instruments: ['BTCUSD'] } as never,
-})) as Doc
-await expectInvalid(
-  () => payload.update({ collection: 'sites', id: site.id, data: { instruments: ['BTCUSD', 'EURUSD', 'XAUUSD'] } as never }),
-  'EURUSD, XAUUSD',
-  'Инструментах платформы',
-)
-await expectInvalid(
-  () => payload.create({ collection: 'sites', data: { slug: 'pi-bad', name: 'Bad', primaryColor: '#d4a437', demoStartBalanceCents: 0, instruments: ['EURUSD'] } as never }),
-  'EURUSD',
-)
-const unchanged = (await payload.findByID({ collection: 'sites', id: site.id, depth: 0 })) as Doc
-assert.deepEqual(unchanged.instruments, ['BTCUSD', 'LTCUSD'])
-await payload.update({ collection: 'sites', id: site.id, data: { instruments: ['BTCUSD', 'LTCUSD', 'SOLUSD'] } as never })
-console.info('OK    сайт: инструмент вне списка платформы — понятная ошибка с перечнем; подмножество сохраняется (closeOnly тоже)')
+await updateSite(a.id, { instruments: ['ETHUSD', 'BTCUSD', 'LTCUSD'], closeOnlyInstruments: ['LTCUSD', 'ETHUSD'] })
+const v3 = await current()
+assert.equal(v3.version, v2.version + 1)
+assert.deepEqual(v3.instruments.map((i) => i.symbol), ['ETHUSD', 'BTCUSD', 'LTCUSD', 'EURUSD'])
+await updateSite(b.id, { closeOnlyInstruments: ['ETHUSD'] })
+const v4 = await current()
+assert.equal(v4.version, v3.version + 1)
+assert.deepEqual(v4.instruments.find((i) => i.symbol === 'ETHUSD'), { symbol: 'ETHUSD', mode: 'closeOnly' })
+console.info('OK    порядок у первого сайта и режим «только закрытие» у всех держателей — меняют список, version растёт')
 
-const withoutBtc = reordered.filter((i) => i.symbol !== 'BTCUSD' && i.symbol !== 'LTCUSD')
-const refusal = await expectInvalid(() => save(withoutBtc), 'BTCUSD (сайты: pi-other, pi-site)', 'LTCUSD (сайты: pi-site)', 'Сначала уберите')
-assert.equal((await current()).version, 3)
-assert.deepEqual((await current()).instruments, reordered)
-console.info(`OK    удаление включённого сайтам инструмента — отказ: ${refusal}`)
+const siteDto = await fetchSite('pi-b')
+assert.equal(siteDto.status, 200)
+assert.deepEqual(siteDto.body.instruments, ['ETHUSD', 'BTCUSD', 'EURUSD'])
+assert.deepEqual(siteDto.body.closeOnlyInstruments, ['ETHUSD'])
+assert.ok(validateContract('sites', siteDto.body).valid)
+const { closeOnlyInstruments: _c, ...legacySite } = siteDto.body
+assert.ok(validateContract('sites', legacySite).valid, 'старый ответ без closeOnlyInstruments валиден')
+assert.equal(validateContract('sites', { ...siteDto.body, closeOnlyInstruments: 'ETHUSD' }).valid, false)
+const fixture = JSON.parse(readFileSync(path.join(process.cwd(), 'contract', 'fixtures', 'cms.sites.json'), 'utf8'))
+assert.ok(validateContract('sites', fixture).valid)
+assert.deepEqual(Object.keys(siteDto.body).sort(), Object.keys(fixture).sort())
+console.info('OK    sites/{slug}: instruments прежние, closeOnlyInstruments — новое необязательное поле; старый ответ валиден')
 
-const withoutMana = reordered.filter((i) => i.symbol !== 'MANAUSD')
-await save(withoutMana)
-assert.equal((await current()).version, 4)
-assert.deepEqual((await current()).instruments, withoutMana)
-const closeOnlyBtc = withoutMana.map((i) => (i.symbol === 'BTCUSD' ? { ...i, mode: 'closeOnly' as const } : i))
-await save(closeOnlyBtc)
-assert.equal((await current()).version, 5)
-console.info('OK    удаление неиспользуемого инструмента и перевод используемого в closeOnly — разрешены')
+await expectInvalid(() => updateSite(a.id, { closeOnlyInstruments: ['LTCUSD', 'XAUUSD'] }), 'Только закрытие', 'XAUUSD')
+await expectInvalid(() => updateSite(a.id, { instruments: ['ETHUSD', 'BTCUSD'] }), 'LTCUSD у сайта не включены')
+await expectInvalid(() => updateSite(a.id, { instruments: ['BTCUSD', 'BTCUSD'], closeOnlyInstruments: [] }), 'дважды')
+await expectInvalid(() => updateSite(a.id, { instruments: ['BTC USD'], closeOnlyInstruments: [] }), 'Некорректный символ')
+await expectInvalid(() => createSite('pi-bad', ['EURUSD'], ['GBPUSD']), 'GBPUSD')
+assert.equal((await current()).version, v4.version)
+console.info('OK    closeOnlyInstruments ⊆ instruments: лишний символ — понятная ошибка; повтор и некорректный символ — отказ')
 
-await payload.update({ collection: 'sites', id: other.id, data: { instruments: [] } as never })
-await payload.update({ collection: 'sites', id: site.id, data: { instruments: ['SOLUSD'] } as never })
-const withoutBtcLtc = closeOnlyBtc.filter((i) => i.symbol !== 'BTCUSD' && i.symbol !== 'LTCUSD')
-await save(withoutBtcLtc)
-assert.equal((await current()).version, 6)
+const probed: string[][] = []
+platformChecks.openPositions = async (symbols) => {
+  probed.push(symbols)
+  return { allowed: true }
+}
+await updateSite(a.id, { instruments: ['ETHUSD', 'BTCUSD'], closeOnlyInstruments: ['ETHUSD'] })
+assert.deepEqual((await fetchSite('pi-a')).body.closeOnlyInstruments, ['ETHUSD'])
+const v5 = await current()
+assert.equal(v5.version, v4.version + 1)
+assert.deepEqual(probed, [['LTCUSD']])
+await updateSite(b.id, { instruments: ['ETHUSD', 'EURUSD'], closeOnlyInstruments: [] })
+assert.deepEqual(probed, [['LTCUSD']], 'BTCUSD остаётся у pi-a — позиции не проверяются')
+platformChecks.openPositions = async (symbols) => {
+  probed.push(symbols)
+  return { allowed: false, reason: `Есть открытые позиции: ${symbols.join(', ')}` }
+}
+await expectInvalid(() => updateSite(b.id, { instruments: ['ETHUSD'], closeOnlyInstruments: [] }), 'Есть открытые позиции: EURUSD')
+assert.deepEqual((await fetchSite('pi-b')).body.instruments, ['ETHUSD', 'EURUSD'])
+platformChecks.openPositions = checkOpenPositions
 assert.deepEqual(await checkOpenPositions(['BTCUSD']), { allowed: true })
-console.info('OK    после снятия у сайтов инструмент убирается из платформы; проверка открытых позиций — «разрешено»')
+console.info('OK    символ пропадает из платформы целиком → checkOpenPositions(символы); отказ проверки останавливает сохранение')
+
+await updateSite(b.id, { instruments: [], closeOnlyInstruments: [] })
+const lonely = await current()
+assert.deepEqual(lonely.instruments, [
+  { symbol: 'ETHUSD', mode: 'closeOnly' },
+  { symbol: 'BTCUSD', mode: 'trade' },
+])
+const refusal = await expectInvalid(() => updateSite(a.id, { instruments: [], closeOnlyInstruments: [] }), EMPTY_PLATFORM_ERROR)
+await expectInvalid(() => payload.delete({ collection: 'sites', id: a.id }), 'пустым')
+assert.equal((await current()).version, lonely.version)
+assert.equal((await payload.find({ collection: 'sites', where: { slug: { equals: 'pi-a' } } })).totalDocs, 1)
+console.info(`OK    пустой вычисленный список — отказ (сохранение и удаление сайта): ${refusal.split(' | ').pop()}`)
+
+await updateSite(b.id, { instruments: ['XAUUSD'] })
+await payload.delete({ collection: 'sites', id: a.id })
+const afterDelete = await current()
+assert.deepEqual(afterDelete.instruments, [{ symbol: 'XAUUSD', mode: 'trade' }])
+assert.equal(afterDelete.version, lonely.version + 2)
+console.info('OK    удаление сайта пересчитывает список, version растёт')
 
 const received: { body: string; signature: string | undefined }[] = []
 const server = createServer((req: IncomingMessage, res) => {
@@ -167,32 +238,54 @@ await new Promise<void>((resolve) => deadServer.listen(0, '127.0.0.1', resolve))
 const deadPort = (deadServer.address() as AddressInfo).port
 await new Promise<void>((resolve) => deadServer.close(() => resolve()))
 
+const waitHooks = async (count: number) => {
+  for (let i = 0; i < 50 && received.length < count; i++) await new Promise((r) => setTimeout(r, 100))
+}
+
 process.env.PLATFORM_INSTRUMENTS_WEBHOOK_URLS = ` http://127.0.0.1:${deadPort}/dead , http://127.0.0.1:${port}/hook`
 process.env.PLATFORM_INSTRUMENTS_WEBHOOK_SECRET = 'platform-secret'
+await updateSite(b.id, { name: 'Только имя' })
+await new Promise((r) => setTimeout(r, 500))
+assert.equal(received.length, 0, 'вычисленный список не изменился — вебхука нет')
+
 const started = Date.now()
-await save(withoutBtcLtc)
+await updateSite(b.id, { instruments: ['XAUUSD', 'EURUSD'] })
 assert.ok(Date.now() - started < 2_000, 'сохранение не ждёт вебхук')
-assert.equal((await current()).version, 7)
-for (let i = 0; i < 50 && received.length === 0; i++) await new Promise((r) => setTimeout(r, 100))
+await waitHooks(1)
 assert.equal(received.length, 1)
 const hook = received[0]!
 assert.equal(hook.signature, 'sha256=' + createHmac('sha256', 'platform-secret').update(hook.body, 'utf8').digest('hex'))
 const hookBody = JSON.parse(hook.body) as Doc
 assert.deepEqual(hookBody.tags, [PLATFORM_INSTRUMENTS_TAG])
 assert.ok(typeof hookBody.event_id === 'string' && !Number.isNaN(Date.parse(hookBody.occurred_at)))
-console.info('OK    вебхук: подпись HMAC sha256 верна, тег cms:platform:instruments; мёртвый адрес не мешает сохранению')
+const hooked = await current()
+assert.equal(hooked.version, afterDelete.version + 1)
+assert.equal(received.length, 1)
+console.info('OK    вебхук после сохранения сайта, изменившего список: подпись HMAC верна, тег cms:platform:instruments; без изменения — не шлётся')
+
+await db.execute(sql`UPDATE "sites" SET "instruments" = '["GBPUSD"]'::jsonb WHERE "id" = ${b.id}`)
+const caught = await current()
+assert.deepEqual(caught.instruments, [{ symbol: 'GBPUSD', mode: 'trade' }])
+assert.equal(caught.version, hooked.version + 1)
+await waitHooks(2)
+assert.equal(received.length, 2)
+assert.equal((await current()).version, caught.version)
+console.info('OK    изменение в обход CMS (миграция, правка в базе) подхватывается первым запросом: version растёт, вебхук уходит')
 
 process.env.PLATFORM_INSTRUMENTS_WEBHOOK_URLS = `http://127.0.0.1:${deadPort}/dead`
-await save(withoutBtcLtc)
-assert.equal((await current()).version, 8)
+await updateSite(b.id, { instruments: ['GBPUSD', 'EURUSD'] })
 delete process.env.PLATFORM_INSTRUMENTS_WEBHOOK_SECRET
 const savedSiteSecret = process.env.SITE_WEBHOOK_SECRET
 delete process.env.SITE_WEBHOOK_SECRET
-await save(withoutBtcLtc)
-assert.equal((await current()).version, 9)
+await updateSite(b.id, { instruments: ['EURUSD'] })
+assert.equal((await current()).version, caught.version + 2)
 if (savedSiteSecret !== undefined) process.env.SITE_WEBHOOK_SECRET = savedSiteSecret
 console.info('OK    вебхук: все адреса недоступны или нет секрета — сохранение проходит, версия растёт')
 server.close()
+
+const legacyAfter = await db.execute(sql`SELECT "instruments" FROM "platform_instruments"`)
+assert.deepEqual(legacyAfter.rows[0].instruments, legacy.rows[0].instruments)
+console.info('OK    прежний ручной список в базе не тронут и не используется')
 
 console.info('\nALL OK')
 process.exit(0)

@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import { APIError, type CollectionConfig } from 'payload'
 
 import {
   DEFAULT_SITE_LANGUAGE,
@@ -9,7 +9,13 @@ import {
   validateLanguages,
 } from '../lib/languages'
 import { defaultSiteSlug, notifySiteFor } from '../lib/notify-site'
-import { validateSiteInstruments } from '../lib/platform-instruments'
+import {
+  checkPlatformChange,
+  refreshPlatformInstruments,
+  validateCloseOnlyInstruments,
+  validateSiteInstruments,
+  withoutSite,
+} from '../lib/platform-instruments'
 
 const languageOptions = LANGUAGES.map((code) => ({ value: code, label: `${LANGUAGE_NAMES[code]} (${code})` }))
 
@@ -44,6 +50,22 @@ export const Sites: CollectionConfig = {
           await ensureSiteSkeleton(req.payload, (doc as { id: string | number }).id)
           console.info(`[sites] skeleton created for ${(doc as { slug?: string }).slug}`)
         }
+        return doc
+      },
+      async ({ doc, req }) => {
+        await refreshPlatformInstruments(req.payload, req)
+        return doc
+      },
+    ],
+    beforeDelete: [
+      async ({ id, req }) => {
+        const verdict = await checkPlatformChange(req, (sites) => withoutSite(sites, id), true)
+        if (verdict !== true) throw new APIError(verdict, 400, undefined, true)
+      },
+    ],
+    afterDelete: [
+      async ({ doc, req }) => {
+        await refreshPlatformInstruments(req.payload, req)
         return doc
       },
     ],
@@ -88,14 +110,23 @@ export const Sites: CollectionConfig = {
       name: 'instruments',
       type: 'json',
       defaultValue: [],
-      label: 'Инструменты сайта',
+      label: 'Инструменты',
       admin: {
-        components: { Field: '/components/MdsAllowListField#MdsAllowListField' },
-        description:
-          'Доступ сайта к инструментам платформы: сайт получает котировки и может показывать только выбранные инструменты',
+        components: { Field: '/components/SiteInstrumentsField#SiteInstrumentsField' },
       },
-      validate: (value: unknown, { req }: { req: Parameters<typeof validateSiteInstruments>[1] }) =>
-        validateSiteInstruments(value, req),
+      validate: (
+        value: unknown,
+        options: Parameters<typeof validateSiteInstruments>[1],
+      ) => validateSiteInstruments(value, options),
+    },
+    {
+      name: 'closeOnlyInstruments',
+      type: 'json',
+      defaultValue: [],
+      label: 'Инструменты сайта в режиме «Только закрытие»',
+      admin: { hidden: true },
+      validate: (value: unknown, { siblingData }: { siblingData: Record<string, unknown> }) =>
+        validateCloseOnlyInstruments(value, siblingData),
     },
     {
       name: 'languages',

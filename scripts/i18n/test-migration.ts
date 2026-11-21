@@ -9,16 +9,17 @@ import { getPayload } from 'payload'
 import { mapAccounts, mapBrand, mapPromotions } from '../../src/lib/contract/mappers'
 import { validateContract } from '../../src/lib/contract/validate'
 import {
-  loadPlatformInstruments,
+  refreshPlatformInstruments,
   TERMINAL_PAIRS,
   toPlatformInstrumentsDto,
-  validateSiteInstruments,
+  validateCloseOnlyInstruments,
 } from '../../src/lib/platform-instruments'
 import { migrations } from '../../src/migrations/index'
 
 const TARGET = '20261119_145051_site_languages'
 const LIVE_PARAMS = '20261119_155549_live_params'
 const PLATFORM = '20261121_120722_platform_instruments'
+const SITE_INSTRUMENTS = '20261121_133912_site_instruments'
 
 const payload = await getPayload({ config })
 const db = (payload.db as unknown as { drizzle: { execute: (q: unknown) => Promise<{ rows: any[] }> } }).drizzle
@@ -67,10 +68,19 @@ const CONTENT = sql`
          (SELECT json_agg(to_jsonb(t) - 'portfolio_key' ORDER BY t._locale, t._order) FROM site_accounts_items t) AS accounts,
          (SELECT json_agg(to_jsonb(t) - 'portfolio_key' ORDER BY t._locale, t._order) FROM _site_accounts_v_version_items t) AS accounts_versions,
          (SELECT json_agg(to_jsonb(t) - 'engine_promo_id' ORDER BY t._locale, t._order) FROM site_promotions_items t) AS promotions,
-         (SELECT json_agg(to_jsonb(t) - 'hero_background' - 'default_language' ORDER BY t.id) FROM sites t) AS sites`
+         (SELECT json_agg(to_jsonb(t) - 'hero_background' - 'default_language' - 'close_only_instruments' ORDER BY t.id) FROM sites t) AS sites`
 const contentBefore = await db.execute(CONTENT)
 
-for (const migration of migrations.slice(index)) await migration.up(args)
+const siteInstrumentsIndex = migrations.findIndex((m) => m.name === SITE_INSTRUMENTS)
+assert.equal(siteInstrumentsIndex, migrations.length - 1)
+for (const migration of migrations.slice(index, siteInstrumentsIndex)) await migration.up(args)
+const manualBefore = await db.execute(sql`SELECT "instruments", "version"::int AS version FROM "platform_instruments"`)
+await db.execute(sql`
+  UPDATE "platform_instruments" SET "version" = 5, "instruments" = (
+    SELECT jsonb_agg(CASE WHEN i ->> 'symbol' IN ('BTCUSD', 'XAUUSD', 'SOLUSD') THEN jsonb_set(i, '{mode}', '"closeOnly"') ELSE i END ORDER BY o)
+    FROM jsonb_array_elements("instruments") WITH ORDINALITY AS t(i, o)
+  )`)
+await migrations[siteInstrumentsIndex]!.up(args)
 
 const languages = await db.execute(sql`
   SELECT s."slug", s."default_language"::text AS def,
@@ -157,43 +167,72 @@ assert.equal('promoId' in promotions.items[0], false)
 assert.ok(validateContract('promotions', promotions).valid)
 console.info('OK    миграция: brand, accounts, promotions после миграции валидны по контракту')
 
-const platformRows = await db.execute(sql`SELECT "instruments", "version"::int AS version FROM "platform_instruments"`)
-assert.equal(platformRows.rows.length, 1)
 const expectedPlatform = [...TERMINAL_PAIRS, 'EURUSD', 'XAUUSD', 'AAPL.US', 'US500'].map((symbol) => ({ symbol, mode: 'trade' }))
-assert.deepEqual(platformRows.rows[0].instruments, expectedPlatform)
-assert.equal(platformRows.rows[0].version, 1)
-const sitesInstruments = await db.execute(sql`SELECT "slug", "instruments" FROM "sites" ORDER BY "slug"`)
+assert.deepEqual(manualBefore.rows[0].instruments, expectedPlatform)
+assert.equal(manualBefore.rows[0].version, 1)
+const manualCloseOnly = expectedPlatform.map((i) =>
+  ['BTCUSD', 'XAUUSD', 'SOLUSD'].includes(i.symbol) ? { ...i, mode: 'closeOnly' } : i,
+)
+const platformRows = await db.execute(sql`SELECT "instruments", "version"::int AS version, "computed_hash" FROM "platform_instruments"`)
+assert.equal(platformRows.rows.length, 1)
+assert.deepEqual(platformRows.rows[0].instruments, manualCloseOnly)
+assert.equal(platformRows.rows[0].version, 5)
+assert.equal(platformRows.rows[0].computed_hash, null)
+console.info('OK    миграция: прежний ручной список платформы сохранён как был (данные не удалены), version не тронута')
+
+const sitesInstruments = await db.execute(sql`SELECT "slug", "instruments", "close_only_instruments" FROM "sites" ORDER BY "slug"`)
 assert.deepEqual(
-  sitesInstruments.rows.map((r) => [r.slug, r.instruments]),
+  sitesInstruments.rows.map((r) => [r.slug, r.instruments, r.close_only_instruments]),
   [
-    ['old-a', ['EURUSD', 'BTCUSD', 'XAUUSD']],
-    ['old-b', ['XAUUSD', 'AAPL.US', 'ETHUSD', 'US500']],
-    ['old-c', null],
-    ['old-d', []],
+    ['old-a', ['EURUSD', 'BTCUSD', 'XAUUSD'], ['BTCUSD', 'XAUUSD']],
+    ['old-b', ['XAUUSD', 'AAPL.US', 'ETHUSD', 'US500'], ['XAUUSD']],
+    ['old-c', null, []],
+    ['old-d', [], []],
   ],
 )
-const platformSymbols = new Set(expectedPlatform.map((i) => i.symbol))
 for (const row of sitesInstruments.rows) {
-  for (const symbol of (row.instruments ?? []) as string[]) assert.ok(platformSymbols.has(symbol), `${row.slug}: ${symbol}`)
+  assert.equal(validateCloseOnlyInstruments(row.close_only_instruments, { instruments: row.instruments }), true, row.slug)
 }
-console.info(`OK    миграция: инструменты платформы = 30 пар терминала + инструменты сайтов (${expectedPlatform.length}), trade, version 1; у сайтов ничего не пропало`)
+console.info('OK    миграция: режим closeOnly перенесён из ручного списка в сайты, где символ включён (SOLUSD не включён никому — никуда); инструменты сайтов не изменились')
 
-const platformDto = toPlatformInstrumentsDto(await loadPlatformInstruments(payload))
-assert.equal(platformDto.version, 1)
-assert.deepEqual(platformDto.instruments, expectedPlatform)
+const platformDto = toPlatformInstrumentsDto(await refreshPlatformInstruments(payload))
+assert.deepEqual(platformDto.instruments, [
+  { symbol: 'EURUSD', mode: 'trade' },
+  { symbol: 'BTCUSD', mode: 'closeOnly' },
+  { symbol: 'XAUUSD', mode: 'closeOnly' },
+  { symbol: 'AAPL.US', mode: 'trade' },
+  { symbol: 'ETHUSD', mode: 'trade' },
+  { symbol: 'US500', mode: 'trade' },
+])
+assert.equal(platformDto.version, 6)
 assert.ok(validateContract('platform-instruments', platformDto).valid)
-for (const row of sitesInstruments.rows) {
-  assert.equal(await validateSiteInstruments(row.instruments, { payload } as never), true, row.slug)
-}
-console.info('OK    миграция: Payload читает список, ответ валиден по контракту, доступ каждого сайта проходит проверку подмножества')
+assert.equal((await refreshPlatformInstruments(payload)).version, 6)
+const siteB = (await payload.find({ collection: 'sites', where: { slug: { equals: 'old-b' } }, depth: 0 })).docs[0] as unknown as Record<string, unknown>
+assert.deepEqual(siteB.closeOnlyInstruments, ['XAUUSD'])
+console.info(`OK    миграция: платформа теперь вычисляется из сайтов (${platformDto.instruments.length} вместо ${manualCloseOnly.length}), version 5 → 6 при первом запросе, дальше не растёт; Payload читает closeOnlyInstruments`)
 
 const platformIndex = migrations.findIndex((m) => m.name === PLATFORM)
-assert.equal(platformIndex, migrations.length - 1)
+assert.equal(platformIndex, siteInstrumentsIndex - 1)
+await db.execute(sql`UPDATE "sites" SET "close_only_instruments" = '["EURUSD"]'::jsonb WHERE "slug" = 'old-a'`)
 await db.execute(sql`UPDATE "platform_instruments" SET "instruments" = '[{"symbol": "BTCUSD", "mode": "closeOnly"}]'::jsonb, "version" = 7`)
 await migrations[platformIndex]!.up(args)
+await migrations[siteInstrumentsIndex]!.up(args)
 const reapplied = await db.execute(sql`SELECT "instruments", "version"::int AS version FROM "platform_instruments"`)
 assert.deepEqual(reapplied.rows.map((r) => [r.instruments, r.version]), [[[{ symbol: 'BTCUSD', mode: 'closeOnly' }], 7]])
-console.info('OK    миграция: повторный прогон не трогает существующий список')
+const reappliedSites = await db.execute(sql`SELECT "slug", "close_only_instruments" FROM "sites" ORDER BY "slug"`)
+assert.deepEqual(reappliedSites.rows.map((r) => [r.slug, r.close_only_instruments]), [
+  ['old-a', ['EURUSD']],
+  ['old-b', ['XAUUSD']],
+  ['old-c', []],
+  ['old-d', []],
+])
+console.info('OK    миграция: повторный прогон не трогает ни ручной список, ни режимы сайтов')
+
+await migrations[siteInstrumentsIndex]!.down(args)
+const siteDown = await db.execute(sql`
+  SELECT count(*)::int AS n FROM information_schema.columns WHERE column_name IN ('close_only_instruments', 'computed_hash')`)
+assert.equal(siteDown.rows[0]?.n, 0)
+console.info('OK    миграция: откат closeOnlyInstruments проходит')
 
 await migrations[platformIndex]!.down(args)
 const platformDown = await db.execute(sql`SELECT to_regclass('public.platform_instruments') AS t`)

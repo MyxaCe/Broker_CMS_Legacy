@@ -322,15 +322,58 @@ export function plural(n: number, forms: [string, string, string]): string {
   return forms[2]
 }
 
-export function bulkAddMessage(adding: number, subscriptions: number): string {
+export function bulkAddMessage(adding: number, before: number, after: number): string {
   const word = plural(adding, ['инструмент', 'инструмента', 'инструментов'])
+  const shared = adding - (after - before)
+  const sharedNote =
+    shared > 0
+      ? ` ${shared} из них уже есть у других сайтов, новых подписок для них не будет.`
+      : ''
   return (
-    `Будет добавлено ${adding} ${word}. Подписок у модуля рыночных данных станет ${subscriptions + adding} ` +
-    `(сейчас ${subscriptions}): по каждому инструменту платформы модуль держит подписку у поставщика данных, ` +
+    `Сайту будет добавлено ${adding} ${word}. Подписок у модуля рыночных данных по всей платформе станет ${after} ` +
+    `(сейчас ${before}).${sharedNote} По каждому инструменту платформы модуль держит подписку у поставщика данных, ` +
     `и это может повысить тариф поставщика.`
   )
 }
 
 export function needsBulkConfirm(adding: number): boolean {
   return adding > BULK_CONFIRM_THRESHOLD
+}
+
+export function rowsFromSite(instruments: unknown, closeOnlyInstruments: unknown): SelectedRow[] {
+  const closeOnly = new Set(Array.isArray(closeOnlyInstruments) ? closeOnlyInstruments : [])
+  const seen = new Set<string>()
+  const rows: SelectedRow[] = []
+  if (!Array.isArray(instruments)) return rows
+  for (const symbol of instruments) {
+    if (typeof symbol !== 'string' || seen.has(symbol)) continue
+    seen.add(symbol)
+    rows.push({ symbol, mode: closeOnly.has(symbol) ? 'closeOnly' : 'trade' })
+  }
+  return rows
+}
+
+export function siteFieldsFromRows(rows: SelectedRow[]): { instruments: string[]; closeOnlyInstruments: string[] } {
+  return {
+    instruments: rows.map((r) => r.symbol),
+    closeOnlyInstruments: rows.filter((r) => r.mode === 'closeOnly').map((r) => r.symbol),
+  }
+}
+
+export interface PlatformUsage {
+  symbol: string
+  sites: (string | number)[]
+}
+
+export function symbolsOfOtherSites(usage: PlatformUsage[], siteId: string | number | null | undefined): Set<string> {
+  const own = siteId === null || siteId === undefined ? null : String(siteId)
+  const out = new Set<string>()
+  for (const item of usage) if (item.sites.some((id) => String(id) !== own)) out.add(item.symbol)
+  return out
+}
+
+export function platformSubscriptions(others: ReadonlySet<string>, ...lists: Iterable<string>[]): number {
+  const all = new Set(others)
+  for (const list of lists) for (const symbol of list) all.add(symbol)
+  return all.size
 }

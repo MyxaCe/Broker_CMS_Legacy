@@ -19,10 +19,14 @@ import {
   needsBulkConfirm,
   neighbourInGroup,
   NO_SEGMENT,
+  platformSubscriptions,
   plural,
+  rowsFromSite,
   segmentChips,
   segmentLabel,
   type SelectedRow,
+  siteFieldsFromRows,
+  symbolsOfOtherSites,
   visibleWindow,
 } from '../src/lib/instrument-catalog'
 
@@ -233,18 +237,57 @@ check('добавление: без дублей, режим «Торговля�
   ])
 })
 
-check('массовое добавление: подтверждение при N > 20, текст про подписки и тариф', () => {
+check('массовое добавление: подтверждение при N > 20, подписки ДО/ПОСЛЕ по всей платформе и тариф', () => {
   assert.equal(needsBulkConfirm(20), false)
   assert.equal(needsBulkConfirm(21), true)
-  const text = bulkAddMessage(523, 30)
+  const text = bulkAddMessage(523, 30, 553)
   assert.ok(text.includes('523 инструмента'), text)
-  assert.ok(text.includes('станет 553'), text)
+  assert.ok(text.includes('по всей платформе станет 553'), text)
   assert.ok(text.includes('сейчас 30'), text)
   assert.ok(text.includes('тариф поставщика'), text)
+  assert.ok(!text.includes('уже есть у других сайтов'), text)
+  const shared = bulkAddMessage(25, 30, 40)
+  assert.ok(shared.includes('станет 40') && shared.includes('15 из них уже есть у других сайтов'), shared)
   assert.equal(plural(1, ['инструмент', 'инструмента', 'инструментов']), 'инструмент')
   assert.equal(plural(11, ['инструмент', 'инструмента', 'инструментов']), 'инструментов')
   assert.equal(plural(22, ['инструмент', 'инструмента', 'инструментов']), 'инструмента')
   assert.equal(plural(25, ['инструмент', 'инструмента', 'инструментов']), 'инструментов')
+})
+
+check('карточка сайта: instruments + closeOnlyInstruments ⇄ строки выбора (порядок = порядок instruments)', () => {
+  const rows = rowsFromSite(['EURUSD', 'BTCUSD', 'EURUSD', 7, 'XAUUSD'], ['BTCUSD', 'GHOST'])
+  assert.deepEqual(rows, [
+    { symbol: 'EURUSD', mode: 'trade' },
+    { symbol: 'BTCUSD', mode: 'closeOnly' },
+    { symbol: 'XAUUSD', mode: 'trade' },
+  ])
+  assert.deepEqual(rowsFromSite(null, null), [])
+  assert.deepEqual(rowsFromSite(['EURUSD'], undefined), [{ symbol: 'EURUSD', mode: 'trade' }])
+  const moved = moveRow(rows, 2, 0).map((r) => (r.symbol === 'EURUSD' ? { ...r, mode: 'closeOnly' as const } : r))
+  assert.deepEqual(siteFieldsFromRows(moved), {
+    instruments: ['XAUUSD', 'EURUSD', 'BTCUSD'],
+    closeOnlyInstruments: ['EURUSD', 'BTCUSD'],
+  })
+  const removed = siteFieldsFromRows(moved.filter((r) => r.symbol !== 'BTCUSD'))
+  assert.deepEqual(removed.closeOnlyInstruments, ['EURUSD'])
+  assert.ok(removed.closeOnlyInstruments.every((s) => removed.instruments.includes(s)))
+})
+
+check('подписки у модуля по всей платформе: другие сайты ∪ выбор этого сайта', () => {
+  const usage = [
+    { symbol: 'BTCUSD', sites: [1, 2] },
+    { symbol: 'ETHUSD', sites: [1] },
+    { symbol: 'EURUSD', sites: [2] },
+    { symbol: 'XAUUSD', sites: ['3'] },
+  ]
+  assert.deepEqual([...symbolsOfOtherSites(usage, 1)], ['BTCUSD', 'EURUSD', 'XAUUSD'])
+  assert.deepEqual([...symbolsOfOtherSites(usage, '3')], ['BTCUSD', 'ETHUSD', 'EURUSD'])
+  assert.deepEqual([...symbolsOfOtherSites(usage, undefined)], ['BTCUSD', 'ETHUSD', 'EURUSD', 'XAUUSD'])
+  const others = symbolsOfOtherSites(usage, 1)
+  assert.equal(platformSubscriptions(others, ['BTCUSD']), 3)
+  assert.equal(platformSubscriptions(others, ['BTCUSD', 'ETHUSD']), 4)
+  assert.equal(platformSubscriptions(others, ['BTCUSD'], ['EURUSD', 'GBPUSD', 'USDJPY']), 5)
+  assert.equal(platformSubscriptions(new Set(), []), 0)
 })
 
 check('производительность: 5000 элементов — сборка < 100 мс, фильтр + поиск < 10 мс на нажатие', () => {

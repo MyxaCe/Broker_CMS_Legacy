@@ -3,7 +3,6 @@ import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 
 import { activeSiteSlug } from '@/lib/active-site'
-import { loadPlatformInstruments } from '@/lib/platform-instruments'
 
 /**
  * Прокси для админки: инструменты MDS.
@@ -11,10 +10,9 @@ import { loadPlatformInstruments } from '@/lib/platform-instruments'
  *     вселенной MDS со списком instruments карточки сайта) — для селекта
  *     на странице «Инструменты»: редактор наполняет страницу только тем,
  *     к чему сайт имеет доступ.
- *   GET /admin-mds/instruments?all=1  — весь каталог MDS — для раздела
- *     «Инструменты платформы» (PlatformInstrumentsField).
- *   GET /admin-mds/instruments?platform=1 — инструменты платформы — для
- *     настройки доступа на карточке сайта (MdsAllowListField).
+ *   GET /admin-mds/instruments?all=1  — весь каталог MDS — для выбора
+ *     инструментов в карточке сайта (SiteInstrumentsField) и сводки
+ *     «Инструменты платформы» (PlatformInstrumentsSummary).
  *
  * ФОРМА ОТВЕТА (решение штаба Р-027). Отказ обязан быть отличим от пустоты:
  *
@@ -42,7 +40,7 @@ interface MdsItem {
 }
 
 /** Причины отказа. Пустой доступ сайта сюда НЕ входит — это не отказ. */
-type FailureState = 'mds_unavailable' | 'no_active_site' | 'allow_list_unavailable' | 'platform_list_unavailable'
+type FailureState = 'mds_unavailable' | 'no_active_site' | 'allow_list_unavailable'
 
 function ok(items: MdsItem[]) {
   return NextResponse.json({ state: 'ok', items })
@@ -74,27 +72,10 @@ async function fetchUniverse(): Promise<MdsItem[] | null> {
 export async function GET(request: Request) {
   const params = new URL(request.url).searchParams
   const wantAll = params.get('all') === '1'
-  const wantPlatform = params.get('platform') === '1'
   const items = await fetchUniverse()
   if (!items) return failure('mds_unavailable')
 
   if (wantAll) return ok(items)
-
-  if (wantPlatform) {
-    try {
-      const payload = await getPayload({ config })
-      const platform = await loadPlatformInstruments(payload)
-      const bySymbol = new Map(items.map((i) => [i.symbol, i]))
-      return ok(
-        platform.instruments.map(
-          (p) => bySymbol.get(p.symbol) ?? { symbol: p.symbol, name: '?', group: 'Нет в MDS', icon: null },
-        ),
-      )
-    } catch (error) {
-      console.warn('[admin-mds] platform list resolve failed:', (error as Error).message)
-      return failure('platform_list_unavailable')
-    }
-  }
 
   // Режим «доступ сайта»: фильтр по списку instruments рабочего сайта
   const slug = activeSiteSlug(request.headers)

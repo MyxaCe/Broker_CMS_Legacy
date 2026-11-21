@@ -84,7 +84,7 @@ jobs:
           NODE_ENV: production
           DATABASE_URL: postgres://cms:cms@localhost:5432/broker_cms_redeploy
 
-      - name: Инструменты платформы (отдача по договору, version, подмножество сайтов, отказ удаления, вебхук)
+      - name: Инструменты платформы (объединение сайтов, version только при изменении, проверки карточки сайта, вебхук)
         run: |
           PGPASSWORD=cms psql -h localhost -U cms -d broker_cms -c "CREATE DATABASE broker_cms_platform"
           pnpm test:platform-instruments

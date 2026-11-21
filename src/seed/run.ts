@@ -3,7 +3,7 @@ import path from 'node:path'
 
 import type { Payload } from 'payload'
 
-import { loadPlatformInstruments, PLATFORM_INSTRUMENTS_SLUG, TERMINAL_PAIRS } from '../lib/platform-instruments'
+import { TERMINAL_PAIRS } from '../lib/platform-instruments'
 import { CONTENT_BUILDERS } from './builders'
 
 type Locale = 'ru' | 'en'
@@ -37,19 +37,6 @@ export async function runSeed(
 ): Promise<SeedSummary> {
   const summary: SeedSummary = { created: [], kept: [] }
 
-  const platform = await loadPlatformInstruments(payload)
-  if (platform.version === 0 && platform.instruments.length === 0) {
-    await payload.updateGlobal({
-      slug: PLATFORM_INSTRUMENTS_SLUG as never,
-      data: { instruments: TERMINAL_PAIRS.map((symbol) => ({ symbol, mode: 'trade' })) } as never,
-    })
-    summary.created.push('platform-instruments')
-    log(`[seed] инструменты платформы: записано ${TERMINAL_PAIRS.length} пар терминала`)
-  } else {
-    summary.kept.push('platform-instruments')
-    log(`[seed] инструменты платформы уже есть (версия ${platform.version}, ${platform.instruments.length}) — не тронуто`)
-  }
-
   const brandRu = fixture('brand', 'ru')
   const existingSite = await payload.find({
     collection: 'sites',
@@ -67,11 +54,12 @@ export async function runSeed(
         primaryColor: brandRu.primaryColor,
         socials: brandRu.socials,
         demoStartBalanceCents: 1000000,
+        instruments: [...TERMINAL_PAIRS],
       } as never,
     })
     siteId = created.id
     summary.created.push('site')
-    log(`[seed] site created: ${siteSlug}`)
+    log(`[seed] site created: ${siteSlug} (инструменты: ${TERMINAL_PAIRS.length} пар терминала)`)
   } else {
     summary.kept.push('site')
     log(`[seed] site already exists: ${siteSlug}`)

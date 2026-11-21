@@ -60,3 +60,25 @@ export async function loadMdsInstruments<T>(url: string): Promise<MdsLoad<T>> {
   const reason = KNOWN.find((r) => r === data?.state) ?? 'unreachable'
   return { state: 'failure', reason }
 }
+
+export interface PlatformSummary {
+  version: number
+  updatedAt: string
+  instruments: { symbol: string; mode: 'trade' | 'closeOnly'; sites: (string | number)[] }[]
+  sites: { id: string | number; slug: string; name: string; instruments: number; closeOnly: number }[]
+}
+
+export async function loadPlatformSummary(): Promise<
+  { state: 'ok'; summary: PlatformSummary } | { state: 'failure'; reason: MdsFailureReason }
+> {
+  try {
+    const res = await fetch('/admin-mds/platform', { credentials: 'include', cache: 'no-store' })
+    const body = (await res.json()) as Partial<PlatformSummary> & { state?: unknown }
+    if (body?.state === 'ok' && Array.isArray(body.instruments) && Array.isArray(body.sites)) {
+      return { state: 'ok', summary: body as PlatformSummary }
+    }
+  } catch {
+    return { state: 'failure', reason: 'unreachable' }
+  }
+  return { state: 'failure', reason: 'platform_list_unavailable' }
+}
