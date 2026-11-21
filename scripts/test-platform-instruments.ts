@@ -101,8 +101,9 @@ console.info('OK    version растёт при каждом сохранени�
 await expectInvalid(() => save([...reordered, { symbol: 'BTCUSD', mode: 'trade' }]), 'BTCUSD', 'дважды')
 await expectInvalid(() => save([{ symbol: 'BTCUSD', mode: 'halt' as never }]), 'BTCUSD', 'режим')
 await expectInvalid(() => save([{ symbol: 'BTC USD', mode: 'trade' }]), 'Некорректный символ')
+await expectInvalid(() => save([]), 'не может быть пустым')
 assert.equal((await current()).version, 3)
-console.info('OK    валидация формы: повтор символа, неизвестный режим, некорректный символ — отказ, версия не меняется')
+console.info('OK    валидация формы: повтор символа, неизвестный режим, некорректный символ, пустой список — отказ, версия не меняется')
 
 const site = (await payload.create({
   collection: 'sites',

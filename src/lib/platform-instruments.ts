@@ -41,6 +41,9 @@ export function readPlatformInstruments(value: unknown): PlatformInstrument[] {
 
 export function validatePlatformInstrumentsShape(value: unknown): true | string {
   if (!Array.isArray(value)) return 'Ожидается список инструментов'
+  if (value.length === 0) {
+    return 'Список инструментов платформы не может быть пустым: модуль рыночных данных такой список не применит, а сохранение сняло бы все цены'
+  }
   const seen = new Set<string>()
   for (const item of value) {
     const symbol = (item as { symbol?: unknown } | null)?.symbol

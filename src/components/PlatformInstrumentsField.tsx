@@ -377,7 +377,7 @@ export function PlatformInstrumentsField({ path }: { path: string }) {
               </div>
             ))}
             {rows.length === 0 && (
-              <p style={{ ...mutedText, padding: '8px' }}>Список пуст — платформа не использует ни одного инструмента</p>
+              <p style={{ ...mutedText, padding: '8px' }}>Список пуст — такой список сохранить нельзя, добавьте инструменты слева</p>
             )}
             {rows.length > 0 && visibleRows.length === 0 && <p style={{ ...mutedText, padding: '8px' }}>Ничего не найдено</p>}
           </div>
