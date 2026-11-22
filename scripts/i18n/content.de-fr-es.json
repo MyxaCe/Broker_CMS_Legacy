@@ -1115,35 +1115,60 @@
             "name": "Website & Registrierung",
             "description": "Marketing-Website, Antragsformulare",
             "status": "operational",
-            "uptime90d": "99.99%"
+            "uptime90d": "99.99%",
+            "check": "site",
+            "manualStatus": "auto",
+            "maintenanceNote": null,
+            "maintenanceFrom": null,
+            "maintenanceTo": null
           },
           {
             "id": "svc-1",
             "name": "Trading-API",
             "description": "Orderausführung, Handelsoperationen",
             "status": "operational",
-            "uptime90d": "99.97%"
+            "uptime90d": "99.97%",
+            "check": "terminal",
+            "manualStatus": "auto",
+            "maintenanceNote": null,
+            "maintenanceFrom": null,
+            "maintenanceTo": null
           },
           {
             "id": "quotes-ws",
             "name": "Kurse (WebSocket)",
             "description": "Echtzeit-Preisstream – der Status Ihrer Verbindung",
             "status": "operational",
-            "uptime90d": "99.98%"
+            "uptime90d": "99.98%",
+            "check": "quotes",
+            "manualStatus": "auto",
+            "maintenanceNote": null,
+            "maintenanceFrom": null,
+            "maintenanceTo": null
           },
           {
             "id": "svc-2",
             "name": "Kundenbereich",
             "description": "Authentifizierung, Profil, Dokumente",
             "status": "operational",
-            "uptime90d": "99.95%"
+            "uptime90d": "99.95%",
+            "check": "cabinet",
+            "manualStatus": "auto",
+            "maintenanceNote": null,
+            "maintenanceFrom": null,
+            "maintenanceTo": null
           },
           {
             "id": "svc-3",
             "name": "Zahlungsgateway",
             "description": "Einzahlungen und Auszahlungen",
             "status": "operational",
-            "uptime90d": "99.92%"
+            "uptime90d": "99.92%",
+            "check": null,
+            "manualStatus": "auto",
+            "maintenanceNote": null,
+            "maintenanceFrom": null,
+            "maintenanceTo": null
           }
         ],
         "incidents": [
@@ -1151,12 +1176,14 @@
             "date": "2026-07-14",
             "title": "Verzögerte Bearbeitung von Auszahlungen auf Karten",
             "status": "Behoben",
+            "state": "resolved",
             "text": "Von 10:20 bis 12:45 UTC wurde ein Teil der Auszahlungsanträge aufgrund einer Störung beim Zahlungsdienstleister verzögert bearbeitet. Alle Anträge wurden ausgeführt und die Mittel gutgeschrieben."
           },
           {
             "date": "2026-06-30",
             "title": "Geplante Wartung der Trading-API",
             "status": "Abgeschlossen",
+            "state": "resolved",
             "text": "In der Nacht vom 29. auf den 30. Juni (01:00–02:30 UTC, Märkte geschlossen) wurde die Ausführungsinfrastruktur aktualisiert. Die Ausfallzeit betrug 12 Minuten innerhalb des angekündigten Zeitfensters."
           }
         ]
@@ -2343,35 +2370,60 @@
             "name": "Site web et inscription",
             "description": "Site marketing, formulaires de demande",
             "status": "operational",
-            "uptime90d": "99.99%"
+            "uptime90d": "99.99%",
+            "check": "site",
+            "manualStatus": "auto",
+            "maintenanceNote": null,
+            "maintenanceFrom": null,
+            "maintenanceTo": null
           },
           {
             "id": "svc-1",
             "name": "API de trading",
             "description": "Exécution des ordres, opérations de trading",
             "status": "operational",
-            "uptime90d": "99.97%"
+            "uptime90d": "99.97%",
+            "check": "terminal",
+            "manualStatus": "auto",
+            "maintenanceNote": null,
+            "maintenanceFrom": null,
+            "maintenanceTo": null
           },
           {
             "id": "quotes-ws",
             "name": "Cotations (WebSocket)",
             "description": "Flux de prix en temps réel — l’état de votre connexion",
             "status": "operational",
-            "uptime90d": "99.98%"
+            "uptime90d": "99.98%",
+            "check": "quotes",
+            "manualStatus": "auto",
+            "maintenanceNote": null,
+            "maintenanceFrom": null,
+            "maintenanceTo": null
           },
           {
             "id": "svc-2",
             "name": "Espace client",
             "description": "Authentification, profil, documents",
             "status": "operational",
-            "uptime90d": "99.95%"
+            "uptime90d": "99.95%",
+            "check": "cabinet",
+            "manualStatus": "auto",
+            "maintenanceNote": null,
+            "maintenanceFrom": null,
+            "maintenanceTo": null
           },
           {
             "id": "svc-3",
             "name": "Passerelle de paiement",
             "description": "Dépôts et retraits",
             "status": "operational",
-            "uptime90d": "99.92%"
+            "uptime90d": "99.92%",
+            "check": null,
+            "manualStatus": "auto",
+            "maintenanceNote": null,
+            "maintenanceFrom": null,
+            "maintenanceTo": null
           }
         ],
         "incidents": [
@@ -2379,12 +2431,14 @@
             "date": "2026-07-14",
             "title": "Retards dans le traitement des retraits vers les cartes bancaires",
             "status": "Résolu",
+            "state": "resolved",
             "text": "De 10:20 à 12:45 UTC, une partie des demandes de retrait a été traitée avec retard en raison d’une dégradation du service chez le prestataire de paiement. Toutes les demandes ont été exécutées et les fonds crédités."
           },
           {
             "date": "2026-06-30",
             "title": "Maintenance planifiée de l’API de trading",
             "status": "Terminée",
+            "state": "resolved",
             "text": "Dans la nuit du 29 au 30 juin (01:00–02:30 UTC, marchés fermés), l’infrastructure d’exécution a été mise à jour. L’indisponibilité a duré 12 minutes, dans la fenêtre annoncée."
           }
         ]
@@ -3571,35 +3625,60 @@
             "name": "Sitio web y registro",
             "description": "Sitio web comercial, formularios de solicitud",
             "status": "operational",
-            "uptime90d": "99.99%"
+            "uptime90d": "99.99%",
+            "check": "site",
+            "manualStatus": "auto",
+            "maintenanceNote": null,
+            "maintenanceFrom": null,
+            "maintenanceTo": null
           },
           {
             "id": "svc-1",
             "name": "API de trading",
             "description": "Ejecución de órdenes, operaciones de trading",
             "status": "operational",
-            "uptime90d": "99.97%"
+            "uptime90d": "99.97%",
+            "check": "terminal",
+            "manualStatus": "auto",
+            "maintenanceNote": null,
+            "maintenanceFrom": null,
+            "maintenanceTo": null
           },
           {
             "id": "quotes-ws",
             "name": "Cotizaciones (WebSocket)",
             "description": "Flujo de precios en tiempo real: estado de su conexión",
             "status": "operational",
-            "uptime90d": "99.98%"
+            "uptime90d": "99.98%",
+            "check": "quotes",
+            "manualStatus": "auto",
+            "maintenanceNote": null,
+            "maintenanceFrom": null,
+            "maintenanceTo": null
           },
           {
             "id": "svc-2",
             "name": "Área de cliente",
             "description": "Autenticación, perfil, documentos",
             "status": "operational",
-            "uptime90d": "99.95%"
+            "uptime90d": "99.95%",
+            "check": "cabinet",
+            "manualStatus": "auto",
+            "maintenanceNote": null,
+            "maintenanceFrom": null,
+            "maintenanceTo": null
           },
           {
             "id": "svc-3",
             "name": "Pasarela de pago",
             "description": "Depósitos y retiros",
             "status": "operational",
-            "uptime90d": "99.92%"
+            "uptime90d": "99.92%",
+            "check": null,
+            "manualStatus": "auto",
+            "maintenanceNote": null,
+            "maintenanceFrom": null,
+            "maintenanceTo": null
           }
         ],
         "incidents": [
@@ -3607,12 +3686,14 @@
             "date": "2026-07-14",
             "title": "Retraso en el procesamiento de retiros a tarjetas bancarias",
             "status": "Resuelto",
+            "state": "resolved",
             "text": "De 10:20 a 12:45 UTC, parte de las solicitudes de retiro se procesaron con retraso debido a una degradación del servicio en el lado del proveedor de pagos. Todas las solicitudes se han ejecutado y los fondos se han abonado."
           },
           {
             "date": "2026-06-30",
             "title": "Mantenimiento programado de la API de trading",
             "status": "Completado",
+            "state": "resolved",
             "text": "En la noche del 29 al 30 de junio (01:00–02:30 UTC, mercados cerrados) se actualizó la infraestructura de ejecución. El tiempo de inactividad fue de 12 minutos dentro de la ventana anunciada."
           }
         ]

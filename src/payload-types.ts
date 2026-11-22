@@ -688,17 +688,27 @@ export interface SiteSystemStatus {
         serviceId: string;
         name: string;
         description: string;
-        status: 'operational' | 'degraded' | 'outage' | 'maintenance';
-        uptime90d: string;
+        /**
+         * Статус и uptime берутся из мониторинга по этой проверке. Порядок строк = порядок на странице.
+         */
+        check?: ('site' | 'cabinet' | 'terminal' | 'quotes' | 'cms' | 'storage') | null;
+        manualStatus: 'auto' | 'maintenance';
+        maintenanceNote?: string | null;
+        maintenanceFrom?: string | null;
+        maintenanceTo?: string | null;
+        status?: ('operational' | 'degraded' | 'outage' | 'maintenance') | null;
+        uptime90d?: string | null;
         id?: string | null;
       }[]
     | null;
   incidents?:
     | {
-        date: string;
+        occurredOn: string;
         title: string;
-        status: string;
+        state: 'investigating' | 'fixing' | 'resolved';
         text: string;
+        date?: string | null;
+        status?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -1325,6 +1335,11 @@ export interface SiteSystemStatusSelect<T extends boolean = true> {
         serviceId?: T;
         name?: T;
         description?: T;
+        check?: T;
+        manualStatus?: T;
+        maintenanceNote?: T;
+        maintenanceFrom?: T;
+        maintenanceTo?: T;
         status?: T;
         uptime90d?: T;
         id?: T;
@@ -1332,10 +1347,12 @@ export interface SiteSystemStatusSelect<T extends boolean = true> {
   incidents?:
     | T
     | {
-        date?: T;
+        occurredOn?: T;
         title?: T;
-        status?: T;
+        state?: T;
         text?: T;
+        date?: T;
+        status?: T;
         id?: T;
       };
   updatedAt?: T;

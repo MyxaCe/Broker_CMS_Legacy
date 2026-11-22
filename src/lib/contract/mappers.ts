@@ -265,19 +265,37 @@ export function mapLegal(doc: PayloadDoc) {
   }
 }
 
+const SERVICE_STATUSES = new Set(['operational', 'degraded', 'outage'])
+const INCIDENT_STATES = new Set(['investigating', 'fixing', 'resolved'])
+
+function validIso(value: unknown): string | null {
+  if (typeof value !== 'string' || value === '') return null
+  const t = Date.parse(value)
+  return Number.isNaN(t) ? null : new Date(t).toISOString()
+}
+
 export function mapSystemStatus(doc: PayloadDoc) {
   return {
-    services: (doc.services ?? []).map((s: PayloadDoc) => ({
-      id: String(s.serviceId ?? ''),
-      name: String(s.name ?? ''),
-      description: String(s.description ?? ''),
-      status: String(s.status ?? 'operational'),
-      uptime90d: String(s.uptime90d ?? ''),
-    })),
+    services: (doc.services ?? []).map((s: PayloadDoc) => {
+      const manualStatus = s.manualStatus === 'maintenance' ? 'maintenance' : 'auto'
+      return {
+        id: String(s.serviceId ?? ''),
+        name: String(s.name ?? ''),
+        description: String(s.description ?? ''),
+        status: manualStatus === 'maintenance' ? 'maintenance' : SERVICE_STATUSES.has(s.status) ? s.status : 'operational',
+        uptime90d: String(s.uptime90d ?? ''),
+        check: typeof s.check === 'string' && s.check !== '' ? s.check : null,
+        manualStatus,
+        maintenanceNote: manualStatus === 'maintenance' && s.maintenanceNote ? String(s.maintenanceNote) : null,
+        maintenanceFrom: manualStatus === 'maintenance' ? validIso(s.maintenanceFrom) : null,
+        maintenanceTo: manualStatus === 'maintenance' ? validIso(s.maintenanceTo) : null,
+      }
+    }),
     incidents: (doc.incidents ?? []).map((i: PayloadDoc) => ({
-      date: String(i.date ?? ''),
+      date: validIso(i.occurredOn)?.slice(0, 10) ?? String(i.date ?? ''),
       title: String(i.title ?? ''),
       status: String(i.status ?? ''),
+      state: INCIDENT_STATES.has(i.state) ? i.state : null,
       text: String(i.text ?? ''),
     })),
   }

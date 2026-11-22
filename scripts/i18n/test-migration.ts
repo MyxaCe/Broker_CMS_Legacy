@@ -22,6 +22,7 @@ const PLATFORM = '20261121_120722_platform_instruments'
 const SITE_INSTRUMENTS = '20261121_133912_site_instruments'
 const VIDEO_LINKS = '20261122_133540_video_links'
 const LEGAL_ENTITY = '20261122_134739_legal_entity'
+const SYSTEM_STATUS = '20261122_135545_system_status_live'
 
 const payload = await getPayload({ config })
 const db = (payload.db as unknown as { drizzle: { execute: (q: unknown) => Promise<{ rows: any[] }> } }).drizzle
@@ -312,7 +313,18 @@ assert.deepEqual(reappliedSites.rows.map((r) => [r.slug, r.close_only_instrument
 ])
 console.info('OK    миграция: повторный прогон не трогает ни ручной список, ни режимы сайтов')
 
+const statusIndex = migrations.findIndex((m) => m.name === SYSTEM_STATUS)
+assert.equal(statusIndex, legalIndex + 1)
+assert.equal(statusIndex, migrations.length - 1)
+const STATUS_COLUMNS = sql`
+  SELECT count(*)::int AS n FROM information_schema.columns
+  WHERE table_name LIKE '%system_status%' AND column_name IN ('check', 'manual_status', 'maintenance_note', 'occurred_on', 'state')`
+assert.equal((await db.execute(STATUS_COLUMNS)).rows[0]?.n, 10)
+console.info('OK    миграция статуса сервисов идёт после юрлица и применена')
+
 for (const migration of migrations.slice(videoIndex + 1).reverse()) await migration.down(args)
+assert.equal((await db.execute(STATUS_COLUMNS)).rows[0]?.n, 0)
+console.info('OK    миграция: откат статуса сервисов проходит')
 const legalDown = await db.execute(sql`
   SELECT to_regclass('public.sites_locales') AS a, to_regclass('public.sites_legal_entity_licenses') AS b,
     (SELECT count(*)::int FROM information_schema.columns WHERE column_name LIKE 'legal_entity_%') AS n`)
