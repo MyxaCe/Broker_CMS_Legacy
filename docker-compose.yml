@@ -48,6 +48,9 @@ services:
       CMS_PUBLIC_URL: http://localhost:3001
       SITE_URL: http://localhost:3000
       SITE_PREVIEW_SECRET: preview-dev-secret
+      # Шлюз терминала (проверка позиций перед удалением символа из платформы); пусто — проверка пропускается
+      TERMINAL_INTERNAL_URL: ''
+      TERMINAL_INTERNAL_TOKEN: ''
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     volumes:

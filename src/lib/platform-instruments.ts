@@ -204,8 +204,54 @@ export async function refreshPlatformInstruments(payload: Payload, req?: Payload
 
 export type DisableCheck = { allowed: true } | { allowed: false; reason: string }
 
-export async function checkOpenPositions(_symbols: string[]): Promise<DisableCheck> {
-  return { allowed: true }
+export const EXPOSURE_TIMEOUT_MS = 3_000
+
+export const EXPOSURE_UNAVAILABLE_ERROR =
+  'Не удалось проверить открытые позиции и отложенные ордера по убираемым инструментам, попробуйте позже'
+
+type Exposure = { symbol: string; openPositions: number; pendingOrders: number }
+
+async function fetchExposure(base: string, token: string, symbol: string): Promise<Exposure> {
+  const res = await fetch(`${base}/internal/instruments/${encodeURIComponent(symbol)}/exposure`, {
+    headers: { 'X-Internal-Token': token },
+    signal: AbortSignal.timeout(EXPOSURE_TIMEOUT_MS),
+  })
+  if (res.status !== 200) throw new Error(`${symbol}: HTTP ${res.status}`)
+  const body = (await res.json()) as Partial<Exposure>
+  const openPositions = Number(body.openPositions)
+  const pendingOrders = Number(body.pendingOrders)
+  if (!Number.isFinite(openPositions) || !Number.isFinite(pendingOrders)) throw new Error(`${symbol}: bad body`)
+  return { symbol, openPositions, pendingOrders }
+}
+
+export async function checkOpenPositions(symbols: string[], env: Record<string, string | undefined> = process.env): Promise<DisableCheck> {
+  const base = env.TERMINAL_INTERNAL_URL?.trim().replace(/\/+$/, '')
+  const token = env.TERMINAL_INTERNAL_TOKEN?.trim()
+  if (!base && !token) {
+    console.warn('[platform-instruments] exposure check skipped: TERMINAL_INTERNAL_URL / TERMINAL_INTERNAL_TOKEN not set')
+    return { allowed: true }
+  }
+  if (!base || !token) {
+    console.error('[platform-instruments] exposure check misconfigured: set both TERMINAL_INTERNAL_URL and TERMINAL_INTERNAL_TOKEN')
+    return { allowed: false, reason: EXPOSURE_UNAVAILABLE_ERROR }
+  }
+  if (symbols.length === 0) return { allowed: true }
+  let results: Exposure[]
+  try {
+    results = await Promise.all(symbols.map((symbol) => fetchExposure(base, token, symbol)))
+  } catch (error) {
+    console.error('[platform-instruments] exposure check failed:', error)
+    return { allowed: false, reason: EXPOSURE_UNAVAILABLE_ERROR }
+  }
+  const busy = results.filter((r) => r.openPositions > 0 || r.pendingOrders > 0)
+  if (busy.length === 0) return { allowed: true }
+  const details = busy.map((r) => `${r.symbol} — открытых позиций: ${r.openPositions}, отложенных ордеров: ${r.pendingOrders}`)
+  return {
+    allowed: false,
+    reason:
+      `Нельзя убрать из платформы инструменты, по которым у клиентов есть открытые позиции или отложенные ордера: ${details.join('; ')}. ` +
+      'Сначала переведите эти инструменты в «Только закрытие», дождитесь закрытия позиций и отмены ордеров, затем уберите их',
+  }
 }
 
 export const platformChecks = { openPositions: checkOpenPositions }

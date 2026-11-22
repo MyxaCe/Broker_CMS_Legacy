@@ -17,6 +17,8 @@ import {
   checkOpenPositions,
   computePlatformInstruments,
   EMPTY_PLATFORM_ERROR,
+  EXPOSURE_TIMEOUT_MS,
+  EXPOSURE_UNAVAILABLE_ERROR,
   platformChecks,
   platformInstrumentsHash,
   PLATFORM_INSTRUMENTS_TAG,
@@ -201,6 +203,79 @@ assert.deepEqual((await fetchSite('pi-b')).body.instruments, ['ETHUSD', 'EURUSD'
 platformChecks.openPositions = checkOpenPositions
 assert.deepEqual(await checkOpenPositions(['BTCUSD']), { allowed: true })
 console.info('OK    символ пропадает из платформы целиком → checkOpenPositions(символы); отказ проверки останавливает сохранение')
+
+delete process.env.TERMINAL_INTERNAL_URL
+delete process.env.TERMINAL_INTERNAL_TOKEN
+const EXPOSURE_TOKEN = 'exposure-test-token'
+const exposure: Record<string, { openPositions: number; pendingOrders: number }> = {
+  BTCUSD: { openPositions: 0, pendingOrders: 0 },
+  ETHUSD: { openPositions: 0, pendingOrders: 0 },
+  EURUSD: { openPositions: 3, pendingOrders: 0 },
+  LTCUSD: { openPositions: 0, pendingOrders: 2 },
+}
+const exposureCalls: string[] = []
+let exposureDelayMs = 0
+const gateway = createServer((req: IncomingMessage, res) => {
+  const match = /^\/internal\/instruments\/([^/]+)\/exposure$/.exec(req.url ?? '')
+  exposureCalls.push(req.url ?? '')
+  setTimeout(() => {
+    if (req.headers['x-internal-token'] !== EXPOSURE_TOKEN) {
+      res.statusCode = 401
+      return res.end('{"error":"unauthorized"}')
+    }
+    const symbol = decodeURIComponent(match?.[1] ?? '')
+    const row = exposure[symbol]
+    if (!match || !row) {
+      res.statusCode = 404
+      return res.end('{}')
+    }
+    res.setHeader('content-type', 'application/json')
+    res.end(JSON.stringify({ symbol, ...row }))
+  }, exposureDelayMs)
+})
+await new Promise<void>((resolve) => gateway.listen(0, '127.0.0.1', resolve))
+const gatewayUrl = `http://127.0.0.1:${(gateway.address() as AddressInfo).port}/`
+const closedServer = createServer()
+await new Promise<void>((resolve) => closedServer.listen(0, '127.0.0.1', resolve))
+const closedPort = (closedServer.address() as AddressInfo).port
+await new Promise<void>((resolve) => closedServer.close(() => resolve()))
+const gatewayEnv = { TERMINAL_INTERNAL_URL: gatewayUrl, TERMINAL_INTERNAL_TOKEN: EXPOSURE_TOKEN }
+
+assert.deepEqual(await checkOpenPositions(['BTCUSD', 'ETHUSD'], gatewayEnv), { allowed: true })
+assert.deepEqual(exposureCalls.sort(), ['/internal/instruments/BTCUSD/exposure', '/internal/instruments/ETHUSD/exposure'])
+console.info('OK    шлюз: нули по всем убираемым символам → разрешено, запрос по каждому символу')
+
+const withPositions = await checkOpenPositions(['BTCUSD', 'EURUSD'], gatewayEnv)
+assert.equal(withPositions.allowed, false)
+assert.ok(!withPositions.allowed && withPositions.reason.includes('EURUSD — открытых позиций: 3'), JSON.stringify(withPositions))
+assert.ok(!withPositions.allowed && !withPositions.reason.includes('BTCUSD') && withPositions.reason.includes('Только закрытие'))
+const withOrders = await checkOpenPositions(['LTCUSD'], gatewayEnv)
+assert.ok(!withOrders.allowed && withOrders.reason.includes('LTCUSD — открытых позиций: 0, отложенных ордеров: 2'), JSON.stringify(withOrders))
+console.info('OK    шлюз: открытые позиции или отложенные ордера → отказ с символами и числами, совет про «Только закрытие»')
+
+const failClosed = { allowed: false, reason: EXPOSURE_UNAVAILABLE_ERROR }
+assert.deepEqual(await checkOpenPositions(['BTCUSD'], { ...gatewayEnv, TERMINAL_INTERNAL_TOKEN: 'wrong' }), failClosed)
+assert.deepEqual(await checkOpenPositions(['XAUUSD'], gatewayEnv), failClosed)
+assert.deepEqual(await checkOpenPositions(['BTCUSD'], { ...gatewayEnv, TERMINAL_INTERNAL_URL: `http://127.0.0.1:${closedPort}` }), failClosed)
+exposureDelayMs = EXPOSURE_TIMEOUT_MS + 1_000
+const slowStarted = Date.now()
+assert.deepEqual(await checkOpenPositions(['BTCUSD'], gatewayEnv), failClosed)
+assert.ok(Date.now() - slowStarted < EXPOSURE_TIMEOUT_MS + 900, 'таймаут проверки ~3 с')
+exposureDelayMs = 0
+assert.deepEqual(await checkOpenPositions(['BTCUSD'], { TERMINAL_INTERNAL_URL: gatewayUrl }), failClosed)
+assert.deepEqual(await checkOpenPositions(['BTCUSD'], { TERMINAL_INTERNAL_TOKEN: EXPOSURE_TOKEN }), failClosed)
+assert.deepEqual(await checkOpenPositions(['BTCUSD'], {}), { allowed: true })
+console.info('OK    шлюз: 401, не-200, недоступен, таймаут, задана одна переменная → отказ (fail-closed); обе не заданы → разрешено')
+
+process.env.TERMINAL_INTERNAL_URL = gatewayUrl
+process.env.TERMINAL_INTERNAL_TOKEN = EXPOSURE_TOKEN
+await expectInvalid(() => updateSite(b.id, { instruments: ['ETHUSD'], closeOnlyInstruments: [] }), 'EURUSD — открытых позиций: 3')
+assert.deepEqual((await fetchSite('pi-b')).body.instruments, ['ETHUSD', 'EURUSD'])
+exposure.EURUSD = { openPositions: 0, pendingOrders: 0 }
+delete process.env.TERMINAL_INTERNAL_URL
+delete process.env.TERMINAL_INTERNAL_TOKEN
+await new Promise<void>((resolve) => gateway.close(() => resolve()))
+console.info('OK    сохранение карточки сайта, убирающее символ с открытыми позициями, отклоняется по ответу шлюза')
 
 await updateSite(b.id, { instruments: [], closeOnlyInstruments: [] })
 const lonely = await current()
