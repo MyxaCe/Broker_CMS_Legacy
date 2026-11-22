@@ -1,5 +1,7 @@
 import type { Field } from 'payload'
 
+import { validateJoinUrl, validateVideoUrl } from '../../../lib/video-url'
+
 export const academyFields: Field[] = [
     {
       name: 'articles',
@@ -21,6 +23,13 @@ export const academyFields: Field[] = [
         },
         { name: 'readingMinutes', type: 'number', required: true, min: 1, label: 'Минут чтения' },
         { name: 'bodyMarkdown', type: 'textarea', required: true, label: 'Текст (Markdown)' },
+        {
+          name: 'videoUrl',
+          type: 'text',
+          label: 'Видео к статье',
+          validate: validateVideoUrl,
+          admin: { description: 'Необязательно. Ссылка YouTube или Vimeo — плеер появится вверху статьи.' },
+        },
       ],
     },
     {
@@ -39,6 +48,20 @@ export const academyFields: Field[] = [
         { name: 'durationMinutes', type: 'number', required: true, min: 1, label: 'Длительность, мин' },
         { name: 'level', type: 'text', required: true, label: 'Уровень (текстом)' },
         { name: 'description', type: 'textarea', required: true, label: 'Описание' },
+        {
+          name: 'recordingUrl',
+          type: 'text',
+          label: 'Запись вебинара',
+          validate: validateVideoUrl,
+          admin: { description: 'Необязательно. Ссылка YouTube или Vimeo — у прошедшего вебинара появится кнопка «Смотреть запись».' },
+        },
+        {
+          name: 'joinUrl',
+          type: 'text',
+          label: 'Ссылка для участия',
+          validate: validateJoinUrl,
+          admin: { description: 'Необязательно. Ссылка https:// на Zoom и т. п. — кнопка «Занять место» поведёт туда. Пусто — на регистрацию.' },
+        },
       ],
     },
     {

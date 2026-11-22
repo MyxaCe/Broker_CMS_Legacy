@@ -6,7 +6,7 @@ import config from '@payload-config'
 import { sql } from '@payloadcms/db-postgres'
 import { getPayload } from 'payload'
 
-import { mapAccounts, mapBrand, mapPromotions } from '../../src/lib/contract/mappers'
+import { mapAcademy, mapAccounts, mapBrand, mapPromotions, mapStreams } from '../../src/lib/contract/mappers'
 import { validateContract } from '../../src/lib/contract/validate'
 import {
   refreshPlatformInstruments,
@@ -20,6 +20,7 @@ const TARGET = '20261119_145051_site_languages'
 const LIVE_PARAMS = '20261119_155549_live_params'
 const PLATFORM = '20261121_120722_platform_instruments'
 const SITE_INSTRUMENTS = '20261121_133912_site_instruments'
+const VIDEO_LINKS = '20261122_133540_video_links'
 
 const payload = await getPayload({ config })
 const db = (payload.db as unknown as { drizzle: { execute: (q: unknown) => Promise<{ rows: any[] }> } }).drizzle
@@ -60,6 +61,17 @@ await db.execute(sql`
   SELECT "id", 'published', now(), now() FROM "sites" WHERE "slug" = 'old-a';
   INSERT INTO "site_promotions_items" ("_order", "_parent_id", "_locale", "id", "promo_id", "badge", "title", "description", "terms", "cta_label", "cta_href")
   SELECT 1, "id", 'ru'::"_locales", 'promo-ru', 'promo-1', 'Бейдж', 'Бонус', 'Описание', 'Условия', 'Получить', '/register' FROM "site_promotions";
+  INSERT INTO "site_streams" ("site_id", "_status", "updated_at", "created_at")
+  SELECT "id", 'published', now(), now() FROM "sites" WHERE "slug" = 'old-a';
+  INSERT INTO "site_streams_items" ("_order", "_parent_id", "_locale", "id", "provider", "video_id", "title", "starts_at", "status")
+  SELECT 1, "id", 'ru'::"_locales", 'stream-ru', 'youtube'::"enum_site_streams_items_provider", 'old-video-id', 'Эфир', '2026-08-05T18:00:00Z'::timestamptz, 'past'::"enum_site_streams_items_status" FROM "site_streams"
+  UNION ALL SELECT 1, "id", 'en'::"_locales", 'stream-en', 'vimeo', '76979871', 'Stream', '2026-08-05T18:00:00Z', 'live' FROM "site_streams";
+  INSERT INTO "site_academy" ("site_id", "_status", "updated_at", "created_at")
+  SELECT "id", 'published', now(), now() FROM "sites" WHERE "slug" = 'old-a';
+  INSERT INTO "site_academy_articles" ("_order", "_parent_id", "_locale", "id", "slug", "title", "excerpt", "level", "reading_minutes", "body_markdown")
+  SELECT 1, "id", 'ru'::"_locales", 'art-ru', 'what-is-forex', 'Что такое Forex', 'Анонс', 'beginner', 7, 'Текст' FROM "site_academy";
+  INSERT INTO "site_academy_webinars" ("_order", "_parent_id", "_locale", "id", "webinar_id", "title", "speaker", "speaker_role", "starts_at", "duration_minutes", "level", "description")
+  SELECT 1, "id", 'ru'::"_locales", 'web-ru', 'web-1', 'Вебинар', 'Анна Б', 'Аналитик', '2026-07-01T10:00:00Z', 60, 'Новичок', 'Описание' FROM "site_academy";
 `)
 
 const CONTENT = sql`
@@ -68,11 +80,16 @@ const CONTENT = sql`
          (SELECT json_agg(to_jsonb(t) - 'portfolio_key' ORDER BY t._locale, t._order) FROM site_accounts_items t) AS accounts,
          (SELECT json_agg(to_jsonb(t) - 'portfolio_key' ORDER BY t._locale, t._order) FROM _site_accounts_v_version_items t) AS accounts_versions,
          (SELECT json_agg(to_jsonb(t) - 'engine_promo_id' ORDER BY t._locale, t._order) FROM site_promotions_items t) AS promotions,
+         (SELECT json_agg(to_jsonb(t) - 'video_url' ORDER BY t._locale, t._order) FROM site_streams_items t) AS streams,
+         (SELECT json_agg(to_jsonb(t) - 'video_url' ORDER BY t._locale, t._order) FROM site_academy_articles t) AS academy_articles,
+         (SELECT json_agg(to_jsonb(t) - 'recording_url' - 'join_url' ORDER BY t._locale, t._order) FROM site_academy_webinars t) AS academy_webinars,
          (SELECT json_agg(to_jsonb(t) - 'hero_background' - 'default_language' - 'close_only_instruments' ORDER BY t.id) FROM sites t) AS sites`
 const contentBefore = await db.execute(CONTENT)
 
 const siteInstrumentsIndex = migrations.findIndex((m) => m.name === SITE_INSTRUMENTS)
-assert.equal(siteInstrumentsIndex, migrations.length - 1)
+assert.equal(siteInstrumentsIndex, migrations.length - 2)
+const videoIndex = migrations.findIndex((m) => m.name === VIDEO_LINKS)
+assert.equal(videoIndex, migrations.length - 1)
 for (const migration of migrations.slice(index, siteInstrumentsIndex)) await migration.up(args)
 const manualBefore = await db.execute(sql`SELECT "instruments", "version"::int AS version FROM "platform_instruments"`)
 await db.execute(sql`
@@ -81,6 +98,7 @@ await db.execute(sql`
     FROM jsonb_array_elements("instruments") WITH ORDINALITY AS t(i, o)
   )`)
 await migrations[siteInstrumentsIndex]!.up(args)
+await migrations[videoIndex]!.up(args)
 
 const languages = await db.execute(sql`
   SELECT s."slug", s."default_language"::text AS def,
@@ -167,6 +185,35 @@ assert.equal('promoId' in promotions.items[0], false)
 assert.ok(validateContract('promotions', promotions).valid)
 console.info('OK    миграция: brand, accounts, promotions после миграции валидны по контракту')
 
+const VIDEO_COLUMNS = sql`
+  SELECT table_name || '.' || column_name AS c FROM information_schema.columns
+  WHERE column_name IN ('video_url', 'recording_url', 'join_url') ORDER BY 1`
+assert.deepEqual((await db.execute(VIDEO_COLUMNS)).rows.map((r) => r.c), [
+  '_site_academy_v_version_articles.video_url',
+  '_site_academy_v_version_webinars.join_url',
+  '_site_academy_v_version_webinars.recording_url',
+  '_site_streams_v_version_items.video_url',
+  'site_academy_articles.video_url',
+  'site_academy_webinars.join_url',
+  'site_academy_webinars.recording_url',
+  'site_streams_items.video_url',
+])
+for (const locale of ['ru', 'en'] as const) {
+  const streamsDoc = (await payload.find({ collection: 'site-streams', where: { site: { equals: siteA.id } }, locale, depth: 0 })).docs[0] as unknown as Record<string, any>
+  const streams = mapStreams(streamsDoc)
+  assert.deepEqual(
+    streams.items.map((i: Record<string, unknown>) => [i.provider, i.videoId, 'videoUrl' in i]),
+    [locale === 'ru' ? ['youtube', 'old-video-id', false] : ['vimeo', '76979871', false]],
+  )
+  assert.ok(validateContract('streams', streams).valid)
+}
+const academyDoc = (await payload.find({ collection: 'site-academy', where: { site: { equals: siteA.id } }, locale: 'ru', depth: 0 })).docs[0] as unknown as Record<string, any>
+const academy = mapAcademy(academyDoc)
+assert.equal('video' in academy.articles[0], false)
+assert.equal('recording' in academy.webinars[0] || 'joinUrl' in academy.webinars[0], false)
+assert.ok(validateContract('academy', academy).valid)
+console.info('OK    миграция видео-ссылок: только новые пустые колонки, прежние эфиры и вебинары отдаются как раньше')
+
 const expectedPlatform = [...TERMINAL_PAIRS, 'EURUSD', 'XAUUSD', 'AAPL.US', 'US500'].map((symbol) => ({ symbol, mode: 'trade' }))
 assert.deepEqual(manualBefore.rows[0].instruments, expectedPlatform)
 assert.equal(manualBefore.rows[0].version, 1)
@@ -227,6 +274,12 @@ assert.deepEqual(reappliedSites.rows.map((r) => [r.slug, r.close_only_instrument
   ['old-d', []],
 ])
 console.info('OK    миграция: повторный прогон не трогает ни ручной список, ни режимы сайтов')
+
+await migrations[videoIndex]!.up(args)
+await migrations[videoIndex]!.down(args)
+assert.deepEqual((await db.execute(VIDEO_COLUMNS)).rows, [])
+assert.deepEqual((await db.execute(CONTENT)).rows, contentBefore.rows)
+console.info('OK    миграция видео-ссылок: повторный прогон и откат проходят, контент не тронут')
 
 await migrations[siteInstrumentsIndex]!.down(args)
 const siteDown = await db.execute(sql`

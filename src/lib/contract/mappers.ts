@@ -1,4 +1,5 @@
 import { siteLanguages } from '../languages'
+import { isHttpsUrl, videoFromUrl } from '../video-url'
 
 type PayloadDoc = Record<string, any>
 
@@ -157,6 +158,16 @@ export function mapPartners(doc: PayloadDoc) {
   }
 }
 
+function optionalVideo(key: string, url: unknown) {
+  const video = videoFromUrl(url)
+  return video ? { [key]: video } : {}
+}
+
+function optionalVideoUrl(url: unknown) {
+  const video = videoFromUrl(url)
+  return video ? { videoUrl: video.url } : {}
+}
+
 export function mapAcademy(doc: PayloadDoc) {
   return {
     articles: (doc.articles ?? []).map((a: PayloadDoc) => ({
@@ -166,6 +177,7 @@ export function mapAcademy(doc: PayloadDoc) {
       level: String(a.level ?? 'beginner'),
       readingMinutes: Number(a.readingMinutes ?? 1),
       bodyMarkdown: String(a.bodyMarkdown ?? ''),
+      ...optionalVideo('video', a.videoUrl),
     })),
     webinars: (doc.webinars ?? []).map((w: PayloadDoc) => ({
       id: String(w.webinarId ?? ''),
@@ -176,6 +188,8 @@ export function mapAcademy(doc: PayloadDoc) {
       durationMinutes: Number(w.durationMinutes ?? 60),
       level: String(w.level ?? ''),
       description: String(w.description ?? ''),
+      ...optionalVideo('recording', w.recordingUrl),
+      ...(isHttpsUrl(w.joinUrl) ? { joinUrl: String(w.joinUrl).trim() } : {}),
     })),
     glossary: (doc.glossary ?? []).map((g: PayloadDoc) => ({
       term: String(g.term ?? ''),
@@ -193,6 +207,7 @@ export function mapStreams(doc: PayloadDoc) {
       poster: mapMedia(s.poster),
       startsAt: iso(s.startsAt),
       status: String(s.status ?? 'upcoming'),
+      ...optionalVideoUrl(s.videoUrl),
     })),
   }
 }

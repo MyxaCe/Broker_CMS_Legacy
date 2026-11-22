@@ -49,7 +49,7 @@ jobs:
       - name: Каталог инструментов платформы (категории, сегменты, поиск, группировка, 5000 элементов)
         run: pnpm test:instrument-catalog
 
-      - name: Миграции на обжитой базе (языки, фон, портфели тарифов; ru/en не меняются)
+      - name: Миграции на обжитой базе (языки, фон, портфели тарифов, видео-ссылки; ru/en не меняются)
         run: |
           PGPASSWORD=cms psql -h localhost -U cms -d broker_cms -c "CREATE DATABASE broker_cms_migration"
           pnpm test:migration
@@ -72,6 +72,14 @@ jobs:
         env:
           NODE_ENV: production
           DATABASE_URL: postgres://cms:cms@localhost:5432/broker_cms_platform
+
+      - name: Видео-ссылки (разбор YouTube/Vimeo, эфир по ссылке, запись и участие вебинара, видео статьи, контракт)
+        run: |
+          PGPASSWORD=cms psql -h localhost -U cms -d broker_cms -c "CREATE DATABASE broker_cms_video"
+          pnpm test:video-links
+        env:
+          NODE_ENV: production
+          DATABASE_URL: postgres://cms:cms@localhost:5432/broker_cms_video
 
       - name: Seed (dev-режим применяет схему БД + контент из фикстур)
         run: pnpm seed
