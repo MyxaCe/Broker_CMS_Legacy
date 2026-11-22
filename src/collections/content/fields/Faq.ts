@@ -1,6 +1,5 @@
 import type { Field } from 'payload'
 
-/** Поля раздела «Faq» (per-site коллекция, бывший глобал). */
 export const faqFields: Field[] = [
     {
       name: 'sections',

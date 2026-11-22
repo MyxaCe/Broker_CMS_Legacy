@@ -8,7 +8,6 @@ import { AdminNav as AdminNav_7bb4d8e8c04650469891d301029b44dd } from '../../../
 import { SiteDashboard as SiteDashboard_cbc5646a102be8c858ce57e7495cc4f3 } from '../../../components/SiteDashboard'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
-/** @type import('payload').ImportMap */
 export const importMap = {
   "/components/SiteInstrumentsField#SiteInstrumentsField": SiteInstrumentsField_c18f9e7bcabda8e2606accc68199ef44,
   "/components/LiveParams#LiveParamsSummary": LiveParamsSummary_11a0d187a30fc68b3101ac6010556f0f,

@@ -13,11 +13,6 @@ import { promotionsFields } from './fields/Promotions'
 import { streamsFields } from './fields/Streams'
 import { systemStatusFields } from './fields/SystemStatus'
 
-/**
- * Per-site контентные коллекции. Поля — в content/fields/* (чистые
- * field-модули; глобалов больше нет). brand — поля карточки sites;
- * articles — своя коллекция с site-полем.
- */
 export const CONTENT_COLLECTIONS = [
   makeSiteContentCollection({
     collectionSlug: 'site-navigation',
@@ -106,7 +101,6 @@ export const CONTENT_COLLECTIONS = [
   CabinetHome,
 ]
 
-/** resource контракта → slug per-site коллекции */
 export const RESOURCE_TO_COLLECTION: Record<string, string> = {
   navigation: 'site-navigation',
   faq: 'site-faq',

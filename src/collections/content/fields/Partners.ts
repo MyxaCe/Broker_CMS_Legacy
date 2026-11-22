@@ -1,6 +1,5 @@
 import type { Field } from 'payload'
 
-/** Поля раздела «Partners» (per-site коллекция, бывший глобал). */
 export const partnersFields: Field[] = [
     {
       name: 'models',

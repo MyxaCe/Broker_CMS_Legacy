@@ -1,11 +1,3 @@
-/**
- * Контрактный тест: ответы живой CMS сравниваются с эталонными фикстурами
- * platform-contracts (contract/fixtures) по всем 14 ресурсам × ru/en,
- * плюс деталка статьи, инструменты платформы, auth и 404. Datetime-поля сравниваются по моменту
- * времени (CMS отдаёт канонический ISO с миллисекундами).
- *
- * Запуск: node scripts/contract-check.mjs   (нужны env CMS_URL?, CMS_API_KEY?)
- */
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import assert from 'node:assert';
@@ -42,8 +34,6 @@ for (const resource of RESOURCES) {
     if (!res.ok) { fail(`${resource} ${locale}: HTTP ${res.status}`); continue; }
     const body = await res.json();
     const fixture = JSON.parse(readFileSync(join(FIXTURES, `cms.${resource}.${locale}.json`), 'utf8'));
-    // Медиа бренда специфичны для окружения (их загружает редактор, seed не сидирует):
-    // проверяем форму объекта, затем исключаем из побайтового сравнения
     if (resource === 'brand') {
       for (const key of ['logo', 'favicon']) {
         const m = body[key];

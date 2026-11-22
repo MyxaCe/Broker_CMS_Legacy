@@ -1,6 +1,5 @@
 import type { Field } from 'payload'
 
-/** Поля раздела «Accounts» (per-site коллекция, бывший глобал). */
 export const accountsFields: Field[] = [
     {
       name: 'items',
@@ -10,7 +9,6 @@ export const accountsFields: Field[] = [
       labels: { singular: 'Тарифный план', plural: 'Тарифные планы' },
       admin: { components: { RowLabel: '/components/RowLabel#ArrayRowLabel' } },
       fields: [
-        // 'id' зарезервирован Payload для строк массива — контрактный id хранится как planId
         { name: 'planId', type: 'text', required: true, label: 'ID плана (standard, pro…)' },
         {
           name: 'portfolioKey',

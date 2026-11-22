@@ -1,6 +1,5 @@
 import type { Field } from 'payload'
 
-/** Поля раздела «Careers» (per-site коллекция, бывший глобал). */
 export const careersFields: Field[] = [
     {
       name: 'benefits',

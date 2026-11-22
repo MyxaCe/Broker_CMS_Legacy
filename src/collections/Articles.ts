@@ -5,11 +5,6 @@ import { liveParamsSummaryField, warnUnknownLiveParams, withLiveParams } from '.
 import { notifyContentChange } from '../lib/notify-site'
 import { sitePreviewUrlFor } from '../lib/preview-url'
 
-/**
- * Контракт: cms.articles (список с пагинацией) + cms.article (деталка по slug).
- * Единственная коллекция контента: у статей есть жизненный цикл и адресуемость
- * по slug — глобалом их моделировать нельзя.
- */
 export const Articles: CollectionConfig = {
   slug: 'articles',
   labels: { singular: 'Статья', plural: 'Статьи' },
@@ -22,7 +17,6 @@ export const Articles: CollectionConfig = {
   },
   versions: { drafts: { autosave: { interval: 1000 } } },
   hooks: {
-    // per-site вебхук: правка статьи demo не должна дёргать кеш apex-ru
     afterChange: [notifyContentChange('articles'), warnUnknownLiveParams],
     beforeValidate: [fillSiteFromActive],
   },
@@ -36,12 +30,9 @@ export const Articles: CollectionConfig = {
       index: true,
       label: 'Сайт',
       admin: {
-        // Статья принадлежит рабочему сайту, выбранному на дашборде
         condition: () => false,
       },
     },
-    // slug уникален В ПРЕДЕЛАХ сайта (поиск деталки фильтрует site+slug);
-    // глобальный unique снят — одинаковые статьи на разных сайтах легальны
     { name: 'slug', type: 'text', required: true, index: true, label: 'Slug' },
     { name: 'title', type: 'text', required: true, localized: true, label: 'Заголовок' },
     { name: 'excerpt', type: 'textarea', required: true, localized: true, label: 'Анонс' },

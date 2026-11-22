@@ -2,8 +2,6 @@ import config from '@payload-config'
 import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 
-/** Здоровье сервиса: доступность процесса + БД (паритет с /api/health сайта). */
-
 export const dynamic = 'force-dynamic'
 
 export async function GET() {

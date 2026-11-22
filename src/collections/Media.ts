@@ -16,8 +16,6 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: {
-    // Явный абсолютный путь: в standalone-образе конфиг бандлится,
-    // относительные пути от файла конфига становятся непредсказуемыми
     staticDir: path.resolve(process.cwd(), 'media'),
   },
 }
