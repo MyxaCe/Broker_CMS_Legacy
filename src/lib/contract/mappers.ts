@@ -1,5 +1,6 @@
 import { siteLanguages } from '../languages'
 import { isHttpsUrl, videoFromUrl } from '../video-url'
+import { mapLegalEntity } from '../legal-entity'
 
 type PayloadDoc = Record<string, any>
 
@@ -42,7 +43,13 @@ export function mapBrand(doc: PayloadDoc) {
     })),
     heroBackground: heroBackground(doc),
     ...siteLanguages(doc),
+    ...withLegalEntity(doc),
   }
+}
+
+function withLegalEntity(doc: PayloadDoc) {
+  const legalEntity = mapLegalEntity(doc)
+  return legalEntity ? { legalEntity } : {}
 }
 
 export function heroBackground(site: PayloadDoc): 'quotes' | 'off' {

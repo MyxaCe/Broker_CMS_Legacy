@@ -8,6 +8,7 @@ import {
   validateDefaultLanguage,
   validateLanguages,
 } from '../lib/languages'
+import { legalEntityField } from '../lib/legal-entity'
 import { defaultSiteSlug, notifySiteFor } from '../lib/notify-site'
 import {
   checkPlatformChange,
@@ -98,6 +99,7 @@ export const Sites: CollectionConfig = {
         { name: 'url', type: 'text', required: true, label: 'Ссылка' },
       ],
     },
+    legalEntityField,
     {
       name: 'instruments',
       type: 'json',

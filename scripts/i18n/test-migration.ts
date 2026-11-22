@@ -21,6 +21,7 @@ const LIVE_PARAMS = '20261119_155549_live_params'
 const PLATFORM = '20261121_120722_platform_instruments'
 const SITE_INSTRUMENTS = '20261121_133912_site_instruments'
 const VIDEO_LINKS = '20261122_133540_video_links'
+const LEGAL_ENTITY = '20261122_134739_legal_entity'
 
 const payload = await getPayload({ config })
 const db = (payload.db as unknown as { drizzle: { execute: (q: unknown) => Promise<{ rows: any[] }> } }).drizzle
@@ -83,13 +84,13 @@ const CONTENT = sql`
          (SELECT json_agg(to_jsonb(t) - 'video_url' ORDER BY t._locale, t._order) FROM site_streams_items t) AS streams,
          (SELECT json_agg(to_jsonb(t) - 'video_url' ORDER BY t._locale, t._order) FROM site_academy_articles t) AS academy_articles,
          (SELECT json_agg(to_jsonb(t) - 'recording_url' - 'join_url' ORDER BY t._locale, t._order) FROM site_academy_webinars t) AS academy_webinars,
-         (SELECT json_agg(to_jsonb(t) - 'hero_background' - 'default_language' - 'close_only_instruments' ORDER BY t.id) FROM sites t) AS sites`
+         (SELECT json_agg(to_jsonb(t) - 'hero_background' - 'default_language' - 'close_only_instruments' - 'legal_entity_name' - 'legal_entity_registration_number' ORDER BY t.id) FROM sites t) AS sites`
 const contentBefore = await db.execute(CONTENT)
 
 const siteInstrumentsIndex = migrations.findIndex((m) => m.name === SITE_INSTRUMENTS)
-assert.equal(siteInstrumentsIndex, migrations.length - 2)
+assert.ok(siteInstrumentsIndex > index)
 const videoIndex = migrations.findIndex((m) => m.name === VIDEO_LINKS)
-assert.equal(videoIndex, migrations.length - 1)
+assert.equal(videoIndex, siteInstrumentsIndex + 1)
 for (const migration of migrations.slice(index, siteInstrumentsIndex)) await migration.up(args)
 const manualBefore = await db.execute(sql`SELECT "instruments", "version"::int AS version FROM "platform_instruments"`)
 await db.execute(sql`
@@ -98,7 +99,7 @@ await db.execute(sql`
     FROM jsonb_array_elements("instruments") WITH ORDINALITY AS t(i, o)
   )`)
 await migrations[siteInstrumentsIndex]!.up(args)
-await migrations[videoIndex]!.up(args)
+for (const migration of migrations.slice(siteInstrumentsIndex + 1)) await migration.up(args)
 
 const languages = await db.execute(sql`
   SELECT s."slug", s."default_language"::text AS def,
@@ -214,6 +215,42 @@ assert.equal('recording' in academy.webinars[0] || 'joinUrl' in academy.webinars
 assert.ok(validateContract('academy', academy).valid)
 console.info('OK    миграция видео-ссылок: только новые пустые колонки, прежние эфиры и вебинары отдаются как раньше')
 
+const legalIndex = migrations.findIndex((m) => m.name === LEGAL_ENTITY)
+assert.equal(legalIndex, videoIndex + 1)
+assert.equal('legalEntity' in brand, false)
+await migrations[legalIndex]!.up(args)
+await db.execute(sql`
+  UPDATE "sites" SET "legal_entity_name" = 'Example Ltd', "legal_entity_registration_number" = 'EX-000000' WHERE "slug" = 'old-a';
+  INSERT INTO "sites_locales" ("legal_entity_address", "_locale", "_parent_id")
+  SELECT 'Пример, ул. Примерная, 1', 'ru'::"_locales", "id" FROM "sites" WHERE "slug" = 'old-a';
+  INSERT INTO "sites_legal_entity_licenses" ("_order", "_parent_id", "id", "number", "verify_url")
+  SELECT 1, "id", 'lic-1', 'LIC-0001', 'https://register.example.test/firms/LIC-0001' FROM "sites" WHERE "slug" = 'old-a';
+  INSERT INTO "sites_legal_entity_licenses_locales" ("activity", "regulator", "_locale", "_parent_id")
+  VALUES ('Брокер', 'Пример-регулятор', 'ru', 'lic-1'), ('Broker', 'Example Authority', 'en', 'lic-1');
+`)
+for (const [locale, activity, regulator] of [
+  ['ru', 'Брокер', 'Пример-регулятор'],
+  ['en', 'Broker', 'Example Authority'],
+] as const) {
+  const doc = (await payload.find({ collection: 'sites', where: { slug: { equals: 'old-a' } }, locale, depth: 0 })).docs[0] as unknown as Record<string, any>
+  const localized = mapBrand(doc)
+  assert.ok(validateContract('brand', localized).valid)
+  assert.deepEqual(localized.legalEntity, {
+    name: 'Example Ltd',
+    registrationNumber: 'EX-000000',
+    address: 'Пример, ул. Примерная, 1',
+    licenses: [{
+      number: 'LIC-0001',
+      activity,
+      regulator,
+      regulatorCountry: null,
+      verifyUrl: 'https://register.example.test/firms/LIC-0001',
+      document: null,
+    }],
+  })
+}
+console.info('OK    миграция: юрлицо — повторный прогон безопасен, пустые сайты без legalEntity, переводы лицензии по локали, адрес с запасным ru')
+
 const expectedPlatform = [...TERMINAL_PAIRS, 'EURUSD', 'XAUUSD', 'AAPL.US', 'US500'].map((symbol) => ({ symbol, mode: 'trade' }))
 assert.deepEqual(manualBefore.rows[0].instruments, expectedPlatform)
 assert.equal(manualBefore.rows[0].version, 1)
@@ -274,6 +311,13 @@ assert.deepEqual(reappliedSites.rows.map((r) => [r.slug, r.close_only_instrument
   ['old-d', []],
 ])
 console.info('OK    миграция: повторный прогон не трогает ни ручной список, ни режимы сайтов')
+
+for (const migration of migrations.slice(videoIndex + 1).reverse()) await migration.down(args)
+const legalDown = await db.execute(sql`
+  SELECT to_regclass('public.sites_locales') AS a, to_regclass('public.sites_legal_entity_licenses') AS b,
+    (SELECT count(*)::int FROM information_schema.columns WHERE column_name LIKE 'legal_entity_%') AS n`)
+assert.deepEqual(legalDown.rows[0], { a: null, b: null, n: 0 })
+console.info('OK    миграция: откат юрлица проходит')
 
 await migrations[videoIndex]!.up(args)
 await migrations[videoIndex]!.down(args)

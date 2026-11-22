@@ -219,6 +219,28 @@ export interface Site {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Выводится в подвале витрины и кабинета и на странице «Регулирование». Пустые поля не показываются
+   */
+  legalEntity?: {
+    name?: string | null;
+    registrationNumber?: string | null;
+    address?: string | null;
+    licenses?:
+      | {
+          number?: string | null;
+          activity?: string | null;
+          regulator?: string | null;
+          regulatorCountry?: string | null;
+          /**
+           * Адрес записи в публичном реестре регулятора, только https://
+           */
+          verifyUrl?: string | null;
+          document?: (number | null) | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
   instruments?:
     | {
         [k: string]: unknown;
@@ -917,6 +939,24 @@ export interface SitesSelect<T extends boolean = true> {
         name?: T;
         url?: T;
         id?: T;
+      };
+  legalEntity?:
+    | T
+    | {
+        name?: T;
+        registrationNumber?: T;
+        address?: T;
+        licenses?:
+          | T
+          | {
+              number?: T;
+              activity?: T;
+              regulator?: T;
+              regulatorCountry?: T;
+              verifyUrl?: T;
+              document?: T;
+              id?: T;
+            };
       };
   instruments?: T;
   closeOnlyInstruments?: T;

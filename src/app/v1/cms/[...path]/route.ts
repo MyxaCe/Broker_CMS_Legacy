@@ -69,6 +69,7 @@ export async function GET(
     const sites = await payload.find({
       collection: 'sites',
       where: { slug: { equals: segments[0] === 'sites' ? (segments[1] ?? '') : siteSlug } },
+      locale,
       limit: 1,
       depth: 2,
     })

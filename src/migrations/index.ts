@@ -6,6 +6,7 @@ import * as migration_20261119_155549_live_params from './20261119_155549_live_p
 import * as migration_20261121_120722_platform_instruments from './20261121_120722_platform_instruments';
 import * as migration_20261121_133912_site_instruments from './20261121_133912_site_instruments';
 import * as migration_20261122_133540_video_links from './20261122_133540_video_links';
+import * as migration_20261122_134739_legal_entity from './20261122_134739_legal_entity';
 
 export const migrations = [
   {
@@ -47,5 +48,10 @@ export const migrations = [
     up: migration_20261122_133540_video_links.up,
     down: migration_20261122_133540_video_links.down,
     name: '20261122_133540_video_links',
+  },
+  {
+    up: migration_20261122_134739_legal_entity.up,
+    down: migration_20261122_134739_legal_entity.down,
+    name: '20261122_134739_legal_entity',
   },
 ];
