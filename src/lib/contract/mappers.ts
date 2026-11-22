@@ -354,15 +354,96 @@ export function mapCabinetHome(doc: PayloadDoc) {
   return { modules }
 }
 
+const SAFE_LINK = /^(https?:\/\/|mailto:|tel:|\/(?!\/)|#)/i
+
+function mapLexicalNode(node: unknown): PayloadDoc[] {
+  if (!node || typeof node !== 'object') return []
+  const source = node as PayloadDoc
+  const children = Array.isArray(source.children) ? source.children.flatMap(mapLexicalNode) : undefined
+  switch (source.type) {
+    case 'upload': {
+      const media = mapMedia(source.value)
+      return media && media.mimeType.startsWith('image/')
+        ? [{ type: 'upload', version: source.version ?? 3, format: source.format ?? '', media }]
+        : []
+    }
+    case 'block': {
+      const fields = (source.fields ?? {}) as PayloadDoc
+      if (fields.blockType !== 'video') return []
+      const video = videoFromUrl(fields.url)
+      if (!video) return []
+      const caption = typeof fields.caption === 'string' && fields.caption.trim() ? { caption: fields.caption.trim() } : {}
+      return [{ type: 'block', version: source.version ?? 2, format: source.format ?? '', fields: { blockType: 'video', video, ...caption } }]
+    }
+    case 'link':
+    case 'autolink': {
+      const fields = (source.fields ?? {}) as PayloadDoc
+      const url = typeof fields.url === 'string' ? fields.url.trim() : ''
+      if (fields.linkType === 'internal' || !SAFE_LINK.test(url)) return children ?? []
+      return [{ ...source, fields: { url, newTab: Boolean(fields.newTab) }, children: children ?? [] }]
+    }
+    case 'relationship':
+      return []
+    default: {
+      const { children: _children, ...rest } = source
+      return [children ? { ...rest, children } : rest]
+    }
+  }
+}
+
+export function mapLexicalBody(body: unknown): PayloadDoc | null {
+  const root = (body as PayloadDoc | null | undefined)?.root
+  if (!root || typeof root !== 'object' || !Array.isArray(root.children)) return null
+  const children = (root.children as unknown[]).flatMap(mapLexicalNode)
+  if (children.length === 0) return null
+  return { root: { ...root, children } }
+}
+
+const minutes = (value: unknown) => {
+  const n = Math.round(Number(value))
+  return Number.isFinite(n) && n > 0 ? n : 1
+}
+
+function articleCategory(doc: PayloadDoc): { slug: string; title?: string } {
+  const ref = doc.articleCategory
+  if (ref && typeof ref === 'object' && typeof ref.slug === 'string' && ref.slug) {
+    return { slug: ref.slug, ...(typeof ref.title === 'string' && ref.title ? { title: ref.title } : {}) }
+  }
+  return { slug: String(doc.category ?? '') }
+}
+
 export function mapArticle(doc: PayloadDoc) {
+  const section = doc.section === 'education' ? 'education' : 'news'
+  const category = articleCategory(doc)
+  const body = mapLexicalBody(doc.body)
+  const cover = mapMedia(doc.cover)
   return {
     slug: String(doc.slug ?? ''),
     title: String(doc.title ?? ''),
     excerpt: String(doc.excerpt ?? ''),
-    category: String(doc.category ?? ''),
+    category: section === 'news' ? category.slug : '',
     source: String(doc.source ?? ''),
     publishedAt: iso(doc.publishedAt),
-    readingMinutes: Number(doc.readingMinutes ?? 1),
+    readingMinutes: minutes(doc.readingMinutes),
     bodyMarkdown: String(doc.bodyMarkdown ?? ''),
+    section,
+    ...(body ? { body } : {}),
+    ...(cover ? { cover } : {}),
+    ...(section === 'news' && category.title ? { categoryTitle: category.title } : {}),
+    ...(section === 'education'
+      ? { level: doc.level === 'intermediate' ? 'intermediate' : 'beginner', ...optionalVideo('video', doc.videoUrl) }
+      : {}),
+  }
+}
+
+export function mapAcademyArticle(doc: PayloadDoc) {
+  return {
+    slug: String(doc.slug ?? ''),
+    title: String(doc.title ?? ''),
+    excerpt: String(doc.excerpt ?? ''),
+    level: doc.level === 'intermediate' ? 'intermediate' : 'beginner',
+    readingMinutes: minutes(doc.readingMinutes),
+    bodyMarkdown: String(doc.bodyMarkdown ?? ''),
+    ...optionalVideo('video', doc.videoUrl),
   }
 }

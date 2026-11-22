@@ -92,6 +92,14 @@ jobs:
           NODE_ENV: production
           DATABASE_URL: postgres://cms:cms@localhost:5432/broker_cms_status
 
+      - name: Статьи (slug и время чтения, миграции Markdown→Lexical, категорий и обучения с повтором и откатом, расписание, предпросмотр, контракт)
+        run: |
+          PGPASSWORD=cms psql -h localhost -U cms -d broker_cms -c "CREATE DATABASE broker_cms_articles"
+          pnpm test:articles
+        env:
+          NODE_ENV: production
+          DATABASE_URL: postgres://cms:cms@localhost:5432/broker_cms_articles
+
       - name: Seed (dev-режим применяет схему БД + контент из фикстур)
         run: pnpm seed
 

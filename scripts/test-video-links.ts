@@ -231,11 +231,17 @@ await check('эфир: неподходящая ссылка — отказ с �
 })
 
 await check('обучение: запись и ссылка участия у вебинара, видео у статьи', async () => {
+  for (const [minute, article] of [
+    [2, { slug: 'with-video', title: 'С видео', videoUrl: `https://youtu.be/${YT}` }],
+    [1, { slug: 'plain', title: 'Без видео' }],
+  ] as const) {
+    await payload.create({
+      collection: 'articles',
+      locale: 'ru',
+      data: { ...article, site: site.id, section: 'education', level: 'beginner', excerpt: 'e', bodyMarkdown: 'b', publishedAt: `2026-01-01T00:0${minute}:00Z`, _status: 'published' } as never,
+    })
+  }
   await upsert('site-academy', {
-    articles: [
-      { slug: 'with-video', title: 'С видео', excerpt: 'e', level: 'beginner', readingMinutes: 3, bodyMarkdown: 'b', videoUrl: `https://youtu.be/${YT}` },
-      { slug: 'plain', title: 'Без видео', excerpt: 'e', level: 'beginner', readingMinutes: 3, bodyMarkdown: 'b' },
-    ],
     webinars: [
       { webinarId: 'web-1', title: 'Прошедший', speaker: 'A B', speakerRole: 'r', startsAt: '2026-01-01T10:00:00Z', durationMinutes: 60, level: 'l', description: 'd', recordingUrl: 'https://vimeo.com/76979871' },
       { webinarId: 'web-2', title: 'Будущий', speaker: 'A B', speakerRole: 'r', startsAt: '2027-01-01T10:00:00Z', durationMinutes: 60, level: 'l', description: 'd', joinUrl: 'https://zoom.us/j/123' },

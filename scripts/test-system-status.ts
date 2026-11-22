@@ -61,6 +61,7 @@ const LEGACY = sql`
 const before = await db.execute(LEGACY)
 
 await migrations[index]!.up(args)
+for (const migration of migrations.slice(index + 1)) await migration.up(args)
 
 const after = await db.execute(LEGACY)
 assert.deepEqual(after.rows, before.rows)
@@ -175,6 +176,7 @@ const en = mapSystemStatus(updated as never)
 assert.deepEqual(en.incidents[0], { date: '2026-11-21', title: 'New', status: '', state: 'investigating', text: 'Text' })
 console.info('OK    Payload: новый инцидент с датой из календаря и статусом из списка сохраняется')
 
+for (const migration of migrations.slice(index + 1).reverse()) await migration.down(args)
 await migrations[index]!.down(args)
 const down = await db.execute(sql`
   SELECT count(*)::int AS n FROM information_schema.columns

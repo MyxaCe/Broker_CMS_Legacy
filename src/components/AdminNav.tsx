@@ -109,7 +109,8 @@ export async function AdminNav() {
               </NavLink>
             ) : null,
           )}
-          <NavLink href="/admin/collections/articles">Новости</NavLink>
+          <NavLink href="/admin/collections/articles">Статьи</NavLink>
+          <NavLink href="/admin/collections/article-categories">Категории статей</NavLink>
 
           <p style={groupTitle}>Кабинет — {active}</p>
           {docIds['site-cabinet-home'] && (

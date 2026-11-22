@@ -71,6 +71,7 @@ export interface Config {
     media: Media;
     sites: Site;
     articles: Article;
+    'article-categories': ArticleCategory;
     'site-navigation': SiteNavigation;
     'site-faq': SiteFaq;
     'site-instruments': SiteInstrument;
@@ -95,6 +96,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     sites: SitesSelect<false> | SitesSelect<true>;
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
+    'article-categories': ArticleCategoriesSelect<false> | ArticleCategoriesSelect<true>;
     'site-navigation': SiteNavigationSelect<false> | SiteNavigationSelect<true>;
     'site-faq': SiteFaqSelect<false> | SiteFaqSelect<true>;
     'site-instruments': SiteInstrumentsSelect<false> | SiteInstrumentsSelect<true>;
@@ -290,17 +292,64 @@ export interface Site {
 export interface Article {
   id: number;
   site?: (number | null) | Site;
-  slug: string;
+  section: 'news' | 'education';
+  /**
+   * Заполняется из заголовка. Можно поправить; после публикации лучше не менять.
+   */
+  slug?: string | null;
+  /**
+   * Дата в будущем — статья появится на сайте в это время.
+   */
+  publishedAt: string;
+  /**
+   * Считается из текста при сохранении.
+   */
+  readingMinutes?: number | null;
   title: string;
   excerpt: string;
-  category: string;
-  source: string;
-  publishedAt: string;
-  readingMinutes: number;
-  bodyMarkdown: string;
+  cover?: (number | null) | Media;
+  articleCategory?: (number | null) | ArticleCategory;
+  source?: string | null;
+  level?: ('beginner' | 'intermediate') | null;
+  /**
+   * Необязательно. Ссылка YouTube или Vimeo — плеер появится вверху статьи.
+   */
+  videoUrl?: string | null;
+  body?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  bodyMarkdown?: string | null;
+  category?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "article-categories".
+ */
+export interface ArticleCategory {
+  id: number;
+  site?: (number | null) | Site;
+  title: string;
+  /**
+   * Заполняется из названия; можно поправить.
+   */
+  slug?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -799,6 +848,10 @@ export interface PayloadLockedDocument {
         value: number | Article;
       } | null)
     | ({
+        relationTo: 'article-categories';
+        value: number | ArticleCategory;
+      } | null)
+    | ({
         relationTo: 'site-navigation';
         value: number | SiteNavigation;
       } | null)
@@ -985,17 +1038,34 @@ export interface SitesSelect<T extends boolean = true> {
  */
 export interface ArticlesSelect<T extends boolean = true> {
   site?: T;
+  section?: T;
   slug?: T;
-  title?: T;
-  excerpt?: T;
-  category?: T;
-  source?: T;
   publishedAt?: T;
   readingMinutes?: T;
+  title?: T;
+  excerpt?: T;
+  cover?: T;
+  articleCategory?: T;
+  source?: T;
+  level?: T;
+  videoUrl?: T;
+  body?: T;
   bodyMarkdown?: T;
+  category?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "article-categories_select".
+ */
+export interface ArticleCategoriesSelect<T extends boolean = true> {
+  site?: T;
+  title?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -23,6 +23,7 @@ const SITE_INSTRUMENTS = '20261121_133912_site_instruments'
 const VIDEO_LINKS = '20261122_133540_video_links'
 const LEGAL_ENTITY = '20261122_134739_legal_entity'
 const SYSTEM_STATUS = '20261122_135545_system_status_live'
+const ARTICLES_CHAIN = ['20261122_140507_articles_editor', '20261122_140600_article_categories', '20261122_140700_academy_articles']
 
 const payload = await getPayload({ config })
 const db = (payload.db as unknown as { drizzle: { execute: (q: unknown) => Promise<{ rows: any[] }> } }).drizzle
@@ -189,7 +190,7 @@ console.info('OK    миграция: brand, accounts, promotions после м�
 
 const VIDEO_COLUMNS = sql`
   SELECT table_name || '.' || column_name AS c FROM information_schema.columns
-  WHERE column_name IN ('video_url', 'recording_url', 'join_url') ORDER BY 1`
+  WHERE column_name IN ('video_url', 'recording_url', 'join_url') AND table_name NOT IN ('articles_locales', '_articles_v_locales') ORDER BY 1`
 assert.deepEqual((await db.execute(VIDEO_COLUMNS)).rows.map((r) => r.c), [
   '_site_academy_v_version_articles.video_url',
   '_site_academy_v_version_webinars.join_url',
@@ -251,6 +252,23 @@ for (const [locale, activity, regulator] of [
   })
 }
 console.info('OK    миграция: юрлицо — повторный прогон безопасен, пустые сайты без legalEntity, переводы лицензии по локали, адрес с запасным ru')
+
+const articlesIndexes = ARTICLES_CHAIN.map((name) => migrations.findIndex((m) => m.name === name))
+const statusBeforeArticles = migrations.findIndex((m) => m.name === SYSTEM_STATUS)
+assert.deepEqual(articlesIndexes, [statusBeforeArticles + 1, statusBeforeArticles + 2, statusBeforeArticles + 3])
+assert.equal(articlesIndexes[2], migrations.length - 1)
+const ARTICLES_STATE = sql`
+  SELECT a."slug", a."section"::text AS section, a."level"::text AS level, a."_status"::text AS status, l."_locale"::text AS locale, l."title", l."body" IS NOT NULL AS has_body,
+         (SELECT count(*)::int FROM "_articles_v" v WHERE v."parent_id" = a."id") AS versions
+  FROM "articles" a JOIN "articles_locales" l ON l."_parent_id" = a."id" ORDER BY a."slug", l."_locale"`
+const movedArticles = await db.execute(ARTICLES_STATE)
+assert.deepEqual(movedArticles.rows, [
+  { slug: 'what-is-forex', section: 'education', level: 'beginner', status: 'published', locale: 'ru', title: 'Что такое Forex', has_body: true, versions: 1 },
+])
+for (const i of articlesIndexes) await migrations[i]!.up(args)
+assert.deepEqual((await db.execute(ARTICLES_STATE)).rows, movedArticles.rows)
+assert.equal((await db.execute(sql`SELECT count(*)::int AS n FROM "article_categories"`)).rows[0]?.n, 0)
+console.info('OK    миграции статей (последние в цепочке): статья обучения перенесена в коллекцию с Lexical, повторный прогон ничего не меняет')
 
 const expectedPlatform = [...TERMINAL_PAIRS, 'EURUSD', 'XAUUSD', 'AAPL.US', 'US500'].map((symbol) => ({ symbol, mode: 'trade' }))
 assert.deepEqual(manualBefore.rows[0].instruments, expectedPlatform)
@@ -315,7 +333,7 @@ console.info('OK    миграция: повторный прогон не тр�
 
 const statusIndex = migrations.findIndex((m) => m.name === SYSTEM_STATUS)
 assert.equal(statusIndex, legalIndex + 1)
-assert.equal(statusIndex, migrations.length - 1)
+assert.equal(statusIndex, migrations.length - 1 - ARTICLES_CHAIN.length)
 const STATUS_COLUMNS = sql`
   SELECT count(*)::int AS n FROM information_schema.columns
   WHERE table_name LIKE '%system_status%' AND column_name IN ('check', 'manual_status', 'maintenance_note', 'occurred_on', 'state')`
@@ -329,7 +347,9 @@ const legalDown = await db.execute(sql`
   SELECT to_regclass('public.sites_locales') AS a, to_regclass('public.sites_legal_entity_licenses') AS b,
     (SELECT count(*)::int FROM information_schema.columns WHERE column_name LIKE 'legal_entity_%') AS n`)
 assert.deepEqual(legalDown.rows[0], { a: null, b: null, n: 0 })
-console.info('OK    миграция: откат юрлица проходит')
+assert.equal((await db.execute(sql`SELECT to_regclass('public.article_categories') AS t`)).rows[0]?.t ?? null, null)
+assert.equal((await db.execute(sql`SELECT count(*)::int AS n FROM "articles"`)).rows[0]?.n, 0)
+console.info('OK    миграция: откат статей и юрлица проходит')
 
 await migrations[videoIndex]!.up(args)
 await migrations[videoIndex]!.down(args)

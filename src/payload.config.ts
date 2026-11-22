@@ -5,6 +5,7 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
+import { ArticleCategories } from './collections/ArticleCategories'
 import { Articles } from './collections/Articles'
 import { CONTENT_COLLECTIONS } from './collections/content/index'
 import { Media } from './collections/Media'
@@ -31,7 +32,7 @@ export default buildConfig({
       Nav: '/components/AdminNav#AdminNav',
     },
   },
-  collections: [Users, Media, Sites, Articles, ...CONTENT_COLLECTIONS],
+  collections: [Users, Media, Sites, Articles, ArticleCategories, ...CONTENT_COLLECTIONS],
   globals: [PlatformInstruments],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

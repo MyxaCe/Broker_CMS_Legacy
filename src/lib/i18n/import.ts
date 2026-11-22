@@ -160,6 +160,7 @@ async function syncTarget(
     id: target.id,
     locale,
     depth: 0,
+    context: { trustReadingMinutes: true },
     data: { ...target.desired, _status: 'published' } as never,
   })
   for (const other of guarded) {
@@ -190,11 +191,13 @@ async function contentTargets(
 ): Promise<Target[]> {
   const targets: Target[] = []
   for (const [resource, dto] of Object.entries(resources)) {
-    if (resource === 'articles') {
-      for (const item of (dto?.items ?? []) as Doc[]) {
+    if (resource === 'articles' || resource === 'academy') {
+      const section = resource === 'articles' ? 'news' : 'education'
+      const items = ((resource === 'articles' ? dto?.items : dto?.articles) ?? []) as Doc[]
+      for (const item of items) {
         const found = await payload.find({
           collection: 'articles',
-          where: { and: [{ site: { equals: siteId } }, { slug: { equals: item.slug } }] },
+          where: { and: [{ site: { equals: siteId } }, { slug: { equals: item.slug } }, { section: { equals: section } }] },
           limit: 1,
           depth: 0,
         })
@@ -208,10 +211,16 @@ async function contentTargets(
           label: `articles/${item.slug}`,
           collection: 'articles',
           id: doc.id,
-          desired: { title: item.title, excerpt: item.excerpt, source: item.source, bodyMarkdown: item.bodyMarkdown },
+          desired: {
+            title: item.title,
+            excerpt: item.excerpt,
+            ...(section === 'news' ? { source: item.source } : {}),
+            bodyMarkdown: item.bodyMarkdown,
+            ...(item.readingMinutes ? { readingMinutes: item.readingMinutes } : {}),
+          },
         })
       }
-      continue
+      if (resource === 'articles') continue
     }
     const builder = CONTENT_BUILDERS[resource]
     if (!builder) {
@@ -232,7 +241,7 @@ async function contentTargets(
       continue
     }
     const localized = localizedFieldNames(payload, builder.collection)
-    const built = builder.build(dto)
+    const built = builder.build(resource === 'academy' ? { ...dto, articles: undefined } : dto)
     const base = baseLocale ? await readLocale(payload, builder.collection, doc.id, baseLocale) : null
     const desired: Doc = {}
     try {

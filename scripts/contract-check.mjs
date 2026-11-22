@@ -23,6 +23,12 @@ function normalize(value) {
   return value;
 }
 
+const ARTICLE_LEGACY_KEYS = ['slug', 'title', 'excerpt', 'category', 'source', 'publishedAt', 'readingMinutes', 'bodyMarkdown'];
+const legacyArticles = (body) => ({
+  items: body.items.map((item) => Object.fromEntries(ARTICLE_LEGACY_KEYS.map((k) => [k, item[k]]))),
+  total: body.total, page: body.page, pageSize: body.pageSize,
+});
+
 let failures = 0;
 const fail = (msg) => { failures++; console.log(`FAIL  ${msg}`); };
 
@@ -32,7 +38,8 @@ for (const resource of RESOURCES) {
       headers: { 'X-API-Key': KEY },
     });
     if (!res.ok) { fail(`${resource} ${locale}: HTTP ${res.status}`); continue; }
-    const body = await res.json();
+    const raw = await res.json();
+    const body = resource === 'articles' ? legacyArticles(raw) : raw;
     const fixture = JSON.parse(readFileSync(join(FIXTURES, `cms.${resource}.${locale}.json`), 'utf8'));
     if (resource === 'brand') {
       for (const key of ['logo', 'favicon']) {
@@ -178,6 +185,24 @@ for (const [resource, strip] of [
   else fail(`${resource}: схема требует ${JSON.stringify(validate.errors)}`);
 }
 
+{
+  const validateList = ajv.compile(readJson('contract', 'json-schema', 'cms.articles.schema.json'));
+  const news = await (await get('/v1/cms/articles?locale=ru')).json();
+  news.section === 'news' && news.items.every((i) => i.section === 'news' && i.body?.root && i.categoryTitle) && validateList(news)
+    ? console.log('OK    articles: раздел news, у статей Lexical-текст и название категории, ответ валиден')
+    : fail(`articles: новые поля ${JSON.stringify(validateList.errors ?? news.items[0])}`);
+  const academy = readJson('contract', 'fixtures', 'cms.academy.ru.json');
+  const education = await (await get('/v1/cms/articles?locale=ru&section=education&pageSize=100')).json();
+  JSON.stringify(education.items.map((i) => [i.slug, i.level])) === JSON.stringify(academy.articles.map((a) => [a.slug, a.level])) &&
+  education.section === 'education' && validateList(education)
+    ? console.log('OK    articles?section=education: статьи обучения из коллекции, порядок и уровни как в academy')
+    : fail(`articles?section=education: ${JSON.stringify(education).slice(0, 300)}`);
+  const legacy = readJson('contract', 'fixtures', 'cms.articles.ru.json');
+  validateList(legacy)
+    ? console.log('OK    articles: ответ старой CMS (без section/body) валиден по схеме')
+    : fail(`articles: схема требует новые поля ${JSON.stringify(validateList.errors)}`);
+}
+
 const translations = readJson('scripts', 'i18n', 'content.de-fr-es.json').locales;
 const faqLive = readJson('scripts', 'i18n', 'faq-live.json').locales;
 for (const locale of ['de', 'fr', 'es']) {
@@ -185,7 +210,8 @@ for (const locale of ['de', 'fr', 'es']) {
   for (const [resource, dto] of Object.entries(expected)) {
     const res = await get(`/v1/cms/${resource}?locale=${locale}`);
     if (!res.ok) { fail(`${resource} ${locale}: HTTP ${res.status}`); continue; }
-    same(`${resource} ${locale}`, await res.json(), dto);
+    const raw = await res.json();
+    same(`${resource} ${locale}`, resource === 'articles' ? legacyArticles(raw) : raw, dto);
   }
   const home = await get(`/v1/cms/cabinet-home?locale=${locale}`);
   same(`cabinet-home ${locale}`, home.ok ? await home.json() : null, readJson('contract', 'fixtures', 'cms.cabinet-home.ru.json'));

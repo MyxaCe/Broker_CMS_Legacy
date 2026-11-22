@@ -3,7 +3,8 @@ import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 
 import { RESOURCE_TO_COLLECTION } from '@/collections/content/index'
-import { heroBackground, mapArticle } from '@/lib/contract/mappers'
+import { articleWhere, parseSection } from '@/lib/contract/articles'
+import { heroBackground, mapAcademyArticle, mapArticle } from '@/lib/contract/mappers'
 import { RESOURCE_MAPPERS } from '@/lib/contract/resources'
 import { validateContract } from '@/lib/contract/validate'
 import { parseLocale, siteLanguages } from '@/lib/languages'
@@ -13,6 +14,8 @@ import { readSymbols, refreshPlatformInstruments, toPlatformInstrumentsDto } fro
 export const dynamic = 'force-dynamic'
 
 const ARTICLES_PAGE_SIZE = 20
+const ARTICLES_PAGE_SIZE_MAX = 100
+const ACADEMY_ARTICLES_LIMIT = 200
 const SITE_SLUG_PATTERN = /^[a-z0-9-]{2,32}$/
 
 function jsonWithVersion(dto: unknown, version: unknown, extra: Record<string, string> = {}) {
@@ -110,7 +113,7 @@ export async function GET(
     if (resource === 'articles' && segments.length === 2) {
       const found = await payload.find({
         collection: 'articles',
-        where: { and: [{ site: { equals: site.id } }, { slug: { equals: segments[1] } }] },
+        where: articleWhere(site.id, { draft, slug: segments[1], section: parseSection(url.searchParams.get('section')) }) as never,
         locale,
         draft,
         limit: 1,
@@ -129,20 +132,24 @@ export async function GET(
 
     if (resource === 'articles') {
       const page = Math.max(1, Number.parseInt(url.searchParams.get('page') ?? '1', 10) || 1)
+      const requestedSize = Number.parseInt(url.searchParams.get('pageSize') ?? '', 10)
+      const pageSize = requestedSize > 0 ? Math.min(requestedSize, ARTICLES_PAGE_SIZE_MAX) : ARTICLES_PAGE_SIZE
+      const section = parseSection(url.searchParams.get('section')) ?? 'news'
       const found = await payload.find({
         collection: 'articles',
-        where: { site: { equals: site.id } },
+        where: articleWhere(site.id, { draft, section }) as never,
         locale,
         draft,
         sort: '-publishedAt',
         page,
-        limit: ARTICLES_PAGE_SIZE,
+        limit: pageSize,
       })
       const dto = {
         items: found.docs.map((doc) => mapArticle(doc as Record<string, any>)),
         total: found.totalDocs,
         page: found.page ?? page,
-        pageSize: ARTICLES_PAGE_SIZE,
+        pageSize,
+        section,
       }
       const check = validateContract('articles', dto)
       if (!check.valid) return contractViolation('articles', siteSlug, check.errors)
@@ -169,10 +176,24 @@ export async function GET(
       return NextResponse.json({ error: 'no_content_for_site' }, { status: 404 })
     }
 
-    const dto = mapper(doc)
+    const dto = mapper(doc) as Record<string, unknown>
+    let version = doc.updatedAt
+    if (resource === 'academy') {
+      const education = await payload.find({
+        collection: 'articles',
+        where: articleWhere(site.id, { draft, section: 'education' }) as never,
+        locale,
+        draft,
+        sort: '-publishedAt',
+        limit: ACADEMY_ARTICLES_LIMIT,
+      })
+      dto.articles = education.docs.map((article) => mapAcademyArticle(article as Record<string, any>))
+      const newest = (education.docs as Record<string, any>[]).map((a) => String(a.updatedAt ?? '')).sort().pop()
+      if (newest && newest > String(version ?? '')) version = newest
+    }
     const check = validateContract(resource, dto)
     if (!check.valid) return contractViolation(resource, siteSlug, check.errors)
-    return jsonWithVersion(dto, doc.updatedAt)
+    return jsonWithVersion(dto, version)
   } catch (error) {
     console.error(`[contract] ${segments.join('/')} (site=${siteSlug}) failed:`, error)
     return NextResponse.json({ error: 'internal_error' }, { status: 500 })

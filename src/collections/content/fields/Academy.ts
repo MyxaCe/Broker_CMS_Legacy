@@ -7,9 +7,9 @@ export const academyFields: Field[] = [
       name: 'articles',
       type: 'array',
       localized: true,
-      label: 'Обучающие статьи',
+      label: 'Обучающие статьи (перенесены в «Статьи»)',
       labels: { singular: 'Статья', plural: 'Статьи' },
-      admin: { components: { RowLabel: '/components/RowLabel#ArrayRowLabel' } },
+      admin: { condition: () => false, components: { RowLabel: '/components/RowLabel#ArrayRowLabel' } },
       fields: [
         { name: 'slug', type: 'text', required: true, label: 'Slug' },
         { name: 'title', type: 'text', required: true, label: 'Заголовок' },

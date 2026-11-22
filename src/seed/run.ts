@@ -3,6 +3,8 @@ import path from 'node:path'
 
 import type { Payload } from 'payload'
 
+import { categoryTitles } from '../lib/article-categories'
+import { LANGUAGES } from '../lib/languages'
 import { TERMINAL_PAIRS } from '../lib/platform-instruments'
 import { CONTENT_BUILDERS } from './builders'
 
@@ -91,44 +93,80 @@ export async function runSeed(
   }
   log(`[seed] ${siteSlug}: записано из фикстур — ${summary.created.filter((r) => r !== 'site').join(', ') || 'ничего'}; уже есть, не тронуто — ${summary.kept.filter((r) => r !== 'site').join(', ') || 'ничего'}`)
 
-  const articlesRu = fixture('articles', 'ru').items
-  const articlesEn = fixture('articles', 'en').items
-  let articlesCreated = 0
-  for (const ru of articlesRu) {
+  const categoryIds = new Map<string, string | number>()
+  async function ensureCategory(slug: string) {
+    const cached = categoryIds.get(slug)
+    if (cached !== undefined) return cached
     const found = await payload.find({
-      collection: 'articles',
-      where: { and: [{ site: { equals: siteId } }, { slug: { equals: ru.slug } }] },
+      collection: 'article-categories',
+      where: { and: [{ site: { equals: siteId } }, { slug: { equals: slug } }] },
       limit: 1,
       depth: 0,
     })
-    if (found.docs[0]) continue
-    const created = await payload.create({
-      collection: 'articles',
-      locale: 'ru',
-      data: {
-        site: siteId,
-        slug: ru.slug,
-        category: ru.category,
-        publishedAt: ru.publishedAt,
-        readingMinutes: ru.readingMinutes,
-        title: ru.title,
-        excerpt: ru.excerpt,
-        source: ru.source,
-        bodyMarkdown: ru.bodyMarkdown,
-        _status: 'published',
-      } as never,
-    })
-    const en = articlesEn.find((a: any) => a.slug === ru.slug)
-    if (en) {
-      await payload.update({
-        collection: 'articles',
-        id: created.id,
-        locale: 'en',
-        data: { title: en.title, excerpt: en.excerpt, source: en.source, bodyMarkdown: en.bodyMarkdown, _status: 'published' } as never,
+    let id = found.docs[0]?.id as string | number | undefined
+    if (id === undefined) {
+      const titles = categoryTitles(slug)
+      const created = await payload.create({
+        collection: 'article-categories',
+        locale: 'ru',
+        data: { site: siteId, slug, title: titles.ru ?? slug } as never,
       })
+      id = created.id
+      for (const locale of LANGUAGES) {
+        if (locale === 'ru' || !titles[locale]) continue
+        await payload.update({ collection: 'article-categories', id, locale, data: { title: titles[locale] } as never })
+      }
     }
-    articlesCreated++
+    categoryIds.set(slug, id)
+    return id
   }
-  log(`[seed] ${siteSlug}: статей создано ${articlesCreated}, уже было ${articlesRu.length - articlesCreated}`)
+
+  const EDUCATION_BASE = Date.parse('2026-07-01T09:00:00Z')
+  const sources = [
+    { section: 'news' as const, ru: fixture('articles', 'ru').items as any[], en: fixture('articles', 'en').items as any[] },
+    { section: 'education' as const, ru: fixture('academy', 'ru').articles as any[], en: fixture('academy', 'en').articles as any[] },
+  ]
+  for (const { section, ru: itemsRu, en: itemsEn } of sources) {
+    let created = 0
+    for (const [index, ru] of itemsRu.entries()) {
+      const found = await payload.find({
+        collection: 'articles',
+        where: { and: [{ site: { equals: siteId } }, { slug: { equals: ru.slug } }, { section: { equals: section } }] },
+        limit: 1,
+        depth: 0,
+      })
+      if (found.docs[0]) continue
+      const common =
+        section === 'news'
+          ? { articleCategory: await ensureCategory(ru.category), category: ru.category, publishedAt: ru.publishedAt }
+          : { level: ru.level, publishedAt: new Date(EDUCATION_BASE - index * 60_000).toISOString() }
+      const localized = (item: any) => ({
+        title: item.title,
+        excerpt: item.excerpt,
+        bodyMarkdown: item.bodyMarkdown,
+        readingMinutes: item.readingMinutes,
+        ...(section === 'news' ? { source: item.source } : {}),
+        ...(item.video?.url ? { videoUrl: item.video.url } : {}),
+      })
+      const doc = await payload.create({
+        collection: 'articles',
+        locale: 'ru',
+        context: { trustReadingMinutes: true },
+        data: { site: siteId, slug: ru.slug, section, ...common, ...localized(ru), _status: 'published' } as never,
+      })
+      const en = itemsEn.find((a: any) => a.slug === ru.slug)
+      if (en) {
+        await payload.update({
+          collection: 'articles',
+          id: doc.id,
+          locale: 'en',
+          context: { trustReadingMinutes: true },
+          data: { ...localized(en), _status: 'published' } as never,
+        })
+      }
+      created++
+    }
+    log(`[seed] ${siteSlug}: статей (${section}) создано ${created}, уже было ${itemsRu.length - created}`)
+  }
   return summary
 }

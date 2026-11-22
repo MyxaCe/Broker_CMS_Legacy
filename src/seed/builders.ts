@@ -76,7 +76,6 @@ export const CONTENT_BUILDERS: Record<string, ContentBuilder> = {
   academy: {
     collection: 'site-academy',
     build: (f) => ({
-      articles: f.articles,
       webinars: f.webinars.map((w: any) => ({
         webinarId: w.id,
         title: w.title,
