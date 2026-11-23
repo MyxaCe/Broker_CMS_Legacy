@@ -24,6 +24,8 @@ const VIDEO_LINKS = '20261122_133540_video_links'
 const LEGAL_ENTITY = '20261122_134739_legal_entity'
 const SYSTEM_STATUS = '20261122_135545_system_status_live'
 const ARTICLES_CHAIN = ['20261122_140507_articles_editor', '20261122_140600_article_categories', '20261122_140700_academy_articles']
+// Миграции после статей: обучающий курс (только данные, на сайте apex-ru; здесь его нет — ничего не добавляет).
+const AFTER_ARTICLES = ['20261123_090000_education_course']
 
 const payload = await getPayload({ config })
 const db = (payload.db as unknown as { drizzle: { execute: (q: unknown) => Promise<{ rows: any[] }> } }).drizzle
@@ -256,7 +258,8 @@ console.info('OK    миграция: юрлицо — повторный про
 const articlesIndexes = ARTICLES_CHAIN.map((name) => migrations.findIndex((m) => m.name === name))
 const statusBeforeArticles = migrations.findIndex((m) => m.name === SYSTEM_STATUS)
 assert.deepEqual(articlesIndexes, [statusBeforeArticles + 1, statusBeforeArticles + 2, statusBeforeArticles + 3])
-assert.equal(articlesIndexes[2], migrations.length - 1)
+assert.equal(articlesIndexes[2], migrations.length - 1 - AFTER_ARTICLES.length)
+assert.deepEqual(migrations.slice(articlesIndexes[2]! + 1).map((m) => m.name), AFTER_ARTICLES)
 const ARTICLES_STATE = sql`
   SELECT a."slug", a."section"::text AS section, a."level"::text AS level, a."_status"::text AS status, l."_locale"::text AS locale, l."title", l."body" IS NOT NULL AS has_body,
          (SELECT count(*)::int FROM "_articles_v" v WHERE v."parent_id" = a."id") AS versions
@@ -268,7 +271,7 @@ assert.deepEqual(movedArticles.rows, [
 for (const i of articlesIndexes) await migrations[i]!.up(args)
 assert.deepEqual((await db.execute(ARTICLES_STATE)).rows, movedArticles.rows)
 assert.equal((await db.execute(sql`SELECT count(*)::int AS n FROM "article_categories"`)).rows[0]?.n, 0)
-console.info('OK    миграции статей (последние в цепочке): статья обучения перенесена в коллекцию с Lexical, повторный прогон ничего не меняет')
+console.info('OK    миграции статей (последние в цепочке перед курсом): статья обучения перенесена в коллекцию с Lexical, повторный прогон ничего не меняет')
 
 const expectedPlatform = [...TERMINAL_PAIRS, 'EURUSD', 'XAUUSD', 'AAPL.US', 'US500'].map((symbol) => ({ symbol, mode: 'trade' }))
 assert.deepEqual(manualBefore.rows[0].instruments, expectedPlatform)
@@ -333,7 +336,7 @@ console.info('OK    миграция: повторный прогон не тр�
 
 const statusIndex = migrations.findIndex((m) => m.name === SYSTEM_STATUS)
 assert.equal(statusIndex, legalIndex + 1)
-assert.equal(statusIndex, migrations.length - 1 - ARTICLES_CHAIN.length)
+assert.equal(statusIndex, migrations.length - 1 - ARTICLES_CHAIN.length - AFTER_ARTICLES.length)
 const STATUS_COLUMNS = sql`
   SELECT count(*)::int AS n FROM information_schema.columns
   WHERE table_name LIKE '%system_status%' AND column_name IN ('check', 'manual_status', 'maintenance_note', 'occurred_on', 'state')`
