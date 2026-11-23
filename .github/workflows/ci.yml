@@ -116,6 +116,14 @@ jobs:
           NODE_ENV: production
           DATABASE_URL: postgres://cms:cms@localhost:5432/broker_cms_onboarding
 
+      - name: Пробные эфиры (удаление у всех сайтов и из версий, повтор, откат без дублей, контракт)
+        run: |
+          PGPASSWORD=cms psql -h localhost -U cms -d broker_cms -c "CREATE DATABASE broker_cms_mock_streams"
+          pnpm test:mock-streams
+        env:
+          NODE_ENV: production
+          DATABASE_URL: postgres://cms:cms@localhost:5432/broker_cms_mock_streams
+
       - name: Seed (dev-режим применяет схему БД + контент из фикстур)
         run: pnpm seed
 

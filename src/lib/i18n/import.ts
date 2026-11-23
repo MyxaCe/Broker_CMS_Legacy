@@ -57,6 +57,9 @@ function isPlainObject(value: unknown): value is Doc {
 
 export function overlay(base: unknown, translated: unknown, path: string): unknown {
   if (Array.isArray(translated)) {
+    // Payload отдаёт пустой локализованный массив как null: пустой перевод к пустому документу — не расхождение,
+    // и значение остаётся в форме Payload, чтобы повторный импорт видел «без изменений».
+    if (translated.length === 0 && (base === null || base === undefined)) return null
     if (!Array.isArray(base)) throw new StructureMismatch(`${path}: в документе нет массива`)
     if (base.length !== translated.length) {
       throw new StructureMismatch(`${path}: в документе ${base.length} строк, в переводе ${translated.length}`)

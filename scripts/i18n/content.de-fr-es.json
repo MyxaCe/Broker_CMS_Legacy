@@ -862,24 +862,7 @@
         ]
       },
       "streams": {
-        "items": [
-          {
-            "provider": "youtube",
-            "videoId": "mock-live-review",
-            "title": "Wöchentlicher Marktüberblick – live",
-            "poster": null,
-            "startsAt": "2026-08-05T18:00:00.000Z",
-            "status": "upcoming"
-          },
-          {
-            "provider": "youtube",
-            "videoId": "mock-gold-breakdown",
-            "title": "Technische Analyse von Gold",
-            "poster": null,
-            "startsAt": "2026-07-10T18:00:00.000Z",
-            "status": "past"
-          }
-        ]
+        "items": []
       },
       "contacts": {
         "channels": [
@@ -2117,24 +2100,7 @@
         ]
       },
       "streams": {
-        "items": [
-          {
-            "provider": "youtube",
-            "videoId": "mock-live-review",
-            "title": "Revue hebdomadaire des marchés — en direct",
-            "poster": null,
-            "startsAt": "2026-08-05T18:00:00.000Z",
-            "status": "upcoming"
-          },
-          {
-            "provider": "youtube",
-            "videoId": "mock-gold-breakdown",
-            "title": "Analyse technique de l’or",
-            "poster": null,
-            "startsAt": "2026-07-10T18:00:00.000Z",
-            "status": "past"
-          }
-        ]
+        "items": []
       },
       "contacts": {
         "channels": [
@@ -3372,24 +3338,7 @@
         ]
       },
       "streams": {
-        "items": [
-          {
-            "provider": "youtube",
-            "videoId": "mock-live-review",
-            "title": "Revisión semanal del mercado: en directo",
-            "poster": null,
-            "startsAt": "2026-08-05T18:00:00.000Z",
-            "status": "upcoming"
-          },
-          {
-            "provider": "youtube",
-            "videoId": "mock-gold-breakdown",
-            "title": "Análisis técnico del oro",
-            "poster": null,
-            "startsAt": "2026-07-10T18:00:00.000Z",
-            "status": "past"
-          }
-        ]
+        "items": []
       },
       "contacts": {
         "channels": [

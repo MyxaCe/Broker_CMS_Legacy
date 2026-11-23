@@ -14,6 +14,7 @@ import * as migration_20261122_140700_academy_articles from './20261122_140700_a
 import * as migration_20261123_085900_article_level_advanced from './20261123_085900_article_level_advanced';
 import * as migration_20261123_090000_education_course from './20261123_090000_education_course';
 import * as migration_20261123_125215_onboarding from './20261123_125215_onboarding';
+import * as migration_20261123_150000_remove_mock_streams from './20261123_150000_remove_mock_streams';
 
 export const migrations = [
   {
@@ -95,5 +96,10 @@ export const migrations = [
     up: migration_20261123_125215_onboarding.up,
     down: migration_20261123_125215_onboarding.down,
     name: '20261123_125215_onboarding',
+  },
+  {
+    up: migration_20261123_150000_remove_mock_streams.up,
+    down: migration_20261123_150000_remove_mock_streams.down,
+    name: '20261123_150000_remove_mock_streams',
   },
 ];
