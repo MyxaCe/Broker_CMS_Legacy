@@ -85,6 +85,7 @@ export interface Config {
     'site-legal': SiteLegal;
     'site-system-status': SiteSystemStatus;
     'site-cabinet-home': SiteCabinetHome;
+    'site-onboarding': SiteOnboarding;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -110,6 +111,7 @@ export interface Config {
     'site-legal': SiteLegalSelect<false> | SiteLegalSelect<true>;
     'site-system-status': SiteSystemStatusSelect<false> | SiteSystemStatusSelect<true>;
     'site-cabinet-home': SiteCabinetHomeSelect<false> | SiteCabinetHomeSelect<true>;
+    'site-onboarding': SiteOnboardingSelect<false> | SiteOnboardingSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -808,6 +810,81 @@ export interface SiteCabinetHome {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Подсказки по шагам: экран затемняется, подсвечивается один элемент, рядом карточка с текстом. Новичку каждая часть показывается сама один раз, остальным — по кнопке «?».
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-onboarding".
+ */
+export interface SiteOnboarding {
+  id: number;
+  site?: (number | null) | Site;
+  labels?: {
+    back?: string | null;
+    next?: string | null;
+    skip?: string | null;
+    done?: string | null;
+    help?: string | null;
+    /**
+     * {current} и {total} подставляются: «Шаг {current} из {total}»
+     */
+    stepOf?: string | null;
+  };
+  parts?:
+    | {
+        part: 'registration' | 'cabinet' | 'terminal';
+        enabled?: boolean | null;
+        /**
+         * Увеличьте после заметных изменений — часть снова покажется сама новичкам, которые уже видели прежнюю версию
+         */
+        version: number;
+        steps?:
+          | {
+              /**
+               * Если элемента нет на экране (например, нет открытых позиций), шаг пропускается
+               */
+              anchor:
+                | 'registration.firstName'
+                | 'registration.lastName'
+                | 'registration.email'
+                | 'registration.phone'
+                | 'registration.country'
+                | 'registration.password'
+                | 'registration.submit'
+                | 'cabinet.balanceDemo'
+                | 'cabinet.balanceReal'
+                | 'cabinet.deposit'
+                | 'cabinet.withdraw'
+                | 'cabinet.nextSteps'
+                | 'cabinet.wallet'
+                | 'cabinet.history'
+                | 'cabinet.profile'
+                | 'cabinet.security'
+                | 'cabinet.trade'
+                | 'cabinet.help'
+                | 'terminal.pairs'
+                | 'terminal.categories'
+                | 'terminal.chart'
+                | 'terminal.timeframes'
+                | 'terminal.deal'
+                | 'terminal.volume'
+                | 'terminal.sltp'
+                | 'terminal.buySell'
+                | 'terminal.positions'
+                | 'terminal.close'
+                | 'terminal.help';
+              title?: string | null;
+              body?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -902,6 +979,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'site-cabinet-home';
         value: number | SiteCabinetHome;
+      } | null)
+    | ({
+        relationTo: 'site-onboarding';
+        value: number | SiteOnboarding;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -1468,6 +1549,42 @@ export interface SiteCabinetHomeSelect<T extends boolean = true> {
           | T
           | {
               symbol?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-onboarding_select".
+ */
+export interface SiteOnboardingSelect<T extends boolean = true> {
+  site?: T;
+  labels?:
+    | T
+    | {
+        back?: T;
+        next?: T;
+        skip?: T;
+        done?: T;
+        help?: T;
+        stepOf?: T;
+      };
+  parts?:
+    | T
+    | {
+        part?: T;
+        enabled?: T;
+        version?: T;
+        steps?:
+          | T
+          | {
+              anchor?: T;
+              title?: T;
+              body?: T;
               id?: T;
             };
         id?: T;

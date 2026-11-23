@@ -9,6 +9,7 @@ import {
   mapInstruments,
   mapLegal,
   mapNavigation,
+  mapOnboarding,
   mapPartners,
   mapPromotions,
   mapStreams,
@@ -30,4 +31,5 @@ export const RESOURCE_MAPPERS: Record<string, (doc: Record<string, any>) => unkn
   legal: mapLegal,
   'system-status': mapSystemStatus,
   'cabinet-home': mapCabinetHome,
+  onboarding: mapOnboarding,
 }

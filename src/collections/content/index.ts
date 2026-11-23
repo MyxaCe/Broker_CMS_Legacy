@@ -1,5 +1,6 @@
 import { CabinetHome } from './CabinetHome'
 import { makeSiteContentCollection } from './factory'
+import { Onboarding } from './Onboarding'
 import { academyFields } from './fields/Academy'
 import { accountsFields } from './fields/Accounts'
 import { careersFields } from './fields/Careers'
@@ -99,6 +100,7 @@ export const CONTENT_COLLECTIONS = [
     previewPath: '/status',
   }),
   CabinetHome,
+  Onboarding,
 ]
 
 export const RESOURCE_TO_COLLECTION: Record<string, string> = {
@@ -115,4 +117,5 @@ export const RESOURCE_TO_COLLECTION: Record<string, string> = {
   legal: 'site-legal',
   'system-status': 'site-system-status',
   'cabinet-home': 'site-cabinet-home',
+  onboarding: 'site-onboarding',
 }

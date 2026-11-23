@@ -108,6 +108,14 @@ jobs:
           NODE_ENV: production
           DATABASE_URL: postgres://cms:cms@localhost:5432/broker_cms_education
 
+      - name: Экскурсия по платформе (части и элементы, миграция с откатом, сид ru/en и запасной английский, правки редактора, контракт)
+        run: |
+          PGPASSWORD=cms psql -h localhost -U cms -d broker_cms -c "CREATE DATABASE broker_cms_onboarding"
+          pnpm test:onboarding
+        env:
+          NODE_ENV: production
+          DATABASE_URL: postgres://cms:cms@localhost:5432/broker_cms_onboarding
+
       - name: Seed (dev-режим применяет схему БД + контент из фикстур)
         run: pnpm seed
 

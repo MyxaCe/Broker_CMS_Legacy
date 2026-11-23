@@ -143,6 +143,18 @@ export const CONTENT_BUILDERS: Record<string, ContentBuilder> = {
       })),
     }),
   },
+  onboarding: {
+    collection: 'site-onboarding',
+    build: (f) => ({
+      labels: f.labels,
+      parts: f.parts.map((p: any) => ({
+        part: p.part,
+        enabled: true,
+        version: p.version,
+        steps: p.steps.map((s: any) => ({ anchor: s.anchor, title: s.title, body: s.body })),
+      })),
+    }),
+  },
   'cabinet-home': {
     collection: 'site-cabinet-home',
     build: (f) => ({

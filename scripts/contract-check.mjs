@@ -11,7 +11,7 @@ const FIXTURES = join(process.cwd(), 'contract', 'fixtures');
 const RESOURCES = [
   'brand', 'navigation', 'faq', 'instruments', 'accounts', 'promotions',
   'partners', 'academy', 'streams', 'articles', 'contacts', 'careers',
-  'legal', 'system-status', 'cabinet-home',
+  'legal', 'system-status', 'cabinet-home', 'onboarding',
 ];
 
 const ISO_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})$/;
@@ -215,6 +215,8 @@ for (const locale of ['de', 'fr', 'es']) {
   }
   const home = await get(`/v1/cms/cabinet-home?locale=${locale}`);
   same(`cabinet-home ${locale}`, home.ok ? await home.json() : null, readJson('contract', 'fixtures', 'cms.cabinet-home.ru.json'));
+  const tour = await get(`/v1/cms/onboarding?locale=${locale}`);
+  same(`onboarding ${locale} (пока перевода нет — английский, ТД-016)`, tour.ok ? await tour.json() : null, readJson('contract', 'fixtures', 'cms.onboarding.en.json'));
 }
 
 const unknownLocale = await get('/v1/cms/navigation?locale=it');

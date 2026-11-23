@@ -1,0 +1,56 @@
+{
+  "parts": [
+    {
+      "part": "registration",
+      "version": 1,
+      "steps": [
+        { "anchor": "registration.firstName", "title": "First and last name", "body": "Enter them as in your passport: identity verification later checks against these details." },
+        { "anchor": "registration.email", "title": "Email", "body": "You will receive a confirmation link and all account notifications here." },
+        { "anchor": "registration.phone", "title": "Phone", "body": "With the country code, for example +357 25 000 000. Support uses it to reach you." },
+        { "anchor": "registration.country", "title": "Country", "body": "The country you live in. It determines the available deposit methods." },
+        { "anchor": "registration.password", "title": "Password", "body": "At least 8 characters. Do not reuse a password from other sites." },
+        { "anchor": "registration.submit", "title": "Done", "body": "After you submit, you go straight to your account. There, confirm your email, verify your identity and turn on two-factor protection." }
+      ]
+    },
+    {
+      "part": "cabinet",
+      "version": 1,
+      "steps": [
+        { "anchor": "cabinet.balanceDemo", "title": "Demo account", "body": "Practice money: try the terminal without risk. You can reset the account at any time." },
+        { "anchor": "cabinet.balanceReal", "title": "Real account", "body": "Your real money. Trading is available after a deposit." },
+        { "anchor": "cabinet.deposit", "title": "Deposit", "body": "Fund your real account here." },
+        { "anchor": "cabinet.withdraw", "title": "Withdrawal", "body": "Withdraw money from here. A withdrawal may require identity verification." },
+        { "anchor": "cabinet.nextSteps", "title": "Next steps", "body": "What to do next: verify your identity, make a deposit, place your first trade." },
+        { "anchor": "cabinet.profile", "title": "Profile and documents", "body": "Your profile holds email confirmation, identity verification (a document and a camera selfie) and your documents." },
+        { "anchor": "cabinet.security", "title": "Security", "body": "On the Security tab of your profile you can turn on two-factor protection: signing in will require a code from an app. We recommend it." },
+        { "anchor": "cabinet.trade", "title": "Trading", "body": "Open the terminal from here, on the demo or the real account." },
+        { "anchor": "cabinet.help", "title": "Repeat the tour", "body": "Press «?» to go through this tour again." }
+      ]
+    },
+    {
+      "part": "terminal",
+      "version": 1,
+      "steps": [
+        { "anchor": "terminal.pairs", "title": "Instruments", "body": "Instruments with prices. Click a row to open its chart." },
+        { "anchor": "terminal.categories", "title": "Categories", "body": "Tabs split instruments into crypto, forex, metals, stocks and more. Search looks through all of them." },
+        { "anchor": "terminal.chart", "title": "Chart", "body": "The price chart of the selected instrument." },
+        { "anchor": "terminal.timeframes", "title": "Timeframe", "body": "How much time one candle covers: from a minute to a week." },
+        { "anchor": "terminal.deal", "title": "New trade", "body": "The new trade panel: at market or with a limit order." },
+        { "anchor": "terminal.volume", "title": "Volume", "body": "The trade size. The larger it is, the larger both the profit and the loss." },
+        { "anchor": "terminal.sltp", "title": "Stop loss and take profit", "body": "Prices at which the trade closes by itself: limiting the loss or locking in the profit. Always set them." },
+        { "anchor": "terminal.buySell", "title": "Buy or sell", "body": "Buy to gain when the price rises, sell to gain when it falls." },
+        { "anchor": "terminal.positions", "title": "Open positions", "body": "Your trades, current profit or loss, orders and history." },
+        { "anchor": "terminal.close", "title": "Close a trade", "body": "This button closes the trade at the current price." },
+        { "anchor": "terminal.help", "title": "Repeat the tour", "body": "Press «?» to go through this tour again." }
+      ]
+    }
+  ],
+  "labels": {
+    "back": "Back",
+    "next": "Next",
+    "skip": "Skip",
+    "done": "Done",
+    "help": "Platform tour",
+    "stepOf": "Step {current} of {total}"
+  }
+}

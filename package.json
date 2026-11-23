@@ -29,6 +29,7 @@
     "test:legal-entity": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/test-legal-entity.ts",
     "test:system-status": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/test-system-status.ts",
     "test:education-course": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/test-education-course.ts",
+    "test:onboarding": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/test-onboarding.ts",
     "test": "pnpm test:live-params && pnpm test:instrument-catalog && pnpm test:legal-entity"
   },
   "dependencies": {

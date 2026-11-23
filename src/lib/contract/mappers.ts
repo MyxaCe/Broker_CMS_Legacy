@@ -1,6 +1,7 @@
 import { siteLanguages } from '../languages'
 import { isHttpsUrl, videoFromUrl } from '../video-url'
 import { mapLegalEntity } from '../legal-entity'
+import { anchorFitsPart, isOnboardingPart } from '../onboarding-anchors'
 
 type PayloadDoc = Record<string, any>
 
@@ -454,4 +455,23 @@ export function mapAcademyArticle(doc: PayloadDoc) {
     bodyMarkdown: String(doc.bodyMarkdown ?? ''),
     ...optionalVideo('video', doc.videoUrl),
   }
+}
+
+const ONBOARDING_LABEL_KEYS = ['back', 'next', 'skip', 'done', 'help', 'stepOf'] as const
+
+/** Экскурсия: только включённые части; шаг без текста или с чужим элементом не отдаётся. */
+export function mapOnboarding(doc: PayloadDoc) {
+  const parts: { part: string; version: number; steps: { anchor: string; title: string; body: string }[] }[] = []
+  for (const row of doc.parts ?? []) {
+    if (!row.enabled || !isOnboardingPart(row.part)) continue
+    const steps = ((row.steps ?? []) as PayloadDoc[])
+      .filter((s) => anchorFitsPart(s.anchor, row.part))
+      .map((s) => ({ anchor: String(s.anchor), title: String(s.title ?? ''), body: String(s.body ?? '') }))
+      .filter((s) => s.title.trim() !== '' || s.body.trim() !== '')
+    const version = Number.isInteger(row.version) && row.version >= 1 ? (row.version as number) : 1
+    parts.push({ part: row.part, version, steps })
+  }
+  const labels: Record<string, string> = {}
+  for (const key of ONBOARDING_LABEL_KEYS) labels[key] = String(doc.labels?.[key] ?? '')
+  return { parts, labels }
 }
