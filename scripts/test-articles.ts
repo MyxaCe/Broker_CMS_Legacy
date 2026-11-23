@@ -124,6 +124,13 @@ await check('контракт: прежние поля на месте, новы
   assert.ok(validateContract('article', education).valid)
   assert.deepEqual(Object.keys(mapAcademyArticle({ ...base, level: 'beginner', readingMinutes: null })).sort(), ['bodyMarkdown', 'excerpt', 'level', 'readingMinutes', 'slug', 'title'])
   assert.ok(!validateContract('article', { ...legacy, section: 'blog' }).valid)
+  const pro = mapArticle({ ...base, section: 'education', level: 'advanced', category: 'x' })
+  assert.equal(pro.level, 'advanced', 'третий уровень «Профессиональный» доходит до контракта')
+  assert.ok(validateContract('article', pro).valid)
+  assert.equal(mapAcademyArticle({ ...base, level: 'advanced' }).level, 'advanced')
+  assert.equal(mapArticle({ ...base, section: 'education', level: 'expert', category: 'x' }).level, 'beginner', 'неизвестный уровень читается как начальный')
+  const levelField = Articles.fields.find((f) => 'name' in f && f.name === 'level') as { options: { value: string }[] }
+  assert.deepEqual(levelField.options.map((o) => o.value), ['beginner', 'intermediate', 'advanced'])
 })
 
 await check('расписание: без черновиков — только опубликованные с наступившей датой', () => {

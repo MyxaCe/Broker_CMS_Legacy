@@ -431,9 +431,17 @@ export function mapArticle(doc: PayloadDoc) {
     ...(cover ? { cover } : {}),
     ...(section === 'news' && category.title ? { categoryTitle: category.title } : {}),
     ...(section === 'education'
-      ? { level: doc.level === 'intermediate' ? 'intermediate' : 'beginner', ...optionalVideo('video', doc.videoUrl) }
+      ? { level: articleLevel(doc.level), ...optionalVideo('video', doc.videoUrl) }
       : {}),
   }
+}
+
+const ARTICLE_LEVELS = ['beginner', 'intermediate', 'advanced'] as const
+export type ArticleLevel = (typeof ARTICLE_LEVELS)[number]
+
+/** Уровень статьи обучения в контракте; неизвестное значение читается как «Начальный». */
+export function articleLevel(value: unknown): ArticleLevel {
+  return (ARTICLE_LEVELS as readonly unknown[]).includes(value) ? (value as ArticleLevel) : 'beginner'
 }
 
 export function mapAcademyArticle(doc: PayloadDoc) {
@@ -441,7 +449,7 @@ export function mapAcademyArticle(doc: PayloadDoc) {
     slug: String(doc.slug ?? ''),
     title: String(doc.title ?? ''),
     excerpt: String(doc.excerpt ?? ''),
-    level: doc.level === 'intermediate' ? 'intermediate' : 'beginner',
+    level: articleLevel(doc.level),
     readingMinutes: minutes(doc.readingMinutes),
     bodyMarkdown: String(doc.bodyMarkdown ?? ''),
     ...optionalVideo('video', doc.videoUrl),

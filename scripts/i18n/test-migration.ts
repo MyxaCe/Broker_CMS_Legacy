@@ -24,8 +24,8 @@ const VIDEO_LINKS = '20261122_133540_video_links'
 const LEGAL_ENTITY = '20261122_134739_legal_entity'
 const SYSTEM_STATUS = '20261122_135545_system_status_live'
 const ARTICLES_CHAIN = ['20261122_140507_articles_editor', '20261122_140600_article_categories', '20261122_140700_academy_articles']
-// Миграции после статей: обучающий курс (только данные, на сайте apex-ru; здесь его нет — ничего не добавляет).
-const AFTER_ARTICLES = ['20261123_090000_education_course']
+// Миграции после статей: третий уровень статей и обучающий курс (только данные, на сайте apex-ru; здесь его нет — ничего не добавляет).
+const AFTER_ARTICLES = ['20261123_085900_article_level_advanced', '20261123_090000_education_course']
 
 const payload = await getPayload({ config })
 const db = (payload.db as unknown as { drizzle: { execute: (q: unknown) => Promise<{ rows: any[] }> } }).drizzle

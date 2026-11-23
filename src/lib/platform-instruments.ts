@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto'
 import { sql } from '@payloadcms/db-postgres'
 import type { Payload, PayloadRequest } from 'payload'
 
+import { fetchUniverse, type MdsItem } from './mds-universe'
 import { sendWebhook } from './notify-site'
 
 export const PLATFORM_INSTRUMENTS_SLUG = 'platform-instruments'
@@ -254,7 +255,54 @@ export async function checkOpenPositions(symbols: string[], env: Record<string, 
   }
 }
 
-export const platformChecks = { openPositions: checkOpenPositions }
+export const SOURCES_UNAVAILABLE_ERROR =
+  'Не удалось проверить по каталогу MDS, есть ли у добавляемых инструментов источник цен, попробуйте позже'
+
+/** Источник цен у инструмента: в каталоге MDS у него задан provider. */
+export function hasPriceSource(item: { provider?: unknown } | undefined): boolean {
+  return typeof item?.provider === 'string' && item.provider.trim() !== ''
+}
+
+export type SourceProblem = { symbol: string; reason: 'no_source' | 'not_in_catalog' }
+
+export function sourcelessMessage(problems: SourceProblem[]): string {
+  const list = problems
+    .map((p) => `${p.symbol} (${p.reason === 'no_source' ? 'нет источника цен' : 'нет в каталоге MDS'})`)
+    .join(', ')
+  return (
+    `Нельзя добавить ${list}. Терминал не знает инструментов без источника цен и отклоняет весь список инструментов ` +
+    'сайта целиком: торговля на сайте закроется по ВСЕМ инструментам («НЕТ РЫНОЧНЫХ ДАННЫХ»). Уберите эти инструменты из списка'
+  )
+}
+
+/**
+ * Добавляемые символы должны иметь источник цен в каталоге MDS.
+ * Как проверка позиций: MDS_HTTP_URL не задан — проверка пропущена (локальная разработка, тесты);
+ * задан, но MDS не ответил и запомненного каталога нет — добавление отклоняется (сохранения без новых символов сюда не доходят).
+ */
+export async function checkPriceSources(
+  symbols: string[],
+  env: Record<string, string | undefined> = process.env,
+  load: () => Promise<MdsItem[] | null> = fetchUniverse,
+): Promise<DisableCheck> {
+  if (symbols.length === 0) return { allowed: true }
+  if (!env.MDS_HTTP_URL?.trim()) {
+    console.warn('[platform-instruments] price source check skipped: MDS_HTTP_URL not set')
+    return { allowed: true }
+  }
+  const items = await load()
+  if (!items) return { allowed: false, reason: SOURCES_UNAVAILABLE_ERROR }
+  const bySymbol = new Map(items.map((i) => [i.symbol, i]))
+  const problems: SourceProblem[] = []
+  for (const symbol of symbols) {
+    const item = bySymbol.get(symbol)
+    if (!item) problems.push({ symbol, reason: 'not_in_catalog' })
+    else if (!hasPriceSource(item)) problems.push({ symbol, reason: 'no_source' })
+  }
+  return problems.length === 0 ? { allowed: true } : { allowed: false, reason: sourcelessMessage(problems) }
+}
+
+export const platformChecks = { openPositions: checkOpenPositions, priceSources: (symbols: string[]) => checkPriceSources(symbols) }
 
 export function validateSymbolList(value: unknown): true | string {
   if (value === null || value === undefined) return true
@@ -295,6 +343,13 @@ export async function validateSiteInstruments(
   const shape = validateSymbolList(value)
   if (shape !== true) return shape
   const { req, id, siblingData, event } = options
+  if (event !== 'onChange') {
+    const saved = (await loadSiteInstruments(req.payload, req)).find((site) => String(site.id) === String(id))
+    const before = new Set(readSymbols(saved?.instruments))
+    const added = readSymbols(value).filter((symbol) => !before.has(symbol))
+    const sources = await platformChecks.priceSources(added)
+    if (!sources.allowed) return sources.reason
+  }
   return checkPlatformChange(
     req,
     (sites) => withSiteInstruments(sites, id, value ?? [], siblingData?.closeOnlyInstruments),

@@ -91,6 +91,7 @@ export function PlatformInstrumentsSummary() {
           segment: null,
           segmentLabel: null,
           hasIcon: false,
+          hasSource: false,
           haystack: i.symbol.toLowerCase(),
         }
         const slugs = i.sites.map((id) => sitesById.get(String(id))?.slug ?? String(id)).join(' ')

@@ -7,7 +7,7 @@ export interface CatalogItem {
   segment?: string | null
   group?: string | null
   icon?: string | null
-  provider?: string
+  provider?: string | null
   digits?: number
   platform?: string | null
 }
@@ -19,6 +19,8 @@ export interface CatalogEntry {
   segment: string | null
   segmentLabel: string | null
   hasIcon: boolean
+  /** В каталоге MDS задан provider — у инструмента есть источник цен. */
+  hasSource: boolean
   haystack: string
 }
 
@@ -97,6 +99,7 @@ export function buildCatalog(items: CatalogItem[]): CatalogEntry[] {
       segment,
       segmentLabel: segmentLabel(segment, item.group),
       hasIcon: Boolean(item.icon),
+      hasSource: typeof item.provider === 'string' && item.provider.trim() !== '',
       haystack: `${item.symbol.toLowerCase()}\u0000${name.toLowerCase()}`,
     })
   }
@@ -194,10 +197,27 @@ export function filterCatalog(entries: CatalogEntry[], filter: CatalogFilter): C
   return out
 }
 
+export const NO_SOURCE_LABEL = 'нет источника цен'
+export const NO_SOURCE_HINT =
+  'У инструмента нет источника цен в MDS. Терминал не знает таких символов и отклоняет весь список инструментов сайта — торговля закроется по всем инструментам'
+
 export function addableSymbols(entries: CatalogEntry[], added: ReadonlySet<string>): string[] {
   const out: string[] = []
-  for (const e of entries) if (!added.has(e.symbol)) out.push(e.symbol)
+  for (const e of entries) if (!added.has(e.symbol) && e.hasSource) out.push(e.symbol)
   return out
+}
+
+/**
+ * Выбранные символы, которые закроют торговлю на сайте: в каталоге без источника цен
+ * или (когда каталог загружен) вовсе нет в каталоге.
+ */
+export function unpricedSymbols(
+  rows: Pick<SelectedRow, 'symbol'>[],
+  bySymbol: ReadonlyMap<string, Pick<CatalogEntry, 'hasSource'>>,
+  catalogLoaded: boolean,
+): string[] {
+  if (!catalogLoaded) return []
+  return rows.filter((r) => !bySymbol.get(r.symbol)?.hasSource).map((r) => r.symbol)
 }
 
 export function addSymbols(rows: SelectedRow[], symbols: string[]): SelectedRow[] {

@@ -27,6 +27,7 @@ import {
   type SelectedRow,
   siteFieldsFromRows,
   symbolsOfOtherSites,
+  unpricedSymbols,
   visibleWindow,
 } from '../src/lib/instrument-catalog'
 
@@ -43,26 +44,26 @@ function check(name: string, fn: () => void) {
 }
 
 const STAND: CatalogItem[] = [
-  { symbol: 'EURUSD', name: 'Euro / US Dollar', category: 'forex', segment: 'major', group: 'Валюта — Мажоры' },
-  { symbol: 'GBPUSD', name: 'British Pound / US Dollar', category: 'forex', segment: 'major', group: 'Валюта — Мажоры' },
-  { symbol: 'USDJPY', name: 'US Dollar / Japanese Yen', category: 'forex', segment: 'major', group: 'Валюта — Мажоры' },
-  { symbol: 'EURGBP', name: 'Euro / British Pound', category: 'forex', segment: 'minor', group: 'Валюта — Миноры' },
-  { symbol: 'USDTRY', name: 'US Dollar / Turkish Lira', category: 'forex', segment: 'exotic', group: 'Валюта — Экзотика' },
-  { symbol: 'XAUUSD', name: 'Gold', category: 'metals', segment: null, group: 'Металлы' },
-  { symbol: 'AAPL', name: 'Apple Inc.', category: 'stocks', segment: 'america', group: 'Акции — Америка' },
-  { symbol: 'SPX500', name: 'S&P 500', category: 'indices', segment: 'america', group: 'Индексы — Америка' },
-  { symbol: 'DE40', name: 'DAX 40', category: 'indices', segment: 'europe', group: 'Индексы — Европа' },
-  { symbol: 'NIKKEI', name: 'Nikkei 225', category: 'indices', segment: 'japan', group: 'Индексы — Япония' },
-  { symbol: 'BTCUSD', name: 'Bitcoin', category: 'crypto', segment: null, group: 'Криптовалюты', icon: '/icons/BTCUSD.svg' },
-  { symbol: 'ETHUSD', name: 'Ethereum', category: 'crypto', segment: null, group: 'Криптовалюты' },
-  { symbol: 'WEIRD', name: 'Без категории', category: 'bonds', segment: null },
+  { symbol: 'EURUSD', provider: 'modulev2', name: 'Euro / US Dollar', category: 'forex', segment: 'major', group: 'Валюта — Мажоры' },
+  { symbol: 'GBPUSD', provider: 'modulev2', name: 'British Pound / US Dollar', category: 'forex', segment: 'major', group: 'Валюта — Мажоры' },
+  { symbol: 'USDJPY', provider: 'modulev2', name: 'US Dollar / Japanese Yen', category: 'forex', segment: 'major', group: 'Валюта — Мажоры' },
+  { symbol: 'EURGBP', provider: 'modulev2', name: 'Euro / British Pound', category: 'forex', segment: 'minor', group: 'Валюта — Миноры' },
+  { symbol: 'USDTRY', provider: 'modulev2', name: 'US Dollar / Turkish Lira', category: 'forex', segment: 'exotic', group: 'Валюта — Экзотика' },
+  { symbol: 'XAUUSD', provider: 'modulev2', name: 'Gold', category: 'metals', segment: null, group: 'Металлы' },
+  { symbol: 'AAPL', provider: 'modulev2', name: 'Apple Inc.', category: 'stocks', segment: 'america', group: 'Акции — Америка' },
+  { symbol: 'SPX500', provider: 'modulev2', name: 'S&P 500', category: 'indices', segment: 'america', group: 'Индексы — Америка' },
+  { symbol: 'DE40', provider: 'modulev2', name: 'DAX 40', category: 'indices', segment: 'europe', group: 'Индексы — Европа' },
+  { symbol: 'NIKKEI', provider: 'modulev2', name: 'Nikkei 225', category: 'indices', segment: 'japan', group: 'Индексы — Япония' },
+  { symbol: 'BTCUSD', provider: 'modulev2', name: 'Bitcoin', category: 'crypto', segment: null, group: 'Криптовалюты', icon: '/icons/BTCUSD.svg' },
+  { symbol: 'ETHUSD', provider: 'modulev2', name: 'Ethereum', category: 'crypto', segment: null, group: 'Криптовалюты' },
+  { symbol: 'WEIRD', provider: 'modulev2', name: 'Без категории', category: 'bonds', segment: null },
 ]
 
 function crypto(n: number): CatalogItem[] {
   const out: CatalogItem[] = []
   for (let i = 0; i < n; i++) {
     const letters = String.fromCharCode(90 - (i % 26)) + String.fromCharCode(65 + ((i * 7) % 26))
-    out.push({ symbol: `${letters}${i}USD`, name: `Coin ${i}`, category: 'crypto', segment: null, group: 'Криптовалюты' })
+    out.push({ symbol: `${letters}${i}USD`, name: `Coin ${i}`, category: 'crypto', segment: null, group: 'Криптовалюты', provider: 'binance' })
   }
   return out
 }
@@ -86,6 +87,7 @@ function universe(n: number): CatalogItem[] {
       name: `${category} instrument number ${i}`,
       category,
       segment: s[Math.floor(i / cats.length) % s.length]!,
+      provider: 'modulev2',
     })
   }
   return out
@@ -318,6 +320,26 @@ check('производительность: 5000 элементов — сбо�
   assert.ok(perRun < 10, `фильтр ${perRun.toFixed(2)} мс`)
   const forex = filterCatalog(cat, { category: 'forex', segment: 'major', query: 'number', hideAdded: false, added: none })
   assert.ok(forex.length > 0 && forex.every((e) => e.category === 'forex' && e.segment === 'major'))
+})
+
+check('без источника цен (provider пуст): в каталоге виден, но не добавляется; выбранные такие — помечены', () => {
+  const cat = buildCatalog([
+    ...STAND,
+    { symbol: 'SPX', name: 'S&P 500', category: 'indices', segment: null, provider: null },
+    { symbol: 'DAX', name: 'DAX', category: 'indices', segment: null },
+    { symbol: 'FTSE', name: 'FTSE', category: 'indices', segment: null, provider: '  ' },
+  ])
+  const by = new Map(cat.map((e) => [e.symbol, e]))
+  assert.equal(by.get('EURUSD')!.hasSource, true)
+  assert.equal(by.get('SPX')!.hasSource, false)
+  assert.equal(by.get('DAX')!.hasSource, false)
+  assert.equal(by.get('FTSE')!.hasSource, false)
+  const indices = filterCatalog(cat, { category: 'indices', segment: ALL, query: '', hideAdded: false, added: none })
+  assert.ok(indices.some((e) => e.symbol === 'SPX'), 'не прячем: видно, что инструмент есть, но без цен')
+  assert.deepEqual(addableSymbols(indices, none), ['SPX500', 'DE40', 'NIKKEI'], '«Добавить все показанные» берёт только с источником')
+  const rows = rowsFromSite(['EURUSD', 'SPX', 'GONE'], [])
+  assert.deepEqual(unpricedSymbols(rows, by, true), ['SPX', 'GONE'])
+  assert.deepEqual(unpricedSymbols(rows, by, false), [], 'каталог не загружен — не пугаем')
 })
 
 console.info(failures ? `\n${failures} FAILURES` : '\nALL OK')

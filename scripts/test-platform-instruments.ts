@@ -15,6 +15,7 @@ import { GET } from '../src/app/v1/cms/[...path]/route'
 import { validateContract } from '../src/lib/contract/validate'
 import {
   checkOpenPositions,
+  checkPriceSources,
   computePlatformInstruments,
   EMPTY_PLATFORM_ERROR,
   EXPOSURE_TIMEOUT_MS,
@@ -22,6 +23,7 @@ import {
   platformChecks,
   platformInstrumentsHash,
   PLATFORM_INSTRUMENTS_TAG,
+  SOURCES_UNAVAILABLE_ERROR,
   type PlatformInstrument,
 } from '../src/lib/platform-instruments'
 
@@ -30,6 +32,8 @@ type Doc = Record<string, any>
 const API_KEY = 'platform-test-key'
 process.env.CMS_API_KEY = API_KEY
 delete process.env.PLATFORM_INSTRUMENTS_WEBHOOK_URLS
+// Проверку источника цен здесь подменяем явно (ниже); настоящая без MDS_HTTP_URL пропускается.
+delete process.env.MDS_HTTP_URL
 
 const payload = await getPayload({ config })
 const db = (payload.db as unknown as { drizzle: { execute: (q: unknown) => Promise<{ rows: any[] }> } }).drizzle
@@ -203,6 +207,41 @@ assert.deepEqual((await fetchSite('pi-b')).body.instruments, ['ETHUSD', 'EURUSD'
 platformChecks.openPositions = checkOpenPositions
 assert.deepEqual(await checkOpenPositions(['BTCUSD']), { allowed: true })
 console.info('OK    символ пропадает из платформы целиком → checkOpenPositions(символы); отказ проверки останавливает сохранение')
+
+const sourced: string[][] = []
+platformChecks.priceSources = async (symbols) => {
+  sourced.push(symbols)
+  const bad = symbols.filter((sym) => sym === 'SPX')
+  return bad.length ? { allowed: false, reason: `Нельзя добавить ${bad.join(', ')} (нет источника цен)` } : { allowed: true }
+}
+await updateSite(a.id, { instruments: ['ETHUSD', 'BTCUSD', 'LTCUSD'], closeOnlyInstruments: ['ETHUSD'] })
+assert.deepEqual(sourced, [['LTCUSD']], 'проверяются только добавляемые символы')
+await expectInvalid(() => updateSite(a.id, { instruments: ['ETHUSD', 'BTCUSD', 'LTCUSD', 'SPX'], closeOnlyInstruments: ['ETHUSD'] }), 'SPX', 'нет источника цен')
+assert.deepEqual((await fetchSite('pi-a')).body.instruments, ['ETHUSD', 'BTCUSD', 'LTCUSD'], 'отказ — сайт не изменился')
+sourced.length = 0
+await updateSite(a.id, { instruments: ['BTCUSD', 'ETHUSD', 'LTCUSD'], closeOnlyInstruments: ['ETHUSD'] })
+assert.deepEqual(sourced, [[]], 'перестановка без новых символов MDS не трогает')
+await updateSite(a.id, { instruments: ['ETHUSD', 'BTCUSD'], closeOnlyInstruments: ['ETHUSD'] })
+platformChecks.priceSources = (symbols) => checkPriceSources(symbols)
+
+const catalog = [
+  { symbol: 'EURUSD', provider: 'modulev2' },
+  { symbol: 'SPX', provider: null },
+  { symbol: 'DAX', provider: '' },
+]
+const mds = { MDS_HTTP_URL: 'http://mds.test' }
+assert.deepEqual(await checkPriceSources(['EURUSD'], mds, async () => catalog), { allowed: true })
+const refused = await checkPriceSources(['SPX', 'EURUSD', 'NOPE', 'DAX'], mds, async () => catalog)
+assert.equal(refused.allowed, false)
+const reason = (refused as { reason: string }).reason
+for (const part of ['SPX (нет источника цен)', 'NOPE (нет в каталоге MDS)', 'DAX (нет источника цен)', 'по ВСЕМ инструментам']) {
+  assert.ok(reason.includes(part), `в ответе нет «${part}»: ${reason}`)
+}
+assert.ok(!reason.includes('EURUSD'))
+assert.deepEqual(await checkPriceSources(['EURUSD'], mds, async () => null), { allowed: false, reason: SOURCES_UNAVAILABLE_ERROR })
+assert.deepEqual(await checkPriceSources([], mds, async () => null), { allowed: true }, 'без новых символов MDS не нужен')
+assert.deepEqual(await checkPriceSources(['SPX'], {}, async () => catalog), { allowed: true }, 'MDS_HTTP_URL не задан — пропуск')
+console.info('OK    источник цен: добавлять можно только символы с provider в каталоге MDS; MDS недоступен — отказ только при добавлении')
 
 delete process.env.TERMINAL_INTERNAL_URL
 delete process.env.TERMINAL_INTERNAL_TOKEN

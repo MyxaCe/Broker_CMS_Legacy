@@ -23,12 +23,15 @@ import {
   moveRow,
   needsBulkConfirm,
   neighbourInGroup,
+  NO_SOURCE_HINT,
+  NO_SOURCE_LABEL,
   normalizeQuery,
   OTHER_CATEGORY,
   platformSubscriptions,
   plural,
   segmentChips,
   type SelectedRow,
+  unpricedSymbols,
   visibleWindow,
 } from '@/lib/instrument-catalog'
 
@@ -124,6 +127,11 @@ function CatalogList({
                   </span>
                 )}
                 {mode && <span style={badgeStyle(modeColor(mode))}>на сайте · {MODE_LABELS[mode]}</span>}
+                {!mode && !i.hasSource && (
+                  <span style={badgeStyle('var(--theme-error-500)')} title={NO_SOURCE_HINT}>
+                    {NO_SOURCE_LABEL}
+                  </span>
+                )}
                 {elsewhere && (
                   <span
                     style={badgeStyle('var(--theme-elevation-500)')}
@@ -134,10 +142,10 @@ function CatalogList({
                 )}
                 <button
                   type="button"
-                  style={{ ...buttonStyle, ...(mode ? disabledButton : {}) }}
-                  disabled={Boolean(mode)}
+                  style={{ ...buttonStyle, ...(mode || !i.hasSource ? disabledButton : {}) }}
+                  disabled={Boolean(mode) || !i.hasSource}
                   aria-label={`Добавить ${i.symbol}`}
-                  title={mode ? 'Уже на сайте' : 'Добавить сайту'}
+                  title={mode ? 'Уже на сайте' : i.hasSource ? 'Добавить сайту' : NO_SOURCE_HINT}
                   onClick={() => onAdd(i.symbol)}
                 >
                   Добавить
@@ -207,6 +215,7 @@ export function InstrumentPicker({ label, description, rows, onChange, others, o
       segment: null,
       segmentLabel: null,
       hasIcon: false,
+      hasSource: false,
       haystack: symbol.toLowerCase(),
     }
 
@@ -219,6 +228,9 @@ export function InstrumentPicker({ label, description, rows, onChange, others, o
 
   const add = (symbols: string[]) => onChange(addSymbols(rows, symbols))
   const remove = (symbol: string) => onChange(rows.filter((r) => r.symbol !== symbol))
+  const unpriced = unpricedSymbols(rows, bySymbol, raw !== null)
+  const unpricedSet = new Set(unpriced)
+  const removeUnpriced = () => onChange(rows.filter((r) => !unpricedSet.has(r.symbol)))
   const setMode = (symbol: string, mode: InstrumentMode) =>
     onChange(rows.map((r) => (r.symbol === symbol ? { ...r, mode } : r)))
   const move = (from: number, to: number) => {
@@ -441,6 +453,30 @@ export function InstrumentPicker({ label, description, rows, onChange, others, o
               {closeOnlyCount > 0 ? `, только закрытие: ${closeOnlyCount}` : ''}
             </span>
           </div>
+          {unpriced.length > 0 && (
+            <div
+              role="alert"
+              data-unpriced
+              style={{
+                border: '1px solid var(--theme-error-500)',
+                borderRadius: '6px',
+                padding: '8px 10px',
+                fontSize: '12px',
+                display: 'flex',
+                gap: '8px',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+              }}
+            >
+              <span style={{ flex: '1 1 240px' }}>
+                Без источника цен: <strong>{unpriced.join(', ')}</strong>. Пока они в списке, терминал отклоняет весь
+                список сайта и торговля закрыта по всем инструментам
+              </span>
+              <button type="button" style={buttonStyle} onClick={removeUnpriced}>
+                Убрать {unpriced.length === 1 ? unpriced[0] : `все ${unpriced.length}`}
+              </button>
+            </div>
+          )}
           <input
             type="search"
             placeholder="Поиск по выбранным…"
@@ -553,6 +589,11 @@ export function InstrumentPicker({ label, description, rows, onChange, others, o
                           <Icon symbol={row.symbol} hasIcon={info.hasIcon} />
                           <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', minWidth: 0 }}>
                             <Marked text={row.symbol} query={chosenQuery} />
+                            {unpricedSet.has(row.symbol) && (
+                              <span style={{ ...badgeStyle('var(--theme-error-500)'), marginLeft: '6px' }} title={NO_SOURCE_HINT}>
+                                {NO_SOURCE_LABEL}
+                              </span>
+                            )}
                             {info.name && (
                               <span style={{ color: 'var(--theme-elevation-400)' }}>
                                 {' — '}

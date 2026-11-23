@@ -6,7 +6,7 @@ import { RISK_EN, RISK_RU, videos, type EducationSeed } from './types'
 export const LEVEL_3: EducationSeed[] = [
   {
     slug: 'l3-ict-concepts',
-    level: 'intermediate',
+    level: 'advanced',
     locales: {
       ru: {
         title: 'Уровень 3 · ICT: ключевые идеи Inner Circle Trader',
@@ -111,7 +111,7 @@ ${RISK_EN}`,
   },
   {
     slug: 'l3-advanced-liquidity',
-    level: 'intermediate',
+    level: 'advanced',
     locales: {
       ru: {
         title: 'Уровень 3 · Продвинутая ликвидность',
@@ -200,7 +200,7 @@ ${RISK_EN}`,
   },
   {
     slug: 'l3-order-flow',
-    level: 'intermediate',
+    level: 'advanced',
     locales: {
       ru: {
         title: 'Уровень 3 · Order Flow: поток ордеров, футпринт, дельта и стакан',
@@ -296,7 +296,7 @@ ${RISK_EN}`,
   },
   {
     slug: 'l3-trading-systems',
-    level: 'intermediate',
+    level: 'advanced',
     locales: {
       ru: {
         title: 'Уровень 3 · Торговая система: стратегия, бэктест, журнал, матожидание и просадка',
@@ -414,7 +414,7 @@ ${RISK_EN}`,
   },
   {
     slug: 'l3-trading-psychology',
-    level: 'intermediate',
+    level: 'advanced',
     locales: {
       ru: {
         title: 'Уровень 3 · Психология и дисциплина профессионального трейдера',

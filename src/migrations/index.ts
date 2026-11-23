@@ -11,6 +11,7 @@ import * as migration_20261122_135545_system_status_live from './20261122_135545
 import * as migration_20261122_140507_articles_editor from './20261122_140507_articles_editor';
 import * as migration_20261122_140600_article_categories from './20261122_140600_article_categories';
 import * as migration_20261122_140700_academy_articles from './20261122_140700_academy_articles';
+import * as migration_20261123_085900_article_level_advanced from './20261123_085900_article_level_advanced';
 import * as migration_20261123_090000_education_course from './20261123_090000_education_course';
 
 export const migrations = [
@@ -78,6 +79,11 @@ export const migrations = [
     up: migration_20261122_140700_academy_articles.up,
     down: migration_20261122_140700_academy_articles.down,
     name: '20261122_140700_academy_articles',
+  },
+  {
+    up: migration_20261123_085900_article_level_advanced.up,
+    down: migration_20261123_085900_article_level_advanced.down,
+    name: '20261123_085900_article_level_advanced',
   },
   {
     up: migration_20261123_090000_education_course.up,

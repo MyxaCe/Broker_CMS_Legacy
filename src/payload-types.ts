@@ -310,7 +310,7 @@ export interface Article {
   cover?: (number | null) | Media;
   articleCategory?: (number | null) | ArticleCategory;
   source?: string | null;
-  level?: ('beginner' | 'intermediate') | null;
+  level?: ('beginner' | 'intermediate' | 'advanced') | null;
   /**
    * Необязательно. Ссылка YouTube или Vimeo — плеер появится вверху статьи.
    */

@@ -125,6 +125,7 @@ export const Articles: CollectionConfig = {
       options: [
         { label: 'Начальный', value: 'beginner' },
         { label: 'Средний', value: 'intermediate' },
+        { label: 'Профессиональный', value: 'advanced' },
       ],
       validate: requiredFor('education', 'Выберите уровень'),
       admin: { condition: isEducation },

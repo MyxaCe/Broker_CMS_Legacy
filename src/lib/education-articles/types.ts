@@ -8,7 +8,7 @@ export interface EducationSeed {
   slug: string
   // На сайте два уровня. Третий уровень курса («Профессиональный») идёт как intermediate,
   // а «Уровень 3» стоит в заголовке — пока в CMS и на сайте нет значения advanced.
-  level: 'beginner' | 'intermediate'
+  level: 'beginner' | 'intermediate' | 'advanced'
   locales: { ru: EducationText; en: EducationText }
 }
 
