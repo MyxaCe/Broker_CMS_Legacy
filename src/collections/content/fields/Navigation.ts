@@ -41,5 +41,11 @@ export const navigationFields: Field[] = [
       localized: true,
       required: true,
       label: 'Предупреждение о рисках (футер)',
+      // Обязательно для редактора. Исключение — пустой каркас нового сайта (ТД-004): текст
+      // о рисках зависит от юрисдикции, выдумывать его нельзя; пока он пуст, витрина его не выводит.
+      validate: (value: unknown, { req }: { req?: { context?: Record<string, unknown> } }) => {
+        if (req?.context?.siteSkeleton) return true
+        return typeof value === 'string' && value.trim().length > 0 ? true : 'Заполните предупреждение о рисках'
+      },
     },
   ]

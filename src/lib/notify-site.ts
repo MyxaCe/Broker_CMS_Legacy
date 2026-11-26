@@ -62,11 +62,15 @@ export async function notifySiteFor(site: SiteDoc, tags: string[]): Promise<void
 type AfterChangeArgs = {
   doc: Record<string, unknown>
   req: { url?: string | null; payload: unknown }
+  context?: Record<string, unknown>
 }
 
 export const notifyContentChange =
   (resource: string) =>
-  async ({ doc, req }: AfterChangeArgs) => {
+  async ({ doc, req, context }: AfterChangeArgs) => {
+    // Каркас нового сайта создаётся в транзакции самого сайта: сайт ещё не зафиксирован,
+    // витрине нового сайта сбрасывать нечего.
+    if (context?.siteSkeleton) return doc
     const status = doc?._status
     const isVersionRestore = typeof req?.url === 'string' && req.url.includes('/versions/')
     if (!isVersionRestore && status !== undefined && status !== 'published') return doc

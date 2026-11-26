@@ -6,6 +6,7 @@ import type { Payload } from 'payload'
 import { categoryTitles } from '../lib/article-categories'
 import { LANGUAGES } from '../lib/languages'
 import { TERMINAL_PAIRS } from '../lib/platform-instruments'
+import { isSkeletonContent } from '../lib/site-skeleton'
 import { CONTENT_BUILDERS } from './builders'
 
 type Locale = 'ru' | 'en'
@@ -21,8 +22,11 @@ function fixture(resource: string, locale: Locale): any {
   return JSON.parse(readFileSync(file, 'utf8'))
 }
 
-async function isUntouchedSkeleton(payload: Payload, collection: string, doc: Record<string, any>) {
-  if (doc._status === 'published') return false
+async function isUntouchedSkeleton(payload: Payload, resource: string, collection: string, doc: Record<string, any>) {
+  // Каркас нового сайта (ТД-004) публикуется пустым сразу; черновики — старые каркасы до ТД-004.
+  // Заполнять фикстурами можно только то, к чему редактор не прикасался: одна версия и
+  // содержимое как у пустого каркаса.
+  if (doc._status === 'published' && !isSkeletonContent(resource, doc)) return false
   const versions = await payload.findVersions({
     collection: collection as never,
     where: { parent: { equals: doc.id } },
@@ -50,6 +54,8 @@ export async function runSeed(
   if (siteId === undefined) {
     const created = await payload.create({
       collection: 'sites',
+      // Сид сам наполняет разделы фикстурами — пустой каркас ему не нужен.
+      context: { skipSiteSkeleton: true },
       data: {
         slug: siteSlug,
         name: brandRu.name,
@@ -75,7 +81,7 @@ export async function runSeed(
       depth: 0,
     })
     const doc = existing.docs[0] as Record<string, any> | undefined
-    if (doc && !(await isUntouchedSkeleton(payload, def.collection, doc))) {
+    if (doc && !(await isUntouchedSkeleton(payload, resource, def.collection, doc))) {
       summary.kept.push(resource)
       continue
     }

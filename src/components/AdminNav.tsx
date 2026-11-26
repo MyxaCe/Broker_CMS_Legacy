@@ -61,10 +61,15 @@ export async function AdminNav() {
       limit: 1,
       depth: 0,
     })
-    const siteDoc = site.docs[0] as { id: string | number; name?: string } | undefined
+    const siteDoc = site.docs[0] as { id: string | number; name?: string; defaultLanguage?: unknown } | undefined
     if (siteDoc) {
       siteName = siteDoc.name ?? active
-      docIds = await ensureSiteSkeleton(payload, siteDoc.id)
+      try {
+        // Досоздаёт недостающие разделы у сайтов, заведённых до ТД-004.
+        docIds = await ensureSiteSkeleton(payload, siteDoc.id, { locale: siteDoc.defaultLanguage })
+      } catch (error) {
+        console.error('[admin-nav] каркас разделов не досоздан:', (error as Error).message)
+      }
     }
   }
 

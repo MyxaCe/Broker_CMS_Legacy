@@ -31,6 +31,7 @@
     "test:education-course": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/test-education-course.ts",
     "test:onboarding": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/test-onboarding.ts",
     "test:mock-streams": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/test-mock-streams.ts",
+    "test:site-skeleton": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/test-site-skeleton.ts",
     "test": "pnpm test:live-params && pnpm test:instrument-catalog && pnpm test:legal-entity"
   },
   "dependencies": {

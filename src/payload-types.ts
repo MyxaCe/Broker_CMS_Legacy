@@ -213,6 +213,10 @@ export interface Site {
   id: number;
   slug: string;
   name: string;
+  /**
+   * Только при создании. Переносится устройство: пункты меню и колонки подвала, модули главной кабинета. Не переносятся бренд, юрлицо, юридические документы, тексты разделов, контакты, акции и предупреждение о рисках. Пусто — разделы создаются пустыми.
+   */
+  copyStructureFrom?: (number | null) | Site;
   logo?: (number | null) | Media;
   favicon?: (number | null) | Media;
   primaryColor: string;
@@ -1074,6 +1078,7 @@ export interface MediaSelect<T extends boolean = true> {
 export interface SitesSelect<T extends boolean = true> {
   slug?: T;
   name?: T;
+  copyStructureFrom?: T;
   logo?: T;
   favicon?: T;
   primaryColor?: T;

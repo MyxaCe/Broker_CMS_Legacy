@@ -28,6 +28,17 @@ export const Sites: CollectionConfig = {
     defaultColumns: ['slug', 'name', 'primaryColor'],
   },
   hooks: {
+    beforeChange: [
+      ({ data, operation, context }) => {
+        // «Скопировать структуру с сайта» — виртуальное поле, в базе не хранится;
+        // передаём выбор в afterChange через контекст.
+        if (operation === 'create' && data && data.copyStructureFrom != null && data.copyStructureFrom !== '') {
+          const ref = data.copyStructureFrom as string | number | { id?: string | number }
+          context.copyStructureFrom = typeof ref === 'object' ? (ref?.id ?? null) : ref
+        }
+        return data
+      },
+    ],
     afterChange: [
       ({ doc }) => {
         const site = doc as { slug?: string; webhookUrl?: string | null; webhookSecret?: string | null }
@@ -37,11 +48,15 @@ export const Sites: CollectionConfig = {
         void notifySiteFor(site, tags)
         return doc
       },
-      async ({ doc, operation, req }) => {
-        if (operation === 'create') {
+      async ({ doc, operation, req, context }) => {
+        if (operation === 'create' && !context?.skipSiteSkeleton) {
           const { ensureSiteSkeleton } = await import('../lib/site-skeleton')
-          await ensureSiteSkeleton(req.payload, (doc as { id: string | number }).id)
-          console.info(`[sites] skeleton created for ${(doc as { slug?: string }).slug}`)
+          const site = doc as { id: string | number; slug?: string; defaultLanguage?: unknown }
+          const copyFrom = (context?.copyStructureFrom ?? null) as string | number | null
+          await ensureSiteSkeleton(req.payload, site.id, { req, copyFrom, locale: site.defaultLanguage })
+          console.info(
+            `[sites] каркас разделов создан для ${site.slug}${copyFrom != null ? ` (структура скопирована с сайта ${copyFrom})` : ''}`,
+          )
         }
         return doc
       },
@@ -77,6 +92,18 @@ export const Sites: CollectionConfig = {
           : 'Ожидается slug вида apex-ru: строчные латинские, цифры, дефис (2–32)',
     },
     { name: 'name', type: 'text', required: true, label: 'Название бренда' },
+    {
+      name: 'copyStructureFrom',
+      type: 'relationship',
+      relationTo: 'sites',
+      virtual: true,
+      label: 'Скопировать структуру с сайта…',
+      admin: {
+        description:
+          'Только при создании. Переносится устройство: пункты меню и колонки подвала, модули главной кабинета. Не переносятся бренд, юрлицо, юридические документы, тексты разделов, контакты, акции и предупреждение о рисках. Пусто — разделы создаются пустыми.',
+        condition: (data) => !data?.id,
+      },
+    },
     { name: 'logo', type: 'upload', relationTo: 'media', label: 'Логотип' },
     { name: 'favicon', type: 'upload', relationTo: 'media', label: 'Favicon' },
     {

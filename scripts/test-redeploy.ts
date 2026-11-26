@@ -139,7 +139,8 @@ await payload.create({ collection: 'sites', data: { slug: NEW_SITE, name: 'New',
 const fresh = await siteId(NEW_SITE)
 await ensureSiteSkeleton(payload, fresh)
 const skeleton = await doc('site-faq', fresh, 'ru')
-assert.equal(skeleton._status, 'draft')
+assert.equal(skeleton._status, 'published', 'каркас нового сайта публикуется сразу (ТД-004)')
+assert.deepEqual(mapFaq(skeleton), { sections: [] }, 'каркас пустой')
 const seeded = await runSeed(payload, NEW_SITE, silent)
 assert.ok(seeded.created.includes('faq') && seeded.created.includes('accounts'))
 for (const locale of LOCALES) {
