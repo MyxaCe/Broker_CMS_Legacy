@@ -9,6 +9,7 @@ import {
   validateLanguages,
 } from '../lib/languages'
 import { legalEntityField } from '../lib/legal-entity'
+import { SLUG_LOCKED_ERROR } from '../lib/site-slug'
 import { defaultSiteSlug, notifySiteFor } from '../lib/notify-site'
 import {
   checkPlatformChange,
@@ -28,6 +29,20 @@ export const Sites: CollectionConfig = {
     defaultColumns: ['slug', 'name', 'primaryColor'],
   },
   hooks: {
+    // Смену slug отклоняем до проверки прав на поле: иначе Payload молча выбросил бы новое значение,
+    // и вызывающий не понял бы, почему slug не поменялся.
+    beforeOperation: [
+      async ({ args, operation, req }) => {
+        if (operation !== 'update' && operation !== 'updateByID') return args
+        const next = (args as { data?: { slug?: unknown } }).data?.slug
+        if (typeof next !== 'string') return args
+        const id = (args as { id?: string | number }).id
+        if (id === undefined) throw new APIError(SLUG_LOCKED_ERROR, 400, undefined, true)
+        const current = (await req.payload.findByID({ collection: 'sites', id, depth: 0, req })) as { slug?: string }
+        if (current.slug !== next) throw new APIError(SLUG_LOCKED_ERROR, 400, undefined, true)
+        return args
+      },
+    ],
     beforeChange: [
       ({ data, operation, context }) => {
         // «Скопировать структуру с сайта» — виртуальное поле, в базе не хранится;
@@ -86,6 +101,14 @@ export const Sites: CollectionConfig = {
       unique: true,
       index: true,
       label: 'Slug (идентификатор тенанта)',
+      admin: {
+        // После создания slug менять нельзя: это внутренний ключ сайта для витрины, кабинета, терминала и путей к файлам.
+        description:
+          'Внутренний ключ сайта. Задаётся один раз при создании и больше не меняется: по нему витрина, кабинет и терминал находят этот сайт. Название бренда меняется в поле «Название бренда».',
+      },
+      access: {
+        update: ({ doc }) => !doc,
+      },
       validate: (value: unknown) =>
         typeof value === 'string' && /^[a-z0-9-]{2,32}$/.test(value)
           ? true
@@ -105,6 +128,22 @@ export const Sites: CollectionConfig = {
       },
     },
     { name: 'logo', type: 'upload', relationTo: 'media', label: 'Логотип' },
+    {
+      name: 'logoMode',
+      type: 'select',
+      required: true,
+      defaultValue: 'logo-name',
+      options: [
+        { value: 'logo-name', label: 'Логотип и название рядом' },
+        { value: 'logo', label: 'Только логотип (в нём уже есть название)' },
+        { value: 'name', label: 'Только название текстом' },
+      ],
+      label: 'Как показывать бренд в шапке',
+      admin: {
+        description:
+          'Если на логотипе уже написано название бренда, выберите «Только логотип» — иначе название будет показано дважды. Без загруженного логотипа всегда показывается название.',
+      },
+    },
     { name: 'favicon', type: 'upload', relationTo: 'media', label: 'Favicon' },
     {
       name: 'primaryColor',

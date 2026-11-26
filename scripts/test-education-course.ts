@@ -52,6 +52,9 @@ const index = migrations.findIndex((m) => m.name === '20261123_090000_education_
 assert.ok(index > 0, 'миграция курса есть в списке')
 const ours = migrations[index]!
 for (const migration of migrations.slice(0, index)) await migration.up(args)
+// Колонку sites.logo_mode читает любой запрос Payload к сайтам — накатываем её сразу (миграция независимая).
+const siteLogoMode = migrations.find((m) => m.name === '20261126_160000_site_logo_mode')!
+await siteLogoMode.up(args)
 
 await db.execute(sql`
   INSERT INTO "sites" ("slug", "name", "primary_color", "demo_start_balance_cents", "updated_at", "created_at")
@@ -146,7 +149,7 @@ await check('курс: откат удаляет только статьи ку�
   assert.deepEqual(strip(again), strip(migrated))
 })
 
-for (const migration of migrations.slice(index + 1)) await migration.up(args)
+for (const migration of migrations.slice(index + 1)) if (migration !== siteLogoMode) await migration.up(args)
 
 console.info(failures ? `\n${failures} FAIL` : '\nALL OK')
 process.exit(failures ? 1 : 0)

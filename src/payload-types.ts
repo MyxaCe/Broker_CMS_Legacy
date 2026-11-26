@@ -211,6 +211,9 @@ export interface Media {
  */
 export interface Site {
   id: number;
+  /**
+   * Внутренний ключ сайта. Задаётся один раз при создании и больше не меняется: по нему витрина, кабинет и терминал находят этот сайт. Название бренда меняется в поле «Название бренда».
+   */
   slug: string;
   name: string;
   /**
@@ -218,6 +221,10 @@ export interface Site {
    */
   copyStructureFrom?: (number | null) | Site;
   logo?: (number | null) | Media;
+  /**
+   * Если на логотипе уже написано название бренда, выберите «Только логотип» — иначе название будет показано дважды. Без загруженного логотипа всегда показывается название.
+   */
+  logoMode: 'logo-name' | 'logo' | 'name';
   favicon?: (number | null) | Media;
   primaryColor: string;
   socials?:
@@ -1080,6 +1087,7 @@ export interface SitesSelect<T extends boolean = true> {
   name?: T;
   copyStructureFrom?: T;
   logo?: T;
+  logoMode?: T;
   favicon?: T;
   primaryColor?: T;
   socials?:

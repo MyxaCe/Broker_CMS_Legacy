@@ -15,6 +15,7 @@ import * as migration_20261123_085900_article_level_advanced from './20261123_08
 import * as migration_20261123_090000_education_course from './20261123_090000_education_course';
 import * as migration_20261123_125215_onboarding from './20261123_125215_onboarding';
 import * as migration_20261123_150000_remove_mock_streams from './20261123_150000_remove_mock_streams';
+import * as migration_20261126_160000_site_logo_mode from './20261126_160000_site_logo_mode';
 
 export const migrations = [
   {
@@ -101,5 +102,10 @@ export const migrations = [
     up: migration_20261123_150000_remove_mock_streams.up,
     down: migration_20261123_150000_remove_mock_streams.down,
     name: '20261123_150000_remove_mock_streams',
+  },
+  {
+    up: migration_20261126_160000_site_logo_mode.up,
+    down: migration_20261126_160000_site_logo_mode.down,
+    name: '20261126_160000_site_logo_mode',
   },
 ];

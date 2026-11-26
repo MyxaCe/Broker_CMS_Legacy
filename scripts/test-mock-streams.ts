@@ -43,7 +43,6 @@ assert.equal(empty.rows[0]?.t ?? null, null, 'нужна пустая база: 
 
 const index = migrations.findIndex((m) => m.name === '20261123_150000_remove_mock_streams')
 assert.ok(index > 0, 'миграция удаления пробных эфиров есть в списке')
-assert.equal(index, migrations.length - 1, 'миграция последняя в цепочке')
 const ours = migrations[index]!
 for (const migration of migrations.slice(0, index)) await migration.up(args)
 
@@ -72,6 +71,8 @@ async function videoIds(table: 'site_streams_items' | '_site_streams_v_version_i
 }
 
 await ours.up(args)
+// Более поздние миграции (схема, которую читает API) — чтобы ответы ресурсов шли на актуальной схеме.
+for (const migration of migrations.slice(index + 1)) await migration.up(args)
 
 await check('up: пробные эфиры удалены у всех сайтов и локалей, настоящий эфир остался', async () => {
   const live = await videoIds('site_streams_items')

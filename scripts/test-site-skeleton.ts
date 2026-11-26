@@ -229,5 +229,28 @@ await check('сайт с языком по умолчанию de: каркас �
   }
 })
 
+// 4. Slug после создания не меняется; режим показа бренда доезжает в контракт.
+await check('slug сайта нельзя сменить: понятная ошибка, сайт не тронут', async () => {
+  const site = (await payload.find({ collection: 'sites', where: { slug: { equals: 'de-country' } }, depth: 0 })).docs[0] as Doc
+  await assert.rejects(
+    payload.update({ collection: 'sites', id: site.id, data: { slug: 'renamed-country' } as never }),
+    (error: Error) => /Slug сайта менять нельзя/.test(error.message),
+  )
+  const again = (await payload.findByID({ collection: 'sites', id: site.id, depth: 0 })) as Doc
+  assert.equal(again.slug, 'de-country')
+  // Сохранение карточки с тем же slug (так делает админка) проходит.
+  await payload.update({ collection: 'sites', id: site.id, data: { slug: 'de-country', name: 'DE2' } as never })
+  assert.equal(((await payload.findByID({ collection: 'sites', id: site.id, depth: 0 })) as Doc).name, 'DE2')
+})
+
+await check('режим показа бренда: по умолчанию logo-name, «только логотип» доезжает в ресурс brand', async () => {
+  const site = (await payload.find({ collection: 'sites', where: { slug: { equals: 'de-country' } }, depth: 0 })).docs[0] as Doc
+  assert.equal((await fetchJson('brand', 'site=de-country&locale=de')).body.logoMode, 'logo-name')
+  await payload.update({ collection: 'sites', id: site.id, data: { logoMode: 'logo' } as never })
+  const { body } = await fetchJson('brand', 'site=de-country&locale=de')
+  assert.equal(body.logoMode, 'logo')
+  assert.ok(validateContract('brand', body).valid, 'brand с logoMode проходит контракт')
+})
+
 console.info(failures === 0 ? '\nALL OK' : `\n${failures} FAIL`)
 process.exit(failures === 0 ? 0 : 1)

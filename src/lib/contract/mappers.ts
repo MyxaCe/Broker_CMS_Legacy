@@ -43,6 +43,7 @@ export function mapBrand(doc: PayloadDoc) {
       url: String(s.url ?? ''),
     })),
     heroBackground: heroBackground(doc),
+    logoMode: logoMode(doc),
     ...siteLanguages(doc),
     ...withLegalEntity(doc),
   }
@@ -51,6 +52,10 @@ export function mapBrand(doc: PayloadDoc) {
 function withLegalEntity(doc: PayloadDoc) {
   const legalEntity = mapLegalEntity(doc)
   return legalEntity ? { legalEntity } : {}
+}
+
+export function logoMode(site: PayloadDoc): 'logo-name' | 'logo' | 'name' {
+  return site.logoMode === 'logo' || site.logoMode === 'name' ? site.logoMode : 'logo-name'
 }
 
 export function heroBackground(site: PayloadDoc): 'quotes' | 'off' {

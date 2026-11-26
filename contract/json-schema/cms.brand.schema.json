@@ -87,6 +87,14 @@
             "off"
           ]
         },
+        "logoMode": {
+          "type": "string",
+          "enum": [
+            "logo-name",
+            "logo",
+            "name"
+          ]
+        },
         "languages": {
           "type": "array",
           "items": {
