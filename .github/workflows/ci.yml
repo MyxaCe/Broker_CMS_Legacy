@@ -124,7 +124,7 @@ jobs:
           NODE_ENV: production
           DATABASE_URL: postgres://cms:cms@localhost:5432/broker_cms_mock_streams
 
-      - name: Каркас нового сайта (ТД-004: в транзакции сайта, опубликован, пустой, контракт всех ресурсов, повтор, правки, копия структуры, язык de)
+      - name: Каркас нового сайта (ТД-004 — в транзакции сайта, опубликован, пустой, контракт всех ресурсов, повтор, правки, копия структуры, язык de)
         run: |
           PGPASSWORD=cms psql -h localhost -U cms -d broker_cms -c "CREATE DATABASE broker_cms_skeleton"
           pnpm test:site-skeleton
