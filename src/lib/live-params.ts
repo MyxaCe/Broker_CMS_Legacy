@@ -1,3 +1,5 @@
+import { isRequisiteParam } from './requisites'
+
 export const LIVE_PARAMS: readonly { name: string; title: string }[] = [
   { name: 'deposit.min', title: 'Минимальное пополнение' },
   { name: 'withdraw.min', title: 'Минимальный вывод' },
@@ -24,6 +26,11 @@ export function isLiveParam(name: string): boolean {
   return FIXED.has(name) || ACCOUNT_PARAM.test(name) || ACCOUNT_CLASS_PARAM.test(name)
 }
 
+/** Известная метка: живой параметр платформы (подставит сайт) или реквизит сайта (подставит CMS). */
+export function isKnownParam(name: string): boolean {
+  return isLiveParam(name) || isRequisiteParam(name)
+}
+
 export interface LiveParamsScan {
   known: string[]
   unknown: string[]
@@ -35,7 +42,7 @@ export function scanLiveParams(text: unknown): LiveParamsScan {
   if (typeof text !== 'string' || !text.includes('{{')) return { known, unknown }
   for (const match of text.matchAll(PLACEHOLDER)) {
     const name = match[1] ?? ''
-    const target = isLiveParam(name) ? known : unknown
+    const target = isKnownParam(name) ? known : unknown
     const token = `{{${name}}}`
     if (!target.includes(token)) target.push(token)
   }

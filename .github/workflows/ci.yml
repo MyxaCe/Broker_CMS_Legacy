@@ -52,6 +52,9 @@ jobs:
       - name: Юрлицо и лицензии (ссылка на реестр, пустое не выводится, контракт brand)
         run: pnpm test:legal-entity
 
+      - name: Реквизиты сайта в текстах (подстановка, скрытие документа без реквизита, контракт legal)
+        run: pnpm test:requisites
+
       - name: Миграции на обжитой базе (языки, фон, портфели тарифов, видео-ссылки, юрлицо; ru/en не меняются)
         run: |
           PGPASSWORD=cms psql -h localhost -U cms -d broker_cms -c "CREATE DATABASE broker_cms_migration"

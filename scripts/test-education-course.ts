@@ -55,6 +55,9 @@ for (const migration of migrations.slice(0, index)) await migration.up(args)
 // Колонку sites.logo_mode читает любой запрос Payload к сайтам — накатываем её сразу (миграция независимая).
 const siteLogoMode = migrations.find((m) => m.name === '20261126_160000_site_logo_mode')!
 await siteLogoMode.up(args)
+// То же с реквизитами сайта (sites.requisites_*, sites_requisites_extra).
+const siteRequisites = migrations.find((m) => m.name === '20261128_190000_site_requisites')!
+await siteRequisites.up(args)
 
 await db.execute(sql`
   INSERT INTO "sites" ("slug", "name", "primary_color", "demo_start_balance_cents", "updated_at", "created_at")
@@ -149,7 +152,7 @@ await check('курс: откат удаляет только статьи ку�
   assert.deepEqual(strip(again), strip(migrated))
 })
 
-for (const migration of migrations.slice(index + 1)) if (migration !== siteLogoMode) await migration.up(args)
+for (const migration of migrations.slice(index + 1)) if (migration !== siteLogoMode && migration !== siteRequisites) await migration.up(args)
 
 console.info(failures ? `\n${failures} FAIL` : '\nALL OK')
 process.exit(failures ? 1 : 0)

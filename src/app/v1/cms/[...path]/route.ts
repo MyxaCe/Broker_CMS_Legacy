@@ -6,6 +6,7 @@ import { RESOURCE_TO_COLLECTION } from '@/collections/content/index'
 import { articleWhere, parseSection } from '@/lib/contract/articles'
 import { heroBackground, mapAcademyArticle, mapArticle } from '@/lib/contract/mappers'
 import { RESOURCE_MAPPERS } from '@/lib/contract/resources'
+import { requisiteValues, substituteRequisites, withRequisitesLegal } from '@/lib/requisites'
 import { validateContract } from '@/lib/contract/validate'
 import { parseLocale, siteLanguages } from '@/lib/languages'
 import { defaultSiteSlug } from '@/lib/notify-site'
@@ -120,7 +121,7 @@ export async function GET(
       })
       const doc = found.docs[0]
       if (!doc) return NextResponse.json({ error: 'not_found' }, { status: 404 })
-      const dto = mapArticle(doc as Record<string, any>)
+      const dto = substituteRequisites(mapArticle(doc as Record<string, any>), requisiteValues(site))
       const check = validateContract('article', dto)
       if (!check.valid) return contractViolation('article', siteSlug, check.errors)
       return jsonWithVersion(dto, (doc as Record<string, any>).updatedAt)
@@ -145,7 +146,7 @@ export async function GET(
         limit: pageSize,
       })
       const dto = {
-        items: found.docs.map((doc) => mapArticle(doc as Record<string, any>)),
+        items: substituteRequisites(found.docs.map((doc) => mapArticle(doc as Record<string, any>)), requisiteValues(site)),
         total: found.totalDocs,
         page: found.page ?? page,
         pageSize,
@@ -191,9 +192,17 @@ export async function GET(
       const newest = (education.docs as Record<string, any>[]).map((a) => String(a.updatedAt ?? '')).sort().pop()
       if (newest && newest > String(version ?? '')) version = newest
     }
-    const check = validateContract(resource, dto)
+    // Реквизиты сайта ({{brand}}, {{company.*}}) подставляет CMS; документ с пустым реквизитом не отдаётся.
+    const filled =
+      resource === 'legal'
+        ? withRequisitesLegal(dto as { items: Record<string, any>[] }, site)
+        : substituteRequisites(dto, requisiteValues(site))
+    const check = validateContract(resource, filled)
     if (!check.valid) return contractViolation(resource, siteSlug, check.errors)
-    return jsonWithVersion(dto, version)
+    // Реквизиты живут в карточке сайта: их правка тоже новая версия ответа.
+    const siteUpdated = String(site.updatedAt ?? '')
+    if (siteUpdated > String(version ?? '')) version = siteUpdated
+    return jsonWithVersion(filled, version)
   } catch (error) {
     console.error(`[contract] ${segments.join('/')} (site=${siteSlug}) failed:`, error)
     return NextResponse.json({ error: 'internal_error' }, { status: 500 })

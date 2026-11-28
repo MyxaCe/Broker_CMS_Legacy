@@ -180,6 +180,9 @@ for (const migration of migrations.slice(0, indexes[0])) await migration.up(args
 // Колонку sites.logo_mode читает любой запрос Payload к сайтам — накатываем её сразу (миграция независимая).
 const siteLogoMode = migrations.find((m) => m.name === '20261126_160000_site_logo_mode')!
 await siteLogoMode.up(args)
+// То же с реквизитами сайта (sites.requisites_*, sites_requisites_extra).
+const siteRequisites = migrations.find((m) => m.name === '20261128_190000_site_requisites')!
+await siteRequisites.up(args)
 
 const LEGACY_MD_RU = 'Первый абзац про **ставку** ФРС.\n\nВторой абзац: доллар ослаб.'
 await db.execute(sql`
@@ -351,7 +354,7 @@ await check('миграции статей: откат возвращает пр
   assert.deepEqual(strip(again), strip(migrated))
 })
 
-for (const migration of migrations.slice(indexes[2]! + 1)) if (migration !== siteLogoMode) await migration.up(args)
+for (const migration of migrations.slice(indexes[2]! + 1)) if (migration !== siteLogoMode && migration !== siteRequisites) await migration.up(args)
 
 const site = (await payload.find({ collection: 'sites', where: { slug: { equals: 'art-a' } }, depth: 0 })).docs[0] as Doc
 const economy = (await payload.find({ collection: 'article-categories', where: { slug: { equals: 'economy' } }, depth: 0 })).docs[0] as Doc

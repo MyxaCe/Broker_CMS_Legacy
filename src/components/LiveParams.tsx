@@ -4,6 +4,7 @@ import { toast, useAllFormFields, useDocumentInfo, useFormFields } from '@payloa
 import { useEffect, useMemo, useRef } from 'react'
 
 import { collectUnknownLiveParams, LIVE_PARAMS, scanLiveParams } from '../lib/live-params'
+import { isRequisiteParam, REQUISITE_PARAMS } from '../lib/requisites'
 
 const chip = (color: string): React.CSSProperties => ({
   display: 'inline-block',
@@ -24,11 +25,17 @@ export function LiveParamsHint({ path }: { path?: string }) {
   if (!known.length && !unknown.length) return null
   return (
     <div style={{ marginTop: 4 }}>
-      {known.map((token) => (
-        <span key={token} style={chip('success')} title="Живой параметр: сайт подставит значение из настроек платформы">
-          {token} · живой параметр
-        </span>
-      ))}
+      {known.map((token) =>
+        isRequisiteParam(token.slice(2, -2).trim()) ? (
+          <span key={token} style={chip('success')} title="Реквизит: значение из карточки сайта (Сайты → Реквизиты для документов)">
+            {token} · реквизит сайта
+          </span>
+        ) : (
+          <span key={token} style={chip('success')} title="Живой параметр: сайт подставит значение из настроек платформы">
+            {token} · живой параметр
+          </span>
+        ),
+      )}
       {unknown.map((token) => (
         <span key={token} style={chip('error')} title="Такого параметра нет: на сайте будет «—»">
           {token} · неизвестный параметр
@@ -67,7 +74,7 @@ export function LiveParamsSummary() {
       <summary style={{ cursor: 'pointer', color: unknown.length ? 'var(--theme-error-600)' : undefined }}>
         {unknown.length
           ? `Неизвестные параметры: ${unknown.join(', ')}`
-          : 'Живые параметры {{…}}: цифры из настроек платформы'}
+          : 'Параметры {{…}}: цифры платформы и реквизиты сайта'}
       </summary>
       <p style={{ margin: '8px 0' }}>
         Сайт подставляет значения из настроек платформы при показе страницы. Параметры не переводятся: в каждом языке
@@ -75,6 +82,17 @@ export function LiveParamsSummary() {
       </p>
       <ul style={{ margin: 0, paddingLeft: 18 }}>
         {LIVE_PARAMS.map((p) => (
+          <li key={p.name}>
+            <code>{`{{${p.name}}}`}</code> — {p.title}
+          </li>
+        ))}
+      </ul>
+      <p style={{ margin: '8px 0 4px' }}>
+        Реквизиты сайта — название бренда, юрлицо, адрес, юрисдикция. Значения берутся из карточки сайта (Сайты → Юрлицо и
+        лицензия, Реквизиты для документов), так что один и тот же текст подходит для любого сайта:
+      </p>
+      <ul style={{ margin: 0, paddingLeft: 18 }}>
+        {REQUISITE_PARAMS.map((p) => (
           <li key={p.name}>
             <code>{`{{${p.name}}}`}</code> — {p.title}
           </li>

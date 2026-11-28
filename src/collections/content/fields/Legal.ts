@@ -12,7 +12,12 @@ export const legalFields: Field[] = [
         { name: 'slug', type: 'text', required: true, label: 'Slug (privacy, terms…)' },
         { name: 'title', type: 'text', required: true, label: 'Название' },
         { name: 'updatedAt', type: 'text', required: true, label: 'Обновлено (YYYY-MM-DD)' },
-        { name: 'intro', type: 'textarea', required: true, label: 'Вступление' },
+        {
+          name: 'intro',
+          type: 'textarea',
+          label: 'Вступление',
+          admin: { description: 'Необязательно: короткий абзац под заголовком, он же описание страницы для поисковиков' },
+        },
         {
           name: 'sections',
           type: 'array',
@@ -20,7 +25,12 @@ export const legalFields: Field[] = [
           labels: { singular: 'Раздел', plural: 'Разделы' },
           admin: { components: { RowLabel: '/components/RowLabel#ArrayRowLabel' } },
           fields: [
-            { name: 'heading', type: 'text', required: true, label: 'Заголовок' },
+            {
+              name: 'heading',
+              type: 'text',
+              label: 'Заголовок',
+              admin: { description: 'Можно оставить пустым, если документ — сплошной текст без разделов' },
+            },
             {
               name: 'paragraphsMarkdown',
               type: 'array',

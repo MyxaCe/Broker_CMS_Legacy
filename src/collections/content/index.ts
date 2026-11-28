@@ -1,4 +1,5 @@
 import { CabinetHome } from './CabinetHome'
+import { requireRequisitesOnPublish } from '../../lib/requisites-hooks'
 import { makeSiteContentCollection } from './factory'
 import { Onboarding } from './Onboarding'
 import { academyFields } from './fields/Academy'
@@ -91,6 +92,7 @@ export const CONTENT_COLLECTIONS = [
     label: 'Правовые документы',
     fields: legalFields,
     previewPath: '/legal/privacy',
+    beforeChange: [requireRequisitesOnPublish],
   }),
   makeSiteContentCollection({
     collectionSlug: 'site-system-status',

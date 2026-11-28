@@ -1,4 +1,4 @@
-import type { CollectionConfig, Field } from 'payload'
+import type { CollectionBeforeChangeHook, CollectionConfig, Field } from 'payload'
 
 import { fillSiteFromActive, siteListFilter } from '../../lib/active-site'
 import { liveParamsSummaryField, warnUnknownLiveParams, withLiveParams } from '../../lib/live-params-fields'
@@ -11,6 +11,7 @@ export interface SiteContentDef {
   label: string
   fields: Field[]
   previewPath?: string
+  beforeChange?: CollectionBeforeChangeHook[]
 }
 
 export function makeSiteContentCollection(def: SiteContentDef): CollectionConfig {
@@ -28,6 +29,7 @@ export function makeSiteContentCollection(def: SiteContentDef): CollectionConfig
     hooks: {
       afterChange: [notifyContentChange(def.resource), warnUnknownLiveParams],
       beforeValidate: [fillSiteFromActive],
+      ...(def.beforeChange ? { beforeChange: def.beforeChange } : {}),
     },
     fields: [
       {

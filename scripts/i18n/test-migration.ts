@@ -26,7 +26,7 @@ const SYSTEM_STATUS = '20261122_135545_system_status_live'
 const ARTICLES_CHAIN = ['20261122_140507_articles_editor', '20261122_140600_article_categories', '20261122_140700_academy_articles']
 // Миграции после статей: третий уровень статей и обучающий курс (только данные, на сайте apex-ru; здесь его нет — ничего не добавляет),
 // экскурсия по платформе (новые таблицы site_onboarding, старые данные не трогает).
-const AFTER_ARTICLES = ['20261123_085900_article_level_advanced', '20261123_090000_education_course', '20261123_125215_onboarding', '20261123_150000_remove_mock_streams', '20261126_160000_site_logo_mode']
+const AFTER_ARTICLES = ['20261123_085900_article_level_advanced', '20261123_090000_education_course', '20261123_125215_onboarding', '20261123_150000_remove_mock_streams', '20261126_160000_site_logo_mode', '20261128_190000_site_requisites']
 
 const payload = await getPayload({ config })
 const db = (payload.db as unknown as { drizzle: { execute: (q: unknown) => Promise<{ rows: any[] }> } }).drizzle
@@ -89,7 +89,7 @@ const CONTENT = sql`
          (SELECT json_agg(to_jsonb(t) - 'video_url' ORDER BY t._locale, t._order) FROM site_streams_items t) AS streams,
          (SELECT json_agg(to_jsonb(t) - 'video_url' ORDER BY t._locale, t._order) FROM site_academy_articles t) AS academy_articles,
          (SELECT json_agg(to_jsonb(t) - 'recording_url' - 'join_url' ORDER BY t._locale, t._order) FROM site_academy_webinars t) AS academy_webinars,
-         (SELECT json_agg(to_jsonb(t) - 'hero_background' - 'default_language' - 'close_only_instruments' - 'legal_entity_name' - 'legal_entity_registration_number' - 'logo_mode' ORDER BY t.id) FROM sites t) AS sites`
+         (SELECT json_agg(to_jsonb(t) - 'hero_background' - 'default_language' - 'close_only_instruments' - 'legal_entity_name' - 'legal_entity_registration_number' - 'logo_mode' - 'requisites_phone' - 'requisites_email' - 'requisites_website' ORDER BY t.id) FROM sites t) AS sites`
 const contentBefore = await db.execute(CONTENT)
 
 const siteInstrumentsIndex = migrations.findIndex((m) => m.name === SITE_INSTRUMENTS)

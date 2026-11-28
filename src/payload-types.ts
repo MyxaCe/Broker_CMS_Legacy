@@ -243,6 +243,10 @@ export interface Site {
     address?: string | null;
     licenses?:
       | {
+          /**
+           * Латиницей, например cysec. Тогда в любом тексте сайта и в документах {{license.cysec.number}} — номер, {{license.cysec.regulator}} — регулятор, {{license.cysec.country}} — страна, {{license.cysec.activity}} — вид деятельности. Номер правится только здесь — меняется везде
+           */
+          key?: string | null;
           number?: string | null;
           activity?: string | null;
           regulator?: string | null;
@@ -252,6 +256,35 @@ export interface Site {
            */
           verifyUrl?: string | null;
           document?: (number | null) | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Подставляются в тексты вместо меток: {{brand}} — название бренда, {{company.name}}, {{company.regNumber}}, {{company.address}} — из блока «Юрлицо и лицензия», остальные — отсюда. Юридический документ с незаполненной меткой на сайте не показывается, пока поле не заполнят. Лицензии: {{license.<код>.number}} — из блока «Юрлицо и лицензия». Телефон и почту можно ставить метками и в «Контакты» — тогда они правятся только здесь.
+   */
+  requisites?: {
+    /**
+     * В тексте: «законодательством …», «суды …». Например: Республики Кипр
+     */
+    jurisdiction?: string | null;
+    /**
+     * В тексте: «органы …». Например: в Республике Кипр
+     */
+    jurisdictionIn?: string | null;
+    phone?: string | null;
+    email?: string | null;
+    /**
+     * Например: example.com
+     */
+    website?: string | null;
+    /**
+     * Для того, чего нет выше: ключ regulator → в тексте {{company.regulator}}
+     */
+    extra?:
+      | {
+          key: string;
+          value?: string | null;
           id?: string | null;
         }[]
       | null;
@@ -718,10 +751,16 @@ export interface SiteLegal {
         slug: string;
         title: string;
         updatedAt: string;
-        intro: string;
+        /**
+         * Необязательно: короткий абзац под заголовком, он же описание страницы для поисковиков
+         */
+        intro?: string | null;
         sections?:
           | {
-              heading: string;
+              /**
+               * Можно оставить пустым, если документ — сплошной текст без разделов
+               */
+              heading?: string | null;
               paragraphsMarkdown?:
                 | {
                     text: string;
@@ -1106,12 +1145,29 @@ export interface SitesSelect<T extends boolean = true> {
         licenses?:
           | T
           | {
+              key?: T;
               number?: T;
               activity?: T;
               regulator?: T;
               regulatorCountry?: T;
               verifyUrl?: T;
               document?: T;
+              id?: T;
+            };
+      };
+  requisites?:
+    | T
+    | {
+        jurisdiction?: T;
+        jurisdictionIn?: T;
+        phone?: T;
+        email?: T;
+        website?: T;
+        extra?:
+          | T
+          | {
+              key?: T;
+              value?: T;
               id?: T;
             };
       };

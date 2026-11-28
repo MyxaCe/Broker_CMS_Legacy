@@ -26,6 +26,15 @@ export interface LegalEntity {
 
 const PDF = 'application/pdf'
 
+export const LICENSE_KEY = /^[a-z][a-z0-9_]{0,19}$/
+
+export function validateLicenseKey(value: unknown): true | string {
+  if (value === undefined || value === null || value === '') return true
+  return typeof value === 'string' && LICENSE_KEY.test(value)
+    ? true
+    : 'Код: строчная латиница, цифры и «_», начинается с буквы (например cysec)'
+}
+
 export function isVerifyUrl(value: unknown): value is string {
   if (typeof value !== 'string' || value.trim() !== value || value === '') return false
   let url: URL
@@ -107,6 +116,18 @@ export const legalEntityField: Field = {
       label: 'Лицензии',
       labels: { singular: 'Лицензия', plural: 'Лицензии' },
       fields: [
+        {
+          name: 'key',
+          type: 'text',
+          label: 'Код для текстов',
+          admin: {
+            description:
+              'Латиницей, например cysec. Тогда в любом тексте сайта и в документах {{license.cysec.number}} — номер, ' +
+              '{{license.cysec.regulator}} — регулятор, {{license.cysec.country}} — страна, {{license.cysec.activity}} — вид ' +
+              'деятельности. Номер правится только здесь — меняется везде',
+          },
+          validate: (value: unknown) => validateLicenseKey(value),
+        },
         { name: 'number', type: 'text', label: 'Номер лицензии' },
         { name: 'activity', type: 'text', localized: true, label: 'Тип лицензии / вид деятельности' },
         { name: 'regulator', type: 'text', localized: true, label: 'Регулятор' },

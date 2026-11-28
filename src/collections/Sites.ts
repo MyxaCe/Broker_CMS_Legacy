@@ -9,6 +9,7 @@ import {
   validateLanguages,
 } from '../lib/languages'
 import { legalEntityField } from '../lib/legal-entity'
+import { requisitesField } from '../lib/requisites'
 import { SLUG_LOCKED_ERROR } from '../lib/site-slug'
 import { defaultSiteSlug, notifySiteFor } from '../lib/notify-site'
 import {
@@ -166,6 +167,7 @@ export const Sites: CollectionConfig = {
       ],
     },
     legalEntityField,
+    requisitesField,
     {
       name: 'instruments',
       type: 'json',
